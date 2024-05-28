@@ -27,14 +27,7 @@ const UserItem: React.FC<Data> = ({
   const dayDiff = moment().diff(moment(lastChatTime), "days");
 
   const handle = () => {
-    handleNavigation(`/chat/${id}`, {
-      id,
-      name,
-      lastChat,
-      lastChatTime,
-      newUnreadChatCount,
-      avatarImage,
-    });
+    handleNavigation(`/chat/${id}`);
   };
 
   return (
