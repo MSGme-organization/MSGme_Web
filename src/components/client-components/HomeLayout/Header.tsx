@@ -5,7 +5,7 @@ import React from "react";
 import { DownArrow, NavbarBurger, NavbarCross } from "./Svgs";
 
 const HeaderBar = () => {
-  const [nav, setNav] = React.useState(false);
+  const [nav, setNav] = React.useState(true);
 
   return (
     <div className="px-5 xl:px-14 bg-customGrey-light dark:bg-customGrey-black shadow-md  min-h-[90px] absolute w-full top-0 left-0">
