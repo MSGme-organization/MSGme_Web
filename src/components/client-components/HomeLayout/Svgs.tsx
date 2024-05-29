@@ -11,13 +11,13 @@ export const DownArrow = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_506_11589)">
+      <g clipPath="url(#clip0_506_11589)">
         <path
           d="M9.75 4.5L6 8.25L2.25 4.5"
           stroke="currentColor"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>

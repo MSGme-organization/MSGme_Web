@@ -3,35 +3,36 @@
 import Image from "next/image";
 import React from "react";
 
-const Icons = [
-  {
-    path: "/svgs/plus.svg",
-    alt: "plus",
-    classes: "bg-primary",
-    fn: () => console.log("plus"),
-  },
-  {
-    path: "/svgs/avtar.svg",
-    alt: "avtar",
-    classes: "bg-primary",
-    fn: () => console.log("avtar"),
-  },
-  {
-    path: "/svgs/bar.svg",
-    alt: "bar",
-    classes: "bg-gray-200",
-    fn: () => console.log("bar"),
-  },
-];
-
 const ChatListNavBar = ({
   handleNavigation,
+  handleOpen,
 }: {
   handleNavigation: (path: string) => void;
+  handleOpen: () => void;
 }) => {
+  const Icons = [
+    {
+      path: "/svgs/plus.svg",
+      alt: "plus",
+      classes: "bg-primary",
+      fn: () => console.log("plus"),
+    },
+    {
+      path: "/svgs/avtar.svg",
+      alt: "avtar",
+      classes: "bg-primary",
+      fn: () => console.log("avtar"),
+    },
+    {
+      path: "/svgs/bar.svg",
+      alt: "bar",
+      classes: "bg-gray-200 hidden md:block",
+      fn: handleOpen,
+    },
+  ];
   return (
     <>
-      <div className="w-full flex justify-between items-center p-4">
+      <div className="w-full flex justify-between items-center p-4 h-[70px]">
         <div onClick={() => handleNavigation("/chat")}>
           <Image src="/Logo.png" alt="logo" width={95} height={95} />
         </div>
