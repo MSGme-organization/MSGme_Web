@@ -1,7 +1,7 @@
 import Footer from "@/components/client-components/HomeLayout/Footer";
 import HeaderBar from "@/components/client-components/HomeLayout/Header";
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
