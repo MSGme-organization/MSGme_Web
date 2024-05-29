@@ -1,9 +1,9 @@
-"use client"
+"use client";
 import { useThemeMode } from "flowbite-react";
 import Image from "next/image";
 
 export default function Home() {
-  const theme=useThemeMode()
+  const theme = useThemeMode();
   return (
     <div className="text-textColor dark:text-textColor-dark">
       <div className="flex flex-col items-center">
@@ -27,8 +27,17 @@ export default function Home() {
         </button>
       </div>
       <div className="flex flex-col items-center mt-[50px]">
-        <Image src={theme.computedMode==="light"?"/images/lightHome.png":"/images/darkHome.png"} alt="home-light" width={1408} height={364} />
+        <Image
+          src={
+            theme.computedMode === "light"
+              ? "/images/lightHome.png"
+              : "/images/darkHome.png"
+          }
+          alt="home-light"
+          width={1408}
+          height={364}
+        />
       </div>
     </div>
   );
-
+}
