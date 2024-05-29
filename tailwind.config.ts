@@ -28,16 +28,15 @@ const config: Config = {
         DEFAULT: "#96A1AF",
         light: "#E9ECEF",
         dark: "#39455A",
+        black: "#2D3748",
+        blackBg: "#262E3B",
       },
+
       warning: "#E75F5F",
       primary: "#38C585",
     },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
+    
     },
   },
   plugins: [flowbite.plugin()],
