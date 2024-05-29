@@ -16,3 +16,49 @@
   border-radius: 10px;
   background-color: #5555553d;
 }
+
+.loader-spinner {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #25b09b;
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.loader-dots {
+  height: 15px;
+  aspect-ratio: 5;
+  display: grid;
+  --_g: no-repeat radial-gradient(farthest-side, #000 94%, #0000);
+}
+.loader-dots:before,
+.loader-dots:after {
+  content: "";
+  grid-area: 1/1;
+  background: var(--_g) left, var(--_g) right;
+  background-size: 20% 100%;
+  animation: l32 1s infinite;
+}
+.loader-dots:after {
+  background: var(--_g) calc(1 * 100% / 3), var(--_g) calc(2 * 100% / 3);
+  background-size: 20% 100%;
+  animation-direction: reverse;
+}
+@keyframes l32 {
+  80%,
+  100% {
+    transform: rotate(0.5turn);
+  }
+}
