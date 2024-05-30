@@ -22,7 +22,7 @@ const Reaction = ({
     | undefined;
 }) => {
   const handleReaction = (emoji: any) => {
-    console.log(emoji);
+    console.log(emoji.getImageUrl());
   };
   return (
     <>

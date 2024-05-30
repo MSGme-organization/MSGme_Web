@@ -9,7 +9,6 @@ import {
   ForwardIcon,
   MuteIcon,
   ReplyIcon,
-  ThreeDotsIcon,
 } from "@/utils/svgs";
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
@@ -20,6 +19,7 @@ interface MessageProps {
     message: string;
     issentbyme: boolean;
     avatar: string;
+    reaction: string | null | undefined;
   };
   isUserSame: boolean;
 }
@@ -109,15 +109,6 @@ const Message: React.FC<MessageProps> = ({ message, isUserSame }) => {
             />
             <div className="flex">
               <p className="text-sm font-semibold">{message.username}</p>
-              {/* <Menu
-                position="right-start"
-                renderTrigger={() => (
-                  <span className="cursor-pointer">
-                    <ThreeDotsIcon />
-                  </span>
-                )}
-                dpItems={dpItems}
-              /> */}
             </div>
           </>
         )}
@@ -144,6 +135,15 @@ const Message: React.FC<MessageProps> = ({ message, isUserSame }) => {
               items={dpItems}
               position={message.issentbyme ? "top-left" : "right-bottom"}
             />
+          )}
+          {message.reaction && (
+            <span
+              className={`absolute rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${
+                message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
+              }`}
+            >
+              {message.reaction}
+            </span>
           )}
         </p>
         {!message.issentbyme && <Reaction position="right" />}

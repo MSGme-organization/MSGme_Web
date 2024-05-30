@@ -166,201 +166,243 @@ export const users = [
 
 export const messages = [
   {
-    "username": "Alice Johnson",
-    "issentbyme": false,
-    "message": "Hey, are you coming to the meeting tomorrow? We need to discuss the project timeline and assign tasks to everyone.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Alice Johnson",
+    issentbyme: false,
+    message:
+      "Hey, are you coming to the meeting tomorrow? We need to discuss the project timeline and assign tasks to everyone.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "👍",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Yes, I'll be there. I'll prepare the project plan and bring it to the meeting for everyone to review."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Yes, I'll be there. I'll prepare the project plan and bring it to the meeting for everyone to review.",
   },
   {
-    "username": "Bob Smith",
-    "issentbyme": false,
-    "message": "Got the report. Thanks! The data looks promising, and I think we can use this to support our strategy for the next quarter.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Bob Smith",
+    issentbyme: false,
+    message:
+      "Got the report. Thanks! The data looks promising, and I think we can use this to support our strategy for the next quarter.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "😄",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "No problem! Let me know if you need any more details or if there's anything else I can help with."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "No problem! Let me know if you need any more details or if there's anything else I can help with.",
   },
   {
-    "username": "Carol White",
-    "issentbyme": false,
-    "message": "Can you send me the latest designs? I need to review them before our client presentation next week.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Carol White",
+    issentbyme: false,
+    message:
+      "Can you send me the latest designs? I need to review them before our client presentation next week.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "😐",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Sure, I'll send them over by end of day today. I'll make sure all the revisions are included as well."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Sure, I'll send them over by end of day today. I'll make sure all the revisions are included as well.",
   },
   {
-    "username": "David Brown",
-    "issentbyme": false,
-    "message": "I'll be out of the office tomorrow. If you need anything urgent, please contact Eva.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "David Brown",
+    issentbyme: false,
+    message:
+      "I'll be out of the office tomorrow. If you need anything urgent, please contact Eva.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "👌",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Okay, thanks for letting me know. I'll reach out to Eva if anything comes up."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Okay, thanks for letting me know. I'll reach out to Eva if anything comes up.",
   },
   {
-    "username": "Eva Green",
-    "issentbyme": false,
-    "message": "Lunch at 1 PM? There's a new restaurant downtown that I've been wanting to try.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Eva Green",
+    issentbyme: false,
+    message:
+      "Lunch at 1 PM? There's a new restaurant downtown that I've been wanting to try.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Sounds good to me! I'll meet you at the office lobby at 12:45, and we can head over together."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Sounds good to me! I'll meet you at the office lobby at 12:45, and we can head over together.",
+    reaction: "🍔",
   },
   {
-    "username": "Frank Harris",
-    "issentbyme": false,
-    "message": "Can we reschedule the call? I have a conflict at the original time.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Frank Harris",
+    issentbyme: false,
+    message:
+      "Can we reschedule the call? I have a conflict at the original time.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Sure, what time works for you? I'm flexible in the afternoon."
+    username: "Me",
+    issentbyme: true,
+    message: "Sure, what time works for you? I'm flexible in the afternoon.",
   },
   {
-    "username": "Grace Lee",
-    "issentbyme": false,
-    "message": "Happy Birthday! Hope you have a fantastic day filled with joy and celebration.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Grace Lee",
+    issentbyme: false,
+    message:
+      "Happy Birthday! Hope you have a fantastic day filled with joy and celebration.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Thank you! I appreciate the kind words."
+    username: "Me",
+    issentbyme: true,
+    message: "Thank you! I appreciate the kind words.",
   },
   {
-    "username": "Henry Martinez",
-    "issentbyme": false,
-    "message": "See you at the game tonight. Let's cheer our team to victory!",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Henry Martinez",
+    issentbyme: false,
+    message: "See you at the game tonight. Let's cheer our team to victory!",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "🏈",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Looking forward to it! I'll be there with my team colors on."
+    username: "Me",
+    issentbyme: true,
+    message: "Looking forward to it! I'll be there with my team colors on.",
   },
   {
-    "username": "Ivy Nelson",
-    "issentbyme": false,
-    "message": "I'll send the documents by EOD. Please review them and let me know if you have any feedback.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Ivy Nelson",
+    issentbyme: false,
+    message:
+      "I'll send the documents by EOD. Please review them and let me know if you have any feedback.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Thanks, Ivy. I'll review them as soon as I receive them and get back to you with my comments."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Thanks, Ivy. I'll review them as soon as I receive them and get back to you with my comments.",
+    reaction: "📄",
   },
   {
-    "username": "Jack O'Connor",
-    "issentbyme": false,
-    "message": "Let's catch up this weekend. It's been a while since we had a good chat.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Jack O'Connor",
+    issentbyme: false,
+    message:
+      "Let's catch up this weekend. It's been a while since we had a good chat.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Absolutely, let's do it. How about we meet for coffee on Saturday morning?"
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Absolutely, let's do it. How about we meet for coffee on Saturday morning?",
+    reaction: "☕",
   },
   {
-    "username": "Karen Patel",
-    "issentbyme": false,
-    "message": "Don't forget to review the PR. We need your approval before we can move forward with the deployment.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Karen Patel",
+    issentbyme: false,
+    message:
+      "Don't forget to review the PR. We need your approval before we can move forward with the deployment.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Got it. I'll review the PR and provide my feedback by the end of the day."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Got it. I'll review the PR and provide my feedback by the end of the day.",
+    reaction: "👀",
   },
   {
-    "username": "Leo Quintero",
-    "issentbyme": false,
-    "message": "Great job on the presentation! The client was very impressed with the level of detail and the proposed solutions.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Leo Quintero",
+    issentbyme: false,
+    message:
+      "Great job on the presentation! The client was very impressed with the level of detail and the proposed solutions.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Thank you, Leo! It was a team effort. I'm glad the client found it valuable."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Thank you, Leo! It was a team effort. I'm glad the client found it valuable.",
   },
   {
-    "username": "Mia Roberts",
-    "issentbyme": false,
-    "message": "Are you available for a quick call? I have a few questions about the project.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Mia Roberts",
+    issentbyme: false,
+    message:
+      "Are you available for a quick call? I have a few questions about the project.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Sure, I can take a call in about 10 minutes. I'll give you a call then."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Sure, I can take a call in about 10 minutes. I'll give you a call then.",
   },
   {
-    "username": "Nathan Scott",
-    "issentbyme": false,
-    "message": "Check your email for the details. I've sent over the updated project plan and timelines.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Nathan Scott",
+    issentbyme: false,
+    message:
+      "Check your email for the details. I've sent over the updated project plan and timelines.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Thanks, Nathan. I'll review the updated plan and get back to you with any questions or comments."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Thanks, Nathan. I'll review the updated plan and get back to you with any questions or comments.",
+    reaction: "📧",
   },
   {
-    "username": "Olivia Turner",
-    "issentbyme": false,
-    "message": "Meeting postponed to tomorrow. Please make sure to adjust your schedules accordingly.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Olivia Turner",
+    issentbyme: false,
+    message:
+      "Meeting postponed to tomorrow. Please make sure to adjust your schedules accordingly.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Thanks for the update. I'll adjust my schedule and see you tomorrow."
+    username: "Me",
+    issentbyme: true,
+    message:
+      "Thanks for the update. I'll adjust my schedule and see you tomorrow.",
   },
   {
-    "username": "Paul Walker",
-    "issentbyme": false,
-    "message": "Can you send me the updated file? I need it for the report I'm working on.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Paul Walker",
+    issentbyme: false,
+    message:
+      "Can you send me the updated file? I need it for the report I'm working on.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "📁",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Sure, I'll send it over in a few minutes."
+    username: "Me",
+    issentbyme: true,
+    message: "Sure, I'll send it over in a few minutes.",
   },
   {
-    "username": "Quincy Adams",
-    "issentbyme": false,
-    "message": "Let's finish the project today. We're very close to completing it.",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Quincy Adams",
+    issentbyme: false,
+    message:
+      "Let's finish the project today. We're very close to completing it.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "🚀",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "Absolutely. Let's push through and get it done."
+    username: "Me",
+    issentbyme: true,
+    message: "Absolutely. Let's push through and get it done.",
+    reaction: "💪",
   },
   {
-    "username": "Rita Johnson",
-    "issentbyme": false,
-    "message": "How was your weekend? Did you get a chance to relax and unwind?",
-    "avatar": "https://picsum.photos/200/300"
+    username: "Rita Johnson",
+    issentbyme: false,
+    message: "How was your weekend? Did you get a chance to relax and unwind?",
+    avatar: "https://picsum.photos/200/300",
   },
   {
-    "username": "Me",
-    "issentbyme": true,
-    "message": "It was great, thanks! I spent some time with family and got to relax a bit."
-  }
+    username: "Me",
+    issentbyme: true,
+    message:
+      "It was great, thanks! I spent some time with family and got to relax a bit.",
+  },
 ];

@@ -30,6 +30,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
             <Message
               message={{
                 ...message,
+                reaction: message.reaction || "",
                 avatar: message.avatar || "",
               }}
               key={index}
