@@ -73,7 +73,7 @@ const Settings = () => {
       <div className="w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
         <SettingsHeader headerText={"Settings"} showLogout />
         <ProfileSection />
-        <section className="w-full py-3 border-b border-gray-200 ">
+        <section className="w-full py-3 border-b border-gray-200 dark:border-gray-800">
           {settingItems.map((item, index) => (
             <SettingItem key={index} {...item} />
           ))}

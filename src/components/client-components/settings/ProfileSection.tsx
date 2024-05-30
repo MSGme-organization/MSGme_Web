@@ -4,7 +4,7 @@ import React from "react";
 
 const ProfileSection = () => {
   return (
-    <section className="w-full flex justify-between items-center p-4 h-[100px] text-black dark:text-white bg-white dark:bg-customGrey-black border-b border-gray-200">
+    <section className="w-full flex justify-between items-center p-4 h-[100px] text-black dark:text-white bg-white dark:bg-customGrey-black border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center gap-2 w-[95%]">
         <Image
           src="https://picsum.photos/200/300"

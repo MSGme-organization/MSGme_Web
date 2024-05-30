@@ -16,7 +16,7 @@ const SettingItem: React.FC<SettingItemProps> = ({
 }) => {
   return (
     <button
-      className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 active:scale-[.99]"
+      className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 hover:dark:bg-gray-700 active:scale-[.99]"
       onClick={fn}
     >
       <div className="flex gap-2 items-center w-[90%]">

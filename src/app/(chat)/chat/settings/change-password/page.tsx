@@ -2,7 +2,7 @@
 
 import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
 import { EyeIcon, LockIcon } from "@/utils/svgs";
-import {  Label, TextInput } from "flowbite-react";
+import { Label, TextInput } from "flowbite-react";
 import React, { Fragment } from "react";
 
 const ChangePassword = () => {
@@ -30,7 +30,7 @@ const ChangePassword = () => {
   return (
     <div className="w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
       <SettingsHeader headerText={"Change Password"} showLogout={false} />
-      <div className="p-4">
+      <div className="p-4 flex flex-col gap-2">
         {inputArr.map((input, index) => (
           <Fragment key={index}>
             <div className="mt-2">
