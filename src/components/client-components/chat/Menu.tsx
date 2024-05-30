@@ -8,7 +8,11 @@ interface MenuProps {
         theme: FlowbiteDropdownTheme
       ) => React.ReactElement<any, string | React.JSXElementConstructor<any>>)
     | undefined;
-  dpItems: Array<{ label: string; icon: string; fn: () => void }>;
+  dpItems: Array<{
+    label: string;
+    icon: () => React.ReactNode;
+    fn: () => void;
+  }>;
   position?:
     | "top"
     | "top-start"
@@ -39,7 +43,7 @@ const Menu: React.FC<MenuProps> = ({ renderTrigger, dpItems, position }) => {
           onClick={item.fn}
           className="text-left w-full py-2 px-4 text-black flex gap-2 hover:bg-gray-100"
         >
-          <Image src={item.icon} width={20} height={20} alt={item.label} />
+          {item.icon()}
           <p className="ml-2 text-sm font-semibold">{item.label}</p>
         </Dropdown.Item>
       ))}

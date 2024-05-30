@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className + " " + "min-h-screen"}>
+      <body className={poppins.className + " " + "min-h-screen select-none"}>
         {children}
         <Toaster />
       </body>

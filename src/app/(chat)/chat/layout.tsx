@@ -15,8 +15,10 @@ const Layout = ({
 }) => {
   const params = useParams();
   const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
+  const [isMounted, setIsMounted] = React.useState<Boolean>(false);
 
   React.useEffect(() => {
+    setIsMounted(true);
     const updateScreenWidth = () => {
       setScreenWidth(window.innerWidth);
     };
@@ -28,13 +30,18 @@ const Layout = ({
     };
   }, []);
 
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">
       {screenWidth && screenWidth > 768 ? children : params.id ? "" : children}
       <div
-        className={`w-full ${
+        className={`flex-grow ${
           params.id ? "" : "hidden"
-        }  h-full overflow-y-scroll bg-[#E9ECEF] md:block`}
+        }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
       >
         {indChat}
       </div>

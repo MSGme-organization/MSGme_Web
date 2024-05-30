@@ -1,9 +1,10 @@
 "use client";
 
-import ChatListNavBar from "@/components/client-components/ChatListNavBar";
-import UserItem from "@/components/client-components/UserItem";
+import ChatListNavBar from "@/components/client-components/chat-list/ChatListNavBar";
+import UserItem from "@/components/client-components/chat-list/UserItem";
 import { users } from "@/utils/data";
-import Image from "next/image";
+import { BarIcon, SearchIcon } from "@/utils/svgs";
+import { TextInput } from "flowbite-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 
@@ -31,20 +32,18 @@ const Chat = () => {
     setIsOpen(!isOpen);
   };
 
-  console.log("first");
-
   return (
     <>
       {!isOpen && (
         <button
-          className={`rounded-full p-1.5 bg-primary active:scale-90 absolute top-20 left-5 z-10`}
+          className={`rounded-full p-1.5 bg-primary active:scale-90 absolute top-20 left-5 z-10 text-white`}
           onClick={handleOpen}
         >
-          <Image src={"/svgs/bar.svg"} alt={"bar"} width={25} height={25} />
+          <BarIcon />
         </button>
       )}
       <div
-        className={`w-full h-full overflow-y-scroll md:w-[20%] flex-1 min-w-[320px]  ${
+        className={`w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white ${
           isOpen ? "" : "-translate-x-[100%] duration-90 transition-all hidden"
         }`}
       >
@@ -52,22 +51,14 @@ const Chat = () => {
           handleNavigation={handleNavigation}
           handleOpen={handleOpen}
         />
-        <div className="p-4 sticky top-0 bg-white">
-          <input
-            onChange={handleFilter}
-            value={searchString}
-            placeholder="Search for groups and users"
-            className="border-none bg-gray-100 w-full p-2 rounded-md placeholder:text-gray-400 focus:outline-none focus:outline-gray-300 focus:outline-1"
-          />
-          <Image
-            src={"/svgs/search.svg"}
-            className="absolute top-4 translate-y-[50%] right-7"
-            alt="search"
-            width={20}
-            height={20}
+        <div className="p-4 sticky top-0 bg-white dark:bg-customGrey-black">
+          <TextInput
+            rightIcon={SearchIcon}
+            className="text-customGrey"
+            placeholder="Search Chat here"
           />
         </div>
-        <hr />
+        <hr className="border dark:border-customGrey-blackBg" />
         {filteredList.length ? (
           filteredList?.map((data, index) => (
             <UserItem

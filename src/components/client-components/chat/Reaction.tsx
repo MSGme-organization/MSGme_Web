@@ -2,6 +2,7 @@ import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import React from "react";
 import Picker from "emoji-picker-react";
+import { ReactionIcon } from "@/utils/svgs";
 
 const Reaction = ({
   position,
@@ -32,13 +33,9 @@ const Reaction = ({
         dismissOnClick={false}
         className="bg-transparent shadow-none border-none p-0"
         renderTrigger={() => (
-          <Image
-            src={"/svgs/emoji.svg"}
-            className="cursor-pointer mx-2"
-            width={20}
-            height={20}
-            alt="emoji"
-          />
+          <span className="flex justify-center items-center mx-2 dark:text-customGrey cursor-pointer">
+            <ReactionIcon />
+          </span>
         )}
       >
         <Dropdown.Item
@@ -46,6 +43,7 @@ const Reaction = ({
           style={{ backgroundColor: "transparent" }}
         >
           <Picker
+            className="dark:bg-black dark:border-black"
             style={{ width: "100%" }}
             onReactionClick={handleReaction}
             reactionsDefaultOpen={true}

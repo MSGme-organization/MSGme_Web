@@ -6,8 +6,8 @@ import animationData from "../../../../../public/animations/chatPage.json";
 
 const IndChat = () => {
   return (
-    <div className="h-[100dvh] w-full flex justify-center items-center">
-      <div className="w-[30%]">
+    <div className="h-[100dvh] w-full flex justify-center items-center dark:bg-customGrey-black text-black dark:text-white">
+      <div className="w-[80%] max-w-[350px]">
         <Lottie className="w-full" animationData={animationData} autoplay />
         <h1 className="text-center text-3xl font-bold">Hi!, Welcome back</h1>
         <p className="text-center ">
