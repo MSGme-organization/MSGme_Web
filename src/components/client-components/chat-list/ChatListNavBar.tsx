@@ -1,5 +1,7 @@
 "use client";
 
+import { AvatarIcon, BarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
+import { useThemeMode } from "flowbite-react";
 import Image from "next/image";
 import React from "react";
 
@@ -10,23 +12,30 @@ const ChatListNavBar = ({
   handleNavigation: (path: string) => void;
   handleOpen: () => void;
 }) => {
+  const theme = useThemeMode();
   const Icons = [
     {
-      path: "/svgs/plus.svg",
+      path: theme.computedMode === "light" ? SunIcon : MoonIcon,
       alt: "plus",
-      classes: "bg-primary",
+      classes: "bg-transparent text-black dark:text-white",
+      fn: theme.toggleMode,
+    },
+    {
+      path: PlusIcon,
+      alt: "plus",
+      classes: "bg-primary text-white",
       fn: () => console.log("plus"),
     },
     {
-      path: "/svgs/avtar.svg",
+      path: AvatarIcon,
       alt: "avtar",
-      classes: "bg-primary",
-      fn: () => console.log("avtar"),
+      classes: "bg-primary text-white",
+      fn: () => handleNavigation("/chat/settings"),
     },
     {
-      path: "/svgs/bar.svg",
+      path: BarIcon,
       alt: "bar",
-      classes: "bg-gray-200 hidden md:block",
+      classes: "bg-gray-200 hidden md:block dark:bg-customGrey-blackBg",
       fn: handleOpen,
     },
   ];
@@ -43,12 +52,12 @@ const ChatListNavBar = ({
               key={index}
               onClick={icon.fn}
             >
-              <Image src={icon.path} alt={icon.alt} width={18} height={18} />
+              {icon.path()}
             </button>
           ))}
         </div>
       </div>
-      <hr />
+      <hr className="border dark:border-customGrey-blackBg" />
     </>
   );
 };
