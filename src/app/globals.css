@@ -43,6 +43,7 @@
   display: grid;
   --_g: no-repeat radial-gradient(farthest-side, #000 94%, #0000);
 }
+
 .loader-dots:before,
 .loader-dots:after {
   content: "";
@@ -51,12 +52,15 @@
   background-size: 20% 100%;
   animation: l32 1s infinite;
 }
+
 .loader-dots:after {
   background: var(--_g) calc(1 * 100% / 3), var(--_g) calc(2 * 100% / 3);
   background-size: 20% 100%;
   animation-direction: reverse;
 }
+
 @keyframes l32 {
+
   80%,
   100% {
     transform: rotate(0.5turn);

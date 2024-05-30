@@ -1,18 +1,33 @@
+"use client";
 import Footer from "@/components/client-components/HomeLayout/Footer";
 import HeaderBar from "@/components/client-components/HomeLayout/Header";
+import { usePathname } from "next/navigation";
 
 export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <HeaderBar />
-      <div className="min-h-[calc(100dvh-68px)] bg-bgColor dark:bg-customGrey-blackBg  pt-24 pb-4 px-4">
-        {children}
-      </div>
-      <Footer />
-    </>
-  );
+  const pathname = usePathname();
+  if (pathname === "/") {
+    return (
+      <>
+        <HeaderBar />
+        <div className="min-h-[calc(100dvh-68px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
+          {children}
+        </div>
+        <Footer />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <HeaderBar features={false} button="contact" />
+        <div className="min-h-[calc(100dvh-68px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
+          {children}
+        </div>
+        <Footer />
+      </>
+    );
+  }
 }
