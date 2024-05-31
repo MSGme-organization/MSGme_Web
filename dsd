@@ -1,0 +1,36 @@
+[33mcommit 8c23c81da09fa9337fe36d6f5922f7a6dc3b00d0[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/happy[m[33m, [m[1;32mhappy[m[33m)[m
+Author: happy.patel <happy.patel@crestinfotech.co.in>
+Date:   Thu May 30 18:51:52 2024 +0530
+
+    context menu issue solved
+
+[33mcommit 77211e20f7b1f808fef1439803bad391fc8abbb9[m
+Author: happy.patel <happy.patel@crestinfotech.co.in>
+Date:   Thu May 30 18:42:31 2024 +0530
+
+    added reaction on msg
+
+[33mcommit 95e68524064e549debc82bb8b8f096d90f32ba1c[m
+Author: happy.patel <happy.patel@crestinfotech.co.in>
+Date:   Thu May 30 17:53:58 2024 +0530
+
+    dark mode issue on settings
+
+[33mcommit 514042cba1675a0d365039c271174ef733d7391a[m
+Merge: f2a94b0 b09d668
+Author: happy.patel <happy.patel@crestinfotech.co.in>
+Date:   Thu May 30 17:41:44 2024 +0530
+
+    merge happy
+
+[33mcommit b09d66878498fbf1d4d8b7349cdf67223bcda642[m
+Author: happy.patel <happy.patel@crestinfotech.co.in>
+Date:   Thu May 30 17:35:30 2024 +0530
+
+    setting screen added
+
+[33mcommit f2a94b0e4828ef77e551d9d8885f624d95340884[m
+Author: SahilPatel2712 <sahilp14323@gmail.com>
+Date:   Thu May 30 16:35:05 2024 +0530
+
+    solved refresh,hydration regarding bugs

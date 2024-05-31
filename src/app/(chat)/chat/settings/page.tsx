@@ -13,13 +13,16 @@ import {
   PrivacyIcon,
   ShareIcon,
   StartIcon,
+  SunIcon,
 } from "@/utils/svgs";
+import { ToggleSwitch, useThemeMode } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const Settings = () => {
   const [shareModel, setShareModel] = React.useState(false);
   const router = useRouter();
+  const theme = useThemeMode();
 
   const settingItems = [
     {
@@ -35,16 +38,16 @@ const Settings = () => {
       fn: () => {},
     },
     {
-      label: "Change Theme",
-      showArrow: true,
-      icon: MoonIcon,
-      fn: () => {},
-    },
-    {
       label: "Change Language",
       showArrow: true,
       icon: LanguageIcon,
       fn: () => {},
+    },
+    {
+      label: "Change Theme",
+      showArrow: false,
+      icon: theme.computedMode === "light" ? SunIcon : MoonIcon,
+      fn: () => theme.toggleMode(),
     },
     {
       label: "Share Profile",
@@ -70,21 +73,19 @@ const Settings = () => {
 
   return (
     <>
-      <div className="w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
-        <SettingsHeader headerText={"Settings"} showLogout />
-        <ProfileSection />
-        <section className="w-full py-3 border-b border-gray-200 dark:border-gray-800">
-          {settingItems.map((item, index) => (
-            <SettingItem key={index} {...item} />
-          ))}
-        </section>
-        <section></section>
-        <ShareModal
-          shareUrl="www.google.com"
-          setOpenModal={setShareModel}
-          openModal={shareModel}
-        />
-      </div>
+      <SettingsHeader headerText={"Settings"} showLogout />
+      <ProfileSection />
+      <section className="w-full py-3 border-b border-gray-200 dark:border-gray-800">
+        {settingItems.map((item, index) => (
+          <SettingItem key={index} {...item} />
+        ))}
+      </section>
+      <section></section>
+      <ShareModal
+        shareUrl="www.google.com"
+        setOpenModal={setShareModel}
+        openModal={shareModel}
+      />
     </>
   );
 };

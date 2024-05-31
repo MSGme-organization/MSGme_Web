@@ -5,6 +5,7 @@ interface SettingItemProps {
   icon: () => React.ReactNode;
   label: string;
   showArrow?: boolean;
+  CustomButton?: React.ReactNode | undefined;
   fn: () => void;
 }
 
@@ -12,6 +13,7 @@ const SettingItem: React.FC<SettingItemProps> = ({
   icon,
   label,
   showArrow,
+  CustomButton,
   fn,
 }) => {
   return (
@@ -25,6 +27,7 @@ const SettingItem: React.FC<SettingItemProps> = ({
         </div>
         <p className="text-[17px] font-[700]">{label}</p>
       </div>
+      {CustomButton}
       {showArrow && RightArrowIcon()}
     </button>
   );
