@@ -33,12 +33,14 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className="w-full">
-      <label
-        className="text-sm font-semibold text-black dark:text-white"
-        htmlFor={name}
-      >
-        {label}
-      </label>
+      {label && (
+        <label
+          className="text-sm font-semibold text-black dark:text-white"
+          htmlFor={name}
+        >
+          {label}
+        </label>
+      )}
       <div className="w-full relative">
         {LeftIcon && (
           <div

@@ -22,6 +22,7 @@ interface MessageProps {
     reaction: string | null | undefined;
   };
   isUserSame: boolean;
+  handleReply: Function;
 }
 
 interface ContextCord {
@@ -29,7 +30,11 @@ interface ContextCord {
   left: number;
 }
 
-const Message: React.FC<MessageProps> = ({ message, isUserSame }) => {
+const Message: React.FC<MessageProps> = ({
+  message,
+  isUserSame,
+  handleReply,
+}) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
   );
@@ -41,9 +46,7 @@ const Message: React.FC<MessageProps> = ({ message, isUserSame }) => {
     {
       label: "Reply",
       icon: ReplyIcon,
-      fn: () => {
-        console.log("Forward");
-      },
+      fn: () => handleReply(message),
     },
     {
       label: "Copy",
