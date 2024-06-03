@@ -32,12 +32,6 @@ const ChatListNavBar = ({
       classes: "bg-primary text-white",
       fn: () => handleNavigation("/chat/settings"),
     },
-    {
-      path: BarIcon,
-      alt: "bar",
-      classes: "bg-gray-200 hidden md:block dark:bg-customGrey-blackBg",
-      fn: handleOpen,
-    },
   ];
   return (
     <>

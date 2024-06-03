@@ -34,14 +34,7 @@ const Chat = () => {
 
   return (
     <>
-      {!isOpen && (
-        <button
-          className={`rounded-full p-1.5 bg-primary active:scale-90 absolute top-20 left-5 z-10 text-white`}
-          onClick={handleOpen}
-        >
-          <BarIcon />
-        </button>
-      )}
+      
       <div
         className={`w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white ${
           isOpen ? "" : "-translate-x-[100%] duration-90 transition-all hidden"
