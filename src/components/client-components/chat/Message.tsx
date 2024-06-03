@@ -146,7 +146,7 @@ const Message: React.FC<MessageProps> = ({
 
             {message.reaction && (
               <span
-                className={`absolute rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${
+                className={`absolute aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${
                   message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
                 }`}
               >
