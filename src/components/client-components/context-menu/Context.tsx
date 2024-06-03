@@ -4,9 +4,17 @@ interface ContextProps {
   items: Array<{ label: string; icon: () => React.ReactNode; fn: () => void }>;
   contextRef: React.RefObject<HTMLDivElement>;
   position: "right-bottom" | "top-left";
+  setContextCord: React.Dispatch<
+    React.SetStateAction<{ top: number; left: number } | null>
+  >;
 }
 
-const Context: React.FC<ContextProps> = ({ position, items, contextRef }) => {
+const Context: React.FC<ContextProps> = ({
+  position,
+  items,
+  contextRef,
+  setContextCord,
+}) => {
   return (
     <div
       className={`absolute ${
@@ -19,7 +27,10 @@ const Context: React.FC<ContextProps> = ({ position, items, contextRef }) => {
       {items.map((item, index) => (
         <button
           key={index}
-          onClick={item.fn}
+          onClick={() => {
+            item.fn();
+            setContextCord(null);
+          }}
           className="text-left w-full py-2 px-4 flex gap-4 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
         >
           {item.icon()}

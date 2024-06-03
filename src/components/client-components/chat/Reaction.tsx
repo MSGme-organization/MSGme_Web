@@ -53,4 +53,4 @@ const Reaction = ({
   );
 };
 
-export default React.memo(Reaction);
+export default React.memo(Reaction, () => true);

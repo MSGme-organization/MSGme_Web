@@ -23,6 +23,7 @@ interface MessageProps {
   };
   isUserSame: boolean;
   handleReply: Function;
+  handleForward: Function;
 }
 
 interface ContextCord {
@@ -34,6 +35,7 @@ const Message: React.FC<MessageProps> = ({
   message,
   isUserSame,
   handleReply,
+  handleForward,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
@@ -52,18 +54,26 @@ const Message: React.FC<MessageProps> = ({
       label: "Copy",
       icon: CopyIcon,
       fn: async () => {
-        await navigator.clipboard.writeText(message.message);
-        toast("Copied to clipboard", {
-          duration: 0,
-          position: "bottom-center",
-        });
+        try {
+          await navigator.clipboard.writeText(message.message);
+          toast("Copied to clipboard", {
+            duration: 0,
+            position: "bottom-center",
+          });
+        } catch (err) {
+          console.log(err);
+          toast("Failed to copy", {
+            duration: 0,
+            position: "bottom-center",
+          });
+        }
       },
     },
     {
       label: "Forward",
       icon: ForwardIcon,
       fn: () => {
-        console.log("Forward");
+        handleForward(message);
       },
     },
     {
@@ -122,7 +132,7 @@ const Message: React.FC<MessageProps> = ({
         }`}
       >
         {message.issentbyme && <Reaction position="left" />}
-        <div className="w-fit max-w-[80%] shadow md:max-w-[50%] relative">
+        <div className="w-fit max-w-[80%] shadow md:max-w-[70%] relative">
           <p
             onContextMenu={handleContextMenu}
             onDoubleClick={handleContextMenu}
@@ -146,6 +156,7 @@ const Message: React.FC<MessageProps> = ({
           </p>
           {contextCord && (
             <Context
+              setContextCord={setContextCord}
               contextRef={ref}
               items={dpItems}
               position={message.issentbyme ? "top-left" : "right-bottom"}

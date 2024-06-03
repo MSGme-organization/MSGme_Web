@@ -45,7 +45,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar, router }) => {
 
   return (
     <>
-      <div className="w-full absolute top-0 left-0 h-[70px] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white">
+      <div className="w-full sticky top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white">
         <div className="w-full px-4 flex items-center justify-between z-[21]  dark:bg-customGrey-blackBg bg-white">
           <div className="flex items-center">
             <button onClick={() => router.back()} className="md:hidden">

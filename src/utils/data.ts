@@ -20,7 +20,6 @@ export const users = [
   },
   {
     id: 3,
-
     name: "Carol White",
     lastChat: "Can you send me the latest designs?",
     lastChatTime: "2024-05-28T08:20:00Z",
@@ -174,6 +173,14 @@ export const messages = [
     reaction: "👍",
   },
   {
+    username: "Alice Johnson",
+    issentbyme: false,
+    message:
+      "Hey, are you coming to the meeting tomorrow? We need to discuss the project timeline and assign tasks to everyone.",
+    avatar: "https://picsum.photos/200/300",
+    reaction: "👍",
+  },
+  {
     username: "Me",
     issentbyme: true,
     message:
@@ -229,11 +236,25 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    username: "Eva Green",
+    issentbyme: false,
+    message:
+      "Lunch at 1 PM? There's a new restaurant downtown that I've been wanting to try.",
+    avatar: "https://picsum.photos/200/300",
+  },
+  {
     username: "Me",
     issentbyme: true,
     message:
       "Sounds good to me! I'll meet you at the office lobby at 12:45, and we can head over together.",
     reaction: "🍔",
+  },
+  {
+    username: "Frank Harris",
+    issentbyme: false,
+    message:
+      "Can we reschedule the call? I have a conflict at the original time.",
+    avatar: "https://picsum.photos/200/300",
   },
   {
     username: "Frank Harris",
