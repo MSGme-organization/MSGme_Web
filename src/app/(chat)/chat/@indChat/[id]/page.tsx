@@ -1,13 +1,11 @@
 "use client";
 
-import UserItem from "@/components/client-components/chat-list/UserItem";
 import ChatHeader from "@/components/client-components/chat/ChatHeader";
 import Message from "@/components/client-components/chat/Message";
 import Input from "@/components/client-components/common-components/Input";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
 import { messages, users } from "@/utils/data";
 import { CloseIcon } from "@/utils/svgs";
-import { Modal } from "flowbite-react";
 import { useFormik } from "formik";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -25,6 +23,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
   const ref = React.useRef<HTMLDivElement>(null);
+  const msgRef = React.useRef<HTMLDivElement[]>([]);
   const user = users.find((user) => user.id === parseInt(params.id));
   const router = useRouter();
 
@@ -37,6 +36,17 @@ const Chats = ({ params }: { params: { id: string } }) => {
     },
   });
 
+  const handleMsgRef = (index: number, ref: HTMLDivElement) => {
+    msgRef.current[index] = ref;
+  };
+
+  const gotoMSG = (index: number) => {
+    console.log(index);
+    if (msgRef.current[index]) {
+      msgRef.current[index - 3 > 3 ? index - 3 : index - 1].scrollIntoView();
+    }
+  };
+
   const handleReply = (msg: any) => {
     setReplyMsg(msg);
   };
@@ -47,11 +57,13 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
+    msgRef.current = msgRef.current.slice(0, messages.length);
   }, []);
 
   return (
     <>
       <div
+        id="chat"
         ref={ref}
         className="w-full overflow-y-scroll relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col"
       >
@@ -65,6 +77,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
           <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white">
             {messages.map((message, index) => (
               <Message
+                index={index}
+                gotoMSG={gotoMSG}
+                handleMSGRef={handleMsgRef}
                 handleReply={handleReply}
                 handleForward={handleForward}
                 message={{

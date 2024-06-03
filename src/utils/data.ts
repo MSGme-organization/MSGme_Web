@@ -165,6 +165,7 @@ export const users = [
 
 export const messages = [
   {
+    id: 1,
     username: "Alice Johnson",
     issentbyme: false,
     message:
@@ -173,6 +174,7 @@ export const messages = [
     reaction: "👍",
   },
   {
+    id: 2,
     username: "Alice Johnson",
     issentbyme: false,
     message:
@@ -181,12 +183,14 @@ export const messages = [
     reaction: "👍",
   },
   {
+    id: 3,
     username: "Me",
     issentbyme: true,
     message:
       "Yes, I'll be there. I'll prepare the project plan and bring it to the meeting for everyone to review.",
   },
   {
+    id: 4,
     username: "Bob Smith",
     issentbyme: false,
     message:
@@ -195,12 +199,14 @@ export const messages = [
     reaction: "😄",
   },
   {
+    id: 5,
     username: "Me",
     issentbyme: true,
     message:
       "No problem! Let me know if you need any more details or if there's anything else I can help with.",
   },
   {
+    id: 6,
     username: "Carol White",
     issentbyme: false,
     message:
@@ -209,12 +215,14 @@ export const messages = [
     reaction: "😐",
   },
   {
+    id: 7,
     username: "Me",
     issentbyme: true,
     message:
       "Sure, I'll send them over by end of day today. I'll make sure all the revisions are included as well.",
   },
   {
+    id: 8,
     username: "David Brown",
     issentbyme: false,
     message:
@@ -223,12 +231,14 @@ export const messages = [
     reaction: "👌",
   },
   {
+    id: 9,
     username: "Me",
     issentbyme: true,
     message:
       "Okay, thanks for letting me know. I'll reach out to Eva if anything comes up.",
   },
   {
+    id: 10,
     username: "Eva Green",
     issentbyme: false,
     message:
@@ -236,13 +246,21 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 11,
     username: "Eva Green",
     issentbyme: false,
     message:
       "Lunch at 1 PM? There's a new restaurant downtown that I've been wanting to try.",
     avatar: "https://picsum.photos/200/300",
+    repliedMsg: {
+      id: 8,
+      name: "David Brown",
+      msg: "I'll be out of the office tomorrow. If you need anything urgent, please contact Eva.",
+      avatar: "https://picsum.photos/200/300",
+    },
   },
   {
+    id: 12,
     username: "Me",
     issentbyme: true,
     message:
@@ -250,6 +268,7 @@ export const messages = [
     reaction: "🍔",
   },
   {
+    id: 13,
     username: "Frank Harris",
     issentbyme: false,
     message:
@@ -257,6 +276,7 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 14,
     username: "Frank Harris",
     issentbyme: false,
     message:
@@ -264,11 +284,13 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 15,
     username: "Me",
     issentbyme: true,
     message: "Sure, what time works for you? I'm flexible in the afternoon.",
   },
   {
+    id: 16,
     username: "Grace Lee",
     issentbyme: false,
     message:
@@ -276,11 +298,13 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 17,
     username: "Me",
     issentbyme: true,
     message: "Thank you! I appreciate the kind words.",
   },
   {
+    id: 18,
     username: "Henry Martinez",
     issentbyme: false,
     message: "See you at the game tonight. Let's cheer our team to victory!",
@@ -288,11 +312,13 @@ export const messages = [
     reaction: "🏈",
   },
   {
+    id: 19,
     username: "Me",
     issentbyme: true,
     message: "Looking forward to it! I'll be there with my team colors on.",
   },
   {
+    id: 20,
     username: "Ivy Nelson",
     issentbyme: false,
     message:
@@ -300,6 +326,7 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 21,
     username: "Me",
     issentbyme: true,
     message:
@@ -307,6 +334,7 @@ export const messages = [
     reaction: "📄",
   },
   {
+    id: 22,
     username: "Jack O'Connor",
     issentbyme: false,
     message:
@@ -314,6 +342,7 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 23,
     username: "Me",
     issentbyme: true,
     message:
@@ -321,6 +350,7 @@ export const messages = [
     reaction: "☕",
   },
   {
+    id: 24,
     username: "Karen Patel",
     issentbyme: false,
     message:
@@ -328,6 +358,7 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 25,
     username: "Me",
     issentbyme: true,
     message:
@@ -335,6 +366,7 @@ export const messages = [
     reaction: "👀",
   },
   {
+    id: 26,
     username: "Leo Quintero",
     issentbyme: false,
     message:
@@ -342,12 +374,14 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 27,
     username: "Me",
     issentbyme: true,
     message:
       "Thank you, Leo! It was a team effort. I'm glad the client found it valuable.",
   },
   {
+    id: 28,
     username: "Mia Roberts",
     issentbyme: false,
     message:
@@ -355,12 +389,14 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 29,
     username: "Me",
     issentbyme: true,
     message:
       "Sure, I can take a call in about 10 minutes. I'll give you a call then.",
   },
   {
+    id: 30,
     username: "Nathan Scott",
     issentbyme: false,
     message:
@@ -368,6 +404,7 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
   },
   {
+    id: 31,
     username: "Me",
     issentbyme: true,
     message:
@@ -375,55 +412,17 @@ export const messages = [
     reaction: "📧",
   },
   {
+    id: 32,
     username: "Olivia Turner",
     issentbyme: false,
     message:
       "Meeting postponed to tomorrow. Please make sure to adjust your schedules accordingly.",
     avatar: "https://picsum.photos/200/300",
-  },
-  {
-    username: "Me",
-    issentbyme: true,
-    message:
-      "Thanks for the update. I'll adjust my schedule and see you tomorrow.",
-  },
-  {
-    username: "Paul Walker",
-    issentbyme: false,
-    message:
-      "Can you send me the updated file? I need it for the report I'm working on.",
-    avatar: "https://picsum.photos/200/300",
-    reaction: "📁",
-  },
-  {
-    username: "Me",
-    issentbyme: true,
-    message: "Sure, I'll send it over in a few minutes.",
-  },
-  {
-    username: "Quincy Adams",
-    issentbyme: false,
-    message:
-      "Let's finish the project today. We're very close to completing it.",
-    avatar: "https://picsum.photos/200/300",
-    reaction: "🚀",
-  },
-  {
-    username: "Me",
-    issentbyme: true,
-    message: "Absolutely. Let's push through and get it done.",
-    reaction: "💪",
-  },
-  {
-    username: "Rita Johnson",
-    issentbyme: false,
-    message: "How was your weekend? Did you get a chance to relax and unwind?",
-    avatar: "https://picsum.photos/200/300",
-  },
-  {
-    username: "Me",
-    issentbyme: true,
-    message:
-      "It was great, thanks! I spent some time with family and got to relax a bit.",
+    repliedMsg: {
+      id: 24,
+      msg: "Don't forget to review the PR. We need your approval before we can move forward with the deployment.",
+      avatar: "https://picsum.photos/200/300",
+      name: "Me",
+    },
   },
 ];
