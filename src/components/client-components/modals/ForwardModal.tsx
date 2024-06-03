@@ -15,6 +15,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
 }) => {
   return (
     <Modal
+      position={"center"}
       show={Boolean(forwardMsg)}
       onClose={() => setForwardMsg(null)}
       dismissible

@@ -31,7 +31,12 @@ const ShareModal: React.FC<ShareModalProps> = ({
   };
 
   return (
-    <Modal show={openModal} onClose={() => setOpenModal(false)} dismissible>
+    <Modal
+      show={openModal}
+      position={"center"}
+      onClose={() => setOpenModal(false)}
+      dismissible
+    >
       <Modal.Body>
         <div className="p-2">
           <h1 className="text-black dark:text-white text-lg font-semibold">
