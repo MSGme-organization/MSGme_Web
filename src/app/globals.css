@@ -66,3 +66,10 @@
     transform: rotate(0.5turn);
   }
 }
+
+.RSPBstep {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #38C585;
+  border-radius: 100%;
+}

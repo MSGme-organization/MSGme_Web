@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { DownArrow, NavbarBurger, NavbarCross } from "./Svgs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type HeaderBarProps = {
   features?: boolean;
@@ -18,6 +19,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
 }) => {
   const [nav, setNav] = React.useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const router=useRouter()
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,7 +32,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
   return navbar ? (
     <div className="px-5 xl:px-14 bg-bgColor dark:bg-customGrey-black shadow-sm  min-h-[90px] absolute w-full top-0 left-0">
       <section className="h-[100%] max-w-[1808px] flex flex-row items-center justify-between p-4 my-0 mx-auto ">
-        <div className="h-[100%]">
+        <div className="h-[100%] cursor-pointer" onClick={()=>router.push('/')}>
           <img
             src="./Logo.png"
             className="w-[100%] h-[100%] max-w-[132px] max-h-[132px]"

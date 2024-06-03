@@ -382,14 +382,14 @@ export const EditIcon = () => (
     viewBox="0 0 24 24"
   >
     <path
-      fill-rule="evenodd"
+      fillRule="evenodd"
       d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-      clip-rule="evenodd"
+      clipRule="evenodd"
     />
     <path
-      fill-rule="evenodd"
+      fillRule="evenodd"
       d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-      clip-rule="evenodd"
+      clipRule="evenodd"
     />
   </svg>
 );
@@ -766,12 +766,66 @@ export const EmailIcon = () => (
   </svg>
 );
 
+export const EyeSvg = () => {
+  return (
+    <svg
+      width="18px"
+      height="18px"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M3 14C3 9.02944 7.02944 5 12 5C16.9706 5 21 9.02944 21 14M17 14C17 16.7614 14.7614 19 12 19C9.23858 19 7 16.7614 7 14C7 11.2386 9.23858 9 12 9C14.7614 9 17 11.2386 17 14Z"
+          stroke="rgb(156 163 175)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></path>
+      </g>
+    </svg>
+  );
+};
+
+export const CloseEyeSvg = () => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="rgb(156 163 175)"
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M9.60997 9.60714C8.05503 10.4549 7 12.1043 7 14C7 16.7614 9.23858 19 12 19C13.8966 19 15.5466 17.944 16.3941 16.3878M21 14C21 9.02944 16.9706 5 12 5C11.5582 5 11.1238 5.03184 10.699 5.09334M3 14C3 11.0069 4.46104 8.35513 6.70883 6.71886M3 3L21 21"
+          stroke="rgb(156 163 175)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></path>
+      </g>
+    </svg>
+  );
+};
 export const UserIcon = () => (
   <svg
+    width={"100%"}
+    height={"100%"}
     viewBox="0 0 24 24"
     fill="none"
-    height={24}
-    width={24}
     xmlns="http://www.w3.org/2000/svg"
   >
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -781,18 +835,19 @@ export const UserIcon = () => (
       strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
-      <circle
-        cx="12"
-        cy="6"
-        r="4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      ></circle>
       <path
-        opacity="0.5"
-        d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
-        stroke="currentColor"
+        d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z"
+        stroke="rgb(156 163 175)"
         strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
+      <path
+        d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z"
+        stroke="rgb(156 163 175)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></path>
     </g>
   </svg>
@@ -819,74 +874,9 @@ export const CalendarIcon = () => (
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <rect
-        x="6"
-        y="12"
-        width="3"
-        height="3"
-        rx="0.5"
-        fill="currentColor"
-      ></rect>
-      <rect
-        x="10.5"
-        y="12"
-        width="3"
-        height="3"
-        rx="0.5"
-        fill="currentColor"
-      ></rect>
-      <rect
-        x="15"
-        y="12"
-        width="3"
-        height="3"
-        rx="0.5"
-        fill="currentColor"
-      ></rect>
-    </g>
-  </svg>
-);
-
-export const ReplyMSG = () => (
-  <svg
-    height={24}
-    width={24}
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-    <g
-      id="SVGRepo_tracerCarrier"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    ></g>
-    <g id="SVGRepo_iconCarrier">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10.0303 6.46967C10.3232 6.76256 10.3232 7.23744 10.0303 7.53033L6.31066 11.25L14.5 11.25C15.4534 11.25 16.8667 11.5298 18.0632 12.3913C19.298 13.2804 20.25 14.7556 20.25 17C20.25 17.4142 19.9142 17.75 19.5 17.75C19.0858 17.75 18.75 17.4142 18.75 17C18.75 15.2444 18.0353 14.2196 17.1868 13.6087C16.3 12.9702 15.2133 12.75 14.5 12.75L6.31066 12.75L10.0303 16.4697C10.3232 16.7626 10.3232 17.2374 10.0303 17.5303C9.73744 17.8232 9.26256 17.8232 8.96967 17.5303L3.96967 12.5303C3.67678 12.2374 3.67678 11.7626 3.96967 11.4697L8.96967 6.46967C9.26256 6.17678 9.73744 6.17678 10.0303 6.46967Z"
-        fill="#1C274C"
-      />
-    </g>
-  </svg>
-);
-
-export const ForwardMSG = () => (
-  <svg viewBox="0 0 24 24" height={24} width={24} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-    <g
-      id="SVGRepo_tracerCarrier"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    ></g>
-    <g id="SVGRepo_iconCarrier">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10.0303 6.46967C10.3232 6.76256 10.3232 7.23744 10.0303 7.53033L6.31066 11.25L14.5 11.25C15.4534 11.25 16.8667 11.5298 18.0632 12.3913C19.298 13.2804 20.25 14.7556 20.25 17C20.25 17.4142 19.9142 17.75 19.5 17.75C19.0858 17.75 18.75 17.4142 18.75 17C18.75 15.2444 18.0353 14.2196 17.1868 13.6087C16.3 12.9702 15.2133 12.75 14.5 12.75L6.31066 12.75L10.0303 16.4697C10.3232 16.7626 10.3232 17.2374 10.0303 17.5303C9.73744 17.8232 9.26256 17.8232 8.96967 17.5303L3.96967 12.5303C3.67678 12.2374 3.67678 11.7626 3.96967 11.4697L8.96967 6.46967C9.26256 6.17678 9.73744 6.17678 10.0303 6.46967Z"
-        fill="#1C274C"
-      />
+      <rect x="6" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
+      <rect x="10.5" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
+      <rect x="15" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
     </g>
   </svg>
 );

@@ -1,20 +1,25 @@
 "use client";
 
+import { FormikFormProps } from "formik";
 import React from "react";
 
 interface InputProps {
-  label: string;
-  placeholder: string;
+  label?: string;
+  placeholder?: string;
   type: string | "text" | "number" | "textArea";
-  value: string;
-  onChange: any;
-  name: string;
-  required: boolean;
-  error: string | null | undefined;
-  classes: string | undefined;
-  iconClass: string | undefined;
-  LeftIcon: null | undefined | (() => React.ReactNode);
-  RightIcon: null | undefined | (() => React.ReactNode);
+  value?: string;
+  onChange?: any;
+  name?: string;
+  required?: boolean;
+  error?: string | null | undefined;
+  classes?: string | undefined;
+  iconClass?: string | undefined;
+  LeftIcon?: null | undefined | (() => React.ReactNode);
+  RightIcon?: null | undefined | (() => React.ReactNode);
+  form?: any;
+  field?: any;
+  rest?: any;
+  rightIconToggle?: VoidFunction;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -24,12 +29,15 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   name,
-  required,
+  required = false,
   error,
   classes,
   iconClass,
   LeftIcon,
   RightIcon,
+  field,
+  rest,
+  rightIconToggle
 }) => {
   return (
     <div className="w-full">
@@ -51,29 +59,34 @@ const Input: React.FC<InputProps> = ({
         )}
         {type === "textArea" ? (
           <textarea
-            id={name}
-            className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-primary bg-white dark:bg-customGrey-blackBg ${classes}`}
-            name={name}
-            required={required}
-            placeholder={placeholder}
             value={value}
             onChange={onChange}
+            name={name}
+            {...field}
+            {...rest}
+            id={name}
+            className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-primary bg-white dark:bg-customGrey-blackBg ${classes}`}
+            required={required}
+            placeholder={placeholder}
           />
         ) : (
           <input
+            onChange={onChange}
+            name={name}
+            value={value}
+            {...field}
+            {...rest}
             id={name}
             type={type}
             className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-primary bg-white dark:bg-customGrey-blackBg ${classes}`}
-            name={name}
             required={required}
             placeholder={placeholder}
-            value={value}
-            onChange={onChange}
           />
         )}
         {RightIcon && (
           <div
-            className={`absolute top-[50%] right-10 transform -translate-y-1/2 ${iconClass}`}
+            className={`absolute top-[50%] right-10 transform -translate-y-1/2 ${iconClass} cursor-pointer`}
+            onClick={rightIconToggle}
           >
             {RightIcon()}
           </div>
