@@ -1,4 +1,4 @@
-import { CopyIcon } from "@/utils/svgs";
+import { CloseIcon, CopyIcon } from "@/utils/svgs";
 import { Modal } from "flowbite-react";
 import React from "react";
 import toast from "react-hot-toast";
@@ -39,9 +39,12 @@ const ShareModal: React.FC<ShareModalProps> = ({
     >
       <Modal.Body>
         <div className="p-2">
-          <h1 className="text-black dark:text-white text-lg font-semibold">
-            Sharing Profile...
-          </h1>
+          <div className="w-full flex justify-between items-center">
+            <h1 className="text-black dark:text-white text-lg font-semibold">
+              Sharing Profile...
+            </h1>
+            <button onClick={() => setOpenModal(false)}> {CloseIcon()}</button>
+          </div>
           <div className="flex gap-4 py-4">
             <FacebookShareButton
               url={shareUrl}
