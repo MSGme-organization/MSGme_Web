@@ -23,7 +23,7 @@ const fields = [
     error: false,
     errorMessage: "",
     classes: "ps-[44px]",
-    iconClass: "opacity-90",
+    iconClass: "opacity-90  h-[20px] w-[20px]",
   },
   {
     label: "Email Address",

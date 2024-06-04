@@ -8,8 +8,8 @@ import {
 import { LoginValidation } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
 import { Field, Form, Formik } from "formik";
-import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const loginInitialValue = {
@@ -18,13 +18,15 @@ const loginInitialValue = {
 };
 
 const Login = () => {
+  const router = useRouter();
   const [isShown, setShown] = useState(false);
   const handleSubmit = (value: any) => {
     console.log(value);
+    router.push("/chat");
   };
   return (
     <div className="flex justify-center w-[100%] h-[100%] mt-28">
-      <div className="bg-bgColor dark:bg-customGrey-dark text-textColor dark:text-textColor-dark max-w-[593px] w-[100%] p-8 rounded-[20px]">
+      <div className="bg-bgColor dark:bg-customGrey-black text-textColor dark:text-textColor-dark max-w-[593px] w-[100%] p-8 rounded-[20px]">
         <div className="text-center">
           <p className="font-extrabold text-[24px] mt-3">Hi, Welcome back</p>
           <p className="text-[14px] mt-3 font-medium">

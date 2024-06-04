@@ -874,17 +874,189 @@ export const CalendarIcon = () => (
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <rect x="6" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
-      <rect x="10.5" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
-      <rect x="15" y="12" width="3" height="3" rx="0.5" fill="currentColor"></rect>
+      <rect
+        x="6"
+        y="12"
+        width="3"
+        height="3"
+        rx="0.5"
+        fill="currentColor"
+      ></rect>
+      <rect
+        x="10.5"
+        y="12"
+        width="3"
+        height="3"
+        rx="0.5"
+        fill="currentColor"
+      ></rect>
+      <rect
+        x="15"
+        y="12"
+        width="3"
+        height="3"
+        rx="0.5"
+        fill="currentColor"
+      ></rect>
     </g>
   </svg>
 );
-export const ReplyMSG = () => (
+
+export const CheckCircle = () => {
+  return (
+    <svg
+      width="33px"
+      height="33px"
+      viewBox="-2.64 -2.64 29.28 29.28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
+        <rect
+          x="-2.64"
+          y="-2.64"
+          width="29.28"
+          height="29.28"
+          rx="14.64"
+          fill="#38C585"
+          strokeWidth="0"
+        ></rect>
+      </g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <g id="Interface / Check">
+          <path
+            id="Vector"
+            d="M6 12L10.2426 16.2426L18.727 7.75732"
+            stroke="#fff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></path>
+        </g>
+      </g>
+    </svg>
+  );
+};
+
+export const ProfileIcon = () => {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          opacity="0.4"
+          d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z"
+          fill="currentColor"
+        ></path>
+        <path
+          d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z"
+          fill="currentColor"
+        ></path>
+        <path
+          d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z"
+          fill="currentColor"
+        ></path>
+      </g>
+    </svg>
+  );
+};
+
+export const UploadIcon = () => {
+  return (
+    <svg
+      viewBox="-7.44 -7.44 38.88 38.88"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="#ffffff"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0">
+        <rect
+          x="-7.44"
+          y="-7.44"
+          width="38.88"
+          height="38.88"
+          rx="19.44"
+          fill="#38C585"
+          strokeWidth="0"
+        ></rect>
+      </g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M12.5535 2.49392C12.4114 2.33852 12.2106 2.25 12 2.25C11.7894 2.25 11.5886 2.33852 11.4465 2.49392L7.44648 6.86892C7.16698 7.17462 7.18822 7.64902 7.49392 7.92852C7.79963 8.20802 8.27402 8.18678 8.55352 7.88108L11.25 4.9318V16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16V4.9318L15.4465 7.88108C15.726 8.18678 16.2004 8.20802 16.5061 7.92852C16.8118 7.64902 16.833 7.17462 16.5535 6.86892L12.5535 2.49392Z"
+          fill="#ffffff"
+        ></path>
+        <path
+          d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z"
+          fill="#ffffff"
+        ></path>
+      </g>
+    </svg>
+  );
+};
+
+export const PencilIcon = () => {
+  return (
+    <svg
+      viewBox="-6.24 -6.24 36.48 36.48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0">
+        <rect
+          x="-6.24"
+          y="-6.24"
+          width="36.48"
+          height="36.48"
+          rx="18.24"
+          fill="#38C585"
+          strokeWidth="0"
+        ></rect>
+      </g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M18.3785 8.44975L11.4637 15.3647C11.1845 15.6439 10.8289 15.8342 10.4417 15.9117L7.49994 16.5L8.08829 13.5582C8.16572 13.1711 8.35603 12.8155 8.63522 12.5363L15.5501 5.62132M18.3785 8.44975L19.7927 7.03553C20.1832 6.64501 20.1832 6.01184 19.7927 5.62132L18.3785 4.20711C17.988 3.81658 17.3548 3.81658 16.9643 4.20711L15.5501 5.62132M18.3785 8.44975L15.5501 5.62132"
+          stroke="#ffffff"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M5 20H19"
+          stroke="#ffffff"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+      </g>
+    </svg>
+  );
+};
+
+export const ForwardMSG = () => (
   <svg
+    viewBox="0 0 24 24"
     height={24}
     width={24}
-    viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -904,9 +1076,14 @@ export const ReplyMSG = () => (
     </g>
   </svg>
 );
-
-export const ForwardMSG = () => (
-  <svg viewBox="0 0 24 24" height={24} width={24} fill="none" xmlns="http://www.w3.org/2000/svg">
+export const ReplyMSG = () => (
+  <svg
+    height={24}
+    width={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
