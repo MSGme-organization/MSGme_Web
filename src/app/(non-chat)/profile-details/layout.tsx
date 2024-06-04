@@ -4,10 +4,9 @@ import "react-step-progress-bar/styles.css";
 
 import { ProgressBar, Step } from "react-step-progress-bar";
 import { CheckCircle } from "@/utils/svgs";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { Inter } from "next/font/google";
-
-export const PageContext = createContext({});
+import { ProfileProvider } from "@/components/client-components/profile-setup/ProfileContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -94,9 +93,9 @@ export default function ProfileLayout({
               </Step>
             </ProgressBar>
           </div>
-          <PageContext.Provider value={{ setStep: setStep, step: step }}>
+          <ProfileProvider step={step} setStep={setStep}>
             <div className={inter.className}>{children}</div>
-          </PageContext.Provider>
+          </ProfileProvider>
         </div>
       </div>
     </>
