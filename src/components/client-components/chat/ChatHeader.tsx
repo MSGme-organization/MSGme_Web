@@ -11,16 +11,17 @@ import { Button, Dropdown, TextInput } from "flowbite-react";
 import Image from "next/image";
 import React from "react";
 import ShareModal from "../modals/ShareModal";
+import { useRouter } from "next/navigation";
 
 interface ChatHeaderProps {
   name: string | undefined;
   avatar: string | undefined;
-  router: any;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar, router }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
+  const router = useRouter();
   const dpItems = [
     {
       label: "Share",
@@ -125,4 +126,4 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar, router }) => {
   );
 };
 
-export default ChatHeader;
+export default React.memo(ChatHeader, () => true);

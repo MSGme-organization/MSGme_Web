@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Reaction from "./Reaction";
 import toast from "react-hot-toast";
@@ -16,6 +16,7 @@ import { useDetectClickOutside } from "react-detect-click-outside";
 
 interface MessageProps {
   message: {
+    id: number;
     username: string;
     message: string;
     issentbyme: boolean;
@@ -27,6 +28,7 @@ interface MessageProps {
       name: string;
       id: number;
     };
+    totalMsg: number;
   };
   index: number;
   isUserSame: boolean;
@@ -34,6 +36,8 @@ interface MessageProps {
   handleForward: Function;
   gotoMSG: Function;
   handleMSGRef: Function;
+  isContextActive: number | null;
+  setContextActive: Function;
 }
 
 interface ContextCord {
@@ -49,6 +53,8 @@ const Message: React.FC<MessageProps> = ({
   handleMSGRef,
   index,
   gotoMSG,
+  isContextActive,
+  setContextActive,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
@@ -56,7 +62,7 @@ const Message: React.FC<MessageProps> = ({
   const ref = useDetectClickOutside({
     onTriggered: () => setContextCord(null),
   });
-
+  const [isLast, setLast] = useState(false);
   const dpItems = [
     {
       label: "Reply",
@@ -111,12 +117,20 @@ const Message: React.FC<MessageProps> = ({
       },
     },
   ];
-
   const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (window.innerHeight - e.clientY <= 330) {
+      setLast(true);
+    }
     setContextCord({ top: e.clientY, left: e.clientX });
+    setContextActive(message.id);
   };
-
+  useEffect(() => {
+    if (contextCord === null) {
+      setContextActive(null);
+      setLast(false);
+    }
+  }, [contextCord]);
   return (
     <div
       className={`flex flex-col w-full pb-1 px-4  ${
@@ -195,14 +209,15 @@ const Message: React.FC<MessageProps> = ({
               </span>
             )}
           </p>
-          {contextCord && (
+          {contextCord && isContextActive === message.id ? (
             <Context
               setContextCord={setContextCord}
               contextRef={ref}
               items={dpItems}
               position={message.issentbyme ? "top-left" : "right-bottom"}
+              last={isLast}
             />
-          )}
+          ) : null}
         </div>
         {!message.issentbyme && <Reaction position="right" />}
       </div>
@@ -210,4 +225,4 @@ const Message: React.FC<MessageProps> = ({
   );
 };
 
-export default React.memo(Message, () => true);
+export default React.memo(Message);

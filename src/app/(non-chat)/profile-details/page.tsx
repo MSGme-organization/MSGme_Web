@@ -15,7 +15,6 @@ const ProfileDetails = () => {
     setStep(step + 1);
   };
   const handleDecrement = () => {
-    console.log(1);
     setStep(step - 1);
   };
   const { setStep, step } = useProfile() as PageContext;

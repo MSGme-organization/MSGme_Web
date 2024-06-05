@@ -4,6 +4,7 @@ interface ContextProps {
   items: Array<{ label: string; icon: () => React.ReactNode; fn: () => void }>;
   contextRef: React.RefObject<HTMLDivElement>;
   position: "right-bottom" | "top-left";
+  last: boolean;
   setContextCord: React.Dispatch<
     React.SetStateAction<{ top: number; left: number } | null>
   >;
@@ -14,14 +15,24 @@ const Context: React.FC<ContextProps> = ({
   items,
   contextRef,
   setContextCord,
+  last,
 }) => {
+  const getClassNames = () => {
+    if (position === "right-bottom") {
+      return last
+        ? "bottom-[100%] md:left-[100%] left-0"
+        : "top-[100%] md:left-[100%] left-0";
+    } else if (position === "top-left") {
+      return last
+        ? "bottom-[100%] md:right-[100%] right-0"
+        : "top-[100%] md:right-[100%] right-0";
+    }
+    return "";
+  };
+
   return (
     <div
-      className={`absolute ${
-        position === "right-bottom"
-          ? "top-[100%] md:left-[100%] left-0"
-          : "top-[100%] md:right-[100%] right-0"
-      } dark:bg-customGrey-blackBg border border-gray-100 dark:border-gray-600 rounded-md shadow bg-white text-black dark:text-white z-10 select-none`}
+      className={`absolute ${getClassNames()} dark:bg-customGrey-blackBg border border-gray-100 dark:border-gray-600 rounded-md shadow bg-white text-black dark:text-white z-10 select-none`}
       ref={contextRef}
     >
       {items.map((item, index) => (

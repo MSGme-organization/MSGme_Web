@@ -8,8 +8,7 @@ import { messages, users } from "@/utils/data";
 import { CloseIcon } from "@/utils/svgs";
 import { useFormik } from "formik";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 
 export interface Message {
   username: string;
@@ -22,10 +21,15 @@ export interface Message {
 const Chats = ({ params }: { params: { id: string } }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
+  const [isContextActive, setContextActive] = React.useState<number | null>(
+    null
+  );
   const ref = React.useRef<HTMLDivElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
-  const user = users.find((user) => user.id === parseInt(params.id));
-  const router = useRouter();
+  const user = React.useMemo(
+    () => users.find((user) => user.id === parseInt(params.id)),
+    [users]
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -36,24 +40,24 @@ const Chats = ({ params }: { params: { id: string } }) => {
     },
   });
 
-  const handleMsgRef = (index: number, ref: HTMLDivElement) => {
+  const handleMsgRef = useCallback((index: number, ref: HTMLDivElement) => {
     msgRef.current[index] = ref;
-  };
+  }, []);
 
-  const gotoMSG = (index: number) => {
+  const gotoMSG = useCallback((index: number) => {
     console.log(index);
     if (msgRef.current[index]) {
       msgRef.current[index - 3 > 3 ? index - 3 : index - 1].scrollIntoView();
     }
-  };
+  }, []);
 
-  const handleReply = (msg: any) => {
+  const handleReply = useCallback((msg: any) => {
     setReplyMsg(msg);
-  };
+  }, []);
 
-  const handleForward = (msg: any) => {
+  const handleForward = useCallback((msg: any) => {
     setForwardMsg(msg);
-  };
+  }, []);
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
@@ -65,13 +69,11 @@ const Chats = ({ params }: { params: { id: string } }) => {
       <div
         id="chat"
         ref={ref}
-        className="w-full overflow-y-scroll relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col"
+        className={`w-full ${
+          isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
+        } relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
       >
-        <ChatHeader
-          name={user?.name}
-          avatar={user?.avatarImage}
-          router={router}
-        />
+        <ChatHeader name={user?.name} avatar={user?.avatarImage} />
 
         <div className="flex-grow">
           <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white">
@@ -82,11 +84,16 @@ const Chats = ({ params }: { params: { id: string } }) => {
                 handleMSGRef={handleMsgRef}
                 handleReply={handleReply}
                 handleForward={handleForward}
-                message={{
-                  ...message,
-                  reaction: message.reaction || "",
-                  avatar: message.avatar || "",
-                }}
+                isContextActive={isContextActive}
+                setContextActive={setContextActive}
+                message={useMemo(() => {
+                  return {
+                    ...message,
+                    reaction: message.reaction || "",
+                    avatar: message.avatar || "",
+                    totalMsg: messages.length,
+                  };
+                }, [])}
                 key={index}
                 isUserSame={
                   index === 0

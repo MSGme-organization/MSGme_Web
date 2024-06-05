@@ -31,7 +31,6 @@ const Chat = () => {
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <>
       <div
