@@ -52,6 +52,15 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
                 </div>
               </div>
             )}
+            <div>
+              <Input
+                classes="border-none  outline-none focus:ring-0 placeholder:text-customGrey-light"
+                name="search"
+                placeholder="Type a message here (optional)"
+                type="text"
+                required={false}
+              />
+            </div>
             <Input
               classes=""
               iconClass=""
@@ -64,7 +73,6 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
               required={true}
               LeftIcon={null}
               RightIcon={null}
-              label=""
             />
             {filteredArr
               .slice(0, filteredArr.length < 5 ? filteredArr.length : 5)

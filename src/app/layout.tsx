@@ -3,7 +3,12 @@ import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
-const NunitoSans = Nunito_Sans({ weight: "300", subsets: ["latin-ext"] });
+const NunitoSans = Nunito_Sans({
+  weight: "300",
+  subsets: ["latin-ext"],
+  display: "swap",
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   title: "MSGme",
