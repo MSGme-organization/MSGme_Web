@@ -54,7 +54,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
             )}
             <div>
               <Input
-                classes="border-none  outline-none focus:ring-0 placeholder:text-customGrey-light"
+                classes="border-none  outline-none focus:ring-0  shadow-none"
                 name="search"
                 placeholder="Type a message here (optional)"
                 type="text"

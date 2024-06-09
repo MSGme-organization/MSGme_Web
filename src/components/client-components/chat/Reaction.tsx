@@ -5,24 +5,27 @@ import { ReactionIcon } from "@/utils/svgs";
 
 const Reaction = ({
   position,
+  setEmojiReaction
 }: {
   position:
-    | "top"
-    | "top-start"
-    | "top-end"
-    | "bottom"
-    | "bottom-start"
-    | "bottom-end"
-    | "right"
-    | "right-start"
-    | "right-end"
-    | "left"
-    | "left-start"
-    | "left-end"
-    | undefined;
+  | "top"
+  | "top-start"
+  | "top-end"
+  | "bottom"
+  | "bottom-start"
+  | "bottom-end"
+  | "right"
+  | "right-start"
+  | "right-end"
+  | "left"
+  | "left-start"
+  | "left-end"
+  | undefined;
+  setEmojiReaction: (emogi: string) => void
 }) => {
   const handleReaction = (emoji: any) => {
-    console.log(emoji.getImageUrl());
+    setEmojiReaction(emoji?.emoji);
+    // console.log(emoji)
   };
   return (
     <>
@@ -30,7 +33,7 @@ const Reaction = ({
         label=""
         placement={position}
         dismissOnClick={false}
-        className="bg-transparent shadow-none border-none p-0"
+        className="bg-transparent dark:bg-transparent shadow-none border-none p-0"
         renderTrigger={() => (
           <span className="flex justify-center items-center mx-2 dark:text-customGrey cursor-pointer">
             <ReactionIcon />
@@ -44,8 +47,8 @@ const Reaction = ({
           <Picker
             className="dark:bg-black dark:border-black"
             style={{ width: "100%" }}
-            onReactionClick={handleReaction}
             reactionsDefaultOpen={true}
+            onEmojiClick={handleReaction}
           />
         </Dropdown.Item>
       </Dropdown>

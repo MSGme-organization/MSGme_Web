@@ -42,7 +42,7 @@ export default function RootLayout({
         className={
           NunitoSans.className +
           " " +
-          "min-h-screen bg-bgColor dark:bg-customGrey-blackBg"
+          " bg-bgColor dark:bg-customGrey-blackBg"
         }
         suppressHydrationWarning={true}
       >

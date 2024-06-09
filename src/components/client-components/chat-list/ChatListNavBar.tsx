@@ -3,7 +3,8 @@
 import { AvatarIcon, BarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
 import { useThemeMode } from "flowbite-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import AddModal from "../modals/AddModal";
 
 const ChatListNavBar = ({
   handleNavigation,
@@ -24,7 +25,7 @@ const ChatListNavBar = ({
       path: PlusIcon,
       alt: "plus",
       classes: "bg-primary text-white",
-      fn: () => console.log("plus"),
+      fn: () => setShowModal(true),
     },
     {
       path: AvatarIcon,
@@ -33,6 +34,8 @@ const ChatListNavBar = ({
       fn: () => handleNavigation("/chat/settings"),
     },
   ];
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <>
       <div className="w-full flex justify-between items-center p-4 h-[70px]">
@@ -52,6 +55,7 @@ const ChatListNavBar = ({
         </div>
       </div>
       <hr className="border dark:border-customGrey-blackBg" />
+      <AddModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };

@@ -151,52 +151,52 @@ export const SunIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <circle cx="12" cy="12" r="5" stroke="#96A1AF" strokeWidth="1.5"></circle>
+    <circle cx="12" cy="12" r="5" stroke="#38C585" strokeWidth="1.5"></circle>
     <path
       d="M12 2V4"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M12 20V22"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M4 12L2 12"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M22 12L20 12"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M19.7778 4.22266L17.5558 6.25424"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M4.22217 4.22266L6.44418 6.25424"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M6.44434 17.5557L4.22211 19.7779"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
     <path
       d="M19.7778 19.7773L17.5558 17.5551"
-      stroke="currentColor"
+      stroke="#38C585"
       strokeWidth="1.5"
       strokeLinecap="round"
     ></path>
@@ -950,7 +950,7 @@ export const ProfileIcon = () => {
       <g
         id="SVGRepo_tracerCarrier"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -993,7 +993,7 @@ export const UploadIcon = () => {
       <g
         id="SVGRepo_tracerCarrier"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -1030,7 +1030,7 @@ export const PencilIcon = () => {
       <g
         id="SVGRepo_tracerCarrier"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -1038,14 +1038,14 @@ export const PencilIcon = () => {
           stroke="#ffffff"
           stroke-width="2"
           stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
         ></path>
         <path
           d="M5 20H19"
           stroke="#ffffff"
           stroke-width="2"
           stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
         ></path>
       </g>
     </svg>
