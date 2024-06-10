@@ -195,12 +195,12 @@ const Message: React.FC<MessageProps> = ({
             onDoubleClick={handleContextMenu}
             className="text-[16px] font-[550] active:scale-[.99] p-3"
           >
-            <span className="">{message.message}</span>
+            <span className="select-none md:select-auto">{message.message}</span>
 
             {emojiReaction === null ? null : (
               <span
                 onClick={() => setEmojiReaction(null)}
-                className={`absolute aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
+                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
                   } cursor-pointer`}
               >
                 {emojiReaction}

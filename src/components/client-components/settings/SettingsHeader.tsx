@@ -24,7 +24,10 @@ const SettingsHeader = ({
         <p className="text-[20px] font-bold">{headerText}</p>
       </div>
       {showLogout && (
-        <button className="bg-[#FFEEEE] dark:bg-gray-700 text-[#E75F5F] dark:text-red-500 font-semibold flex gap-1 p-3 py-2 rounded-full items-center active:scale-[.97]">
+        <button
+          className="bg-[#FFEEEE] dark:bg-gray-700 text-[#E75F5F] dark:text-red-500 font-semibold flex gap-1 p-3 py-2 rounded-full items-center active:scale-[.97]"
+          onClick={() => navigation.push("/login")}
+        >
           <span>Logout</span>
           {LogoutIcon()}
         </button>

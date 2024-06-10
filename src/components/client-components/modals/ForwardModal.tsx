@@ -36,7 +36,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
       onClose={() => setForwardMsg(null)}
       dismissible
     >
-      <Modal.Body className="dark:bg-customGrey-blackBg bg-gray-50 text-black dark:text-white">
+      <Modal.Body className="dark:bg-customGrey-black bg-gray-50 text-black dark:text-white">
         <div className="p-2">
           <div className="w-full flex justify-between items-center">
             <h1 className="text-black dark:text-white text-lg font-semibold">
@@ -45,21 +45,23 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
             <button onClick={() => setForwardMsg(null)}> {CloseIcon()}</button>
           </div>
           <div className="py-4">
-            {forwardMsg && (
-              <div className="w-full bg-gray-200 mb-4 dark:bg-customGrey-dark text-black dark:text-white rounded-md ">
-                <div className="border-l-[5px] flex justify-between items-center border-primary p-3 rounded-md  font-semibold">
-                  <p> {forwardMsg.message}</p>
+            <div className="bg-white text-black border-gray-700 dark:bg-customGrey-blackBg dark:text-white p-4 rounded-md mb-4">
+              {forwardMsg && (
+                <div className="w-full bg-gray-200 mb-4 dark:bg-customGrey-dark text-black dark:text-white rounded-md ">
+                  <div className="border-l-[5px] flex justify-between items-center border-primary p-3 rounded-md  font-semibold">
+                    <p> {forwardMsg.message}</p>
+                  </div>
                 </div>
+              )}
+              <div>
+                <Input
+                  classes="border-none  outline-none focus:ring-0  shadow-none"
+                  name="search"
+                  placeholder="Type a message here (optional)"
+                  type="text"
+                  required={false}
+                />
               </div>
-            )}
-            <div>
-              <Input
-                classes="border-none  outline-none focus:ring-0  shadow-none"
-                name="search"
-                placeholder="Type a message here (optional)"
-                type="text"
-                required={false}
-              />
             </div>
             <Input
               classes=""

@@ -30,8 +30,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
   }
 
   return navbar ? (
-    <div className="px-5 xl:px-14 bg-bgColor dark:bg-customGrey-black shadow-sm  min-h-[90px] absolute w-full top-0 left-0">
-      <section className="h-[100%] max-w-[1808px] flex flex-row items-center justify-between p-4 my-0 mx-auto ">
+    <div className=" px-5 xl:px-14 bg-bgColor dark:bg-customGrey-black shadow-sm  min-h-[90px] absolute w-full top-0 left-0">
+      <section className="h-[100%] max-w-[1808px] w-full flex flex-row items-center justify-between p-4 my-0 mx-auto min-h-[90px]">
         <div className="h-[100%] cursor-pointer" onClick={()=>router.push('/')}>
           <img
             src="./Logo.png"

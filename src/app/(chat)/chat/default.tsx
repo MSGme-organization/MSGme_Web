@@ -35,7 +35,7 @@ const Chat = () => {
   return (
     <>
       <div
-        className={`w-full h-full overflow-y-scroll md:w-[25%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white ${
+        className={`w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white ${
           isOpen ? "" : "-translate-x-[100%] duration-90 transition-all hidden"
         }`}
       >

@@ -76,7 +76,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
         <ChatHeader name={user?.name} avatar={user?.avatarImage} />
 
         <div className="flex-grow">
-          <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white">
+          <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-9">
             {messages.map((message, index) => (
               <Message
                 index={index}

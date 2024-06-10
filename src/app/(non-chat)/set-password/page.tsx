@@ -105,7 +105,7 @@ const ResetPassword = () => {
                   type="submit"
                   className="text-nowrap rounded-[8px] bg-primary text-textColor-dark py-4 px-6 font-bold text-[16px] w-[100%]"
                 >
-                  Send
+                  Reset Password
                 </button>
               </div>
             </div>
