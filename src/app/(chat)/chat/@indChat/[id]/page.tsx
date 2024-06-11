@@ -15,9 +15,11 @@ import React, { useCallback, useMemo } from "react";
 export interface Message {
   username: string;
   issentbyme: Boolean;
-  message: string;
-  avatar: string;
+  message?: string;
+  avatar?: string;
   reaction?: string;
+  repliedMsg?: any;
+  id: number;
 }
 
 const Chats = ({ params }: { params: { id: string } }) => {
@@ -26,6 +28,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
   const [isContextActive, setContextActive] = React.useState<number | null>(
     null
   );
+  const [totalMessages, setMessages] = React.useState<Message[] | []>(messages);
   const ref = React.useRef<HTMLDivElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const user = React.useMemo(
@@ -37,8 +40,21 @@ const Chats = ({ params }: { params: { id: string } }) => {
     initialValues: {
       msg: "",
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      if (replyMsg !== null || values.msg) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: prev[prev.length - 1].id + 1,
+            username: "Me",
+            issentbyme: true,
+            message: values.msg,
+            repliedMsg: replyMsg,
+          },
+        ]);
+        setReplyMsg(null);
+        resetForm();
+      }
     },
   });
 
@@ -54,6 +70,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
   }, []);
 
   const handleReply = useCallback((msg: any) => {
+    if (Object.keys(msg).includes("repliedMsg")) {
+      delete msg["repliedMsg"];
+    }
     setReplyMsg(msg);
   }, []);
 
@@ -63,9 +82,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
-    msgRef.current = msgRef.current.slice(0, messages.length);
-  }, []);
-
+    msgRef.current = msgRef.current.slice(0, totalMessages.length);
+  }, [totalMessages]);
+  console.log(totalMessages);
   return (
     <>
       <div
@@ -79,7 +98,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
         <div className="flex-grow">
           <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-9">
-            {messages.map((message, index) => (
+            {totalMessages.map((message, index) => (
               <Message
                 index={index}
                 gotoMSG={gotoMSG}
@@ -88,19 +107,17 @@ const Chats = ({ params }: { params: { id: string } }) => {
                 handleForward={handleForward}
                 isContextActive={isContextActive}
                 setContextActive={setContextActive}
-                message={useMemo(() => {
-                  return {
-                    ...message,
-                    reaction: message.reaction || "",
-                    avatar: message.avatar || "",
-                    totalMsg: messages.length,
-                  };
-                }, [])}
+                message={{
+                  ...message,
+                  reaction: message.reaction || "",
+                  avatar: message.avatar || "",
+                  totalMsg: totalMessages.length,
+                }}
                 key={index}
                 isUserSame={
                   index === 0
                     ? false
-                    : messages[index - 1].username === message.username
+                    : totalMessages[index - 1].username === message.username
                 }
               />
             ))}

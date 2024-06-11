@@ -254,8 +254,9 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
     repliedMsg: {
       id: 8,
-      name: "David Brown",
-      msg: "I'll be out of the office tomorrow. If you need anything urgent, please contact Eva.",
+      username: "David Brown",
+      message:
+        "I'll be out of the office tomorrow. If you need anything urgent, please contact Eva.",
       avatar: "https://picsum.photos/200/300",
     },
   },
@@ -420,9 +421,10 @@ export const messages = [
     avatar: "https://picsum.photos/200/300",
     repliedMsg: {
       id: 24,
-      msg: "Don't forget to review the PR. We need your approval before we can move forward with the deployment.",
+      message:
+        "Don't forget to review the PR. We need your approval before we can move forward with the deployment.",
       avatar: "https://picsum.photos/200/300",
-      name: "Me",
+      username: "Me",
     },
   },
 ];

@@ -23,10 +23,11 @@ interface MessageProps {
     avatar: string;
     reaction: string | null | undefined;
     repliedMsg?: {
-      msg: string;
+      message: string;
       avatar: string;
-      name: string;
+      username: string;
       id: number;
+      issentbyme: boolean;
     };
     totalMsg: number;
   };
@@ -174,26 +175,26 @@ const Message: React.FC<MessageProps> = ({
         >
           {message.repliedMsg && (
             <button
-              className="bg-gray-200 dark:bg-gray-700 m-3 p-2 rounded-md border-s-[4px] border-primary"
+              className="bg-gray-200 text-black dark:text-white dark:bg-gray-700 m-3 p-2 rounded-md border-s-[4px] border-primary"
               onClick={() => {
                 gotoMSG(message.repliedMsg?.id);
               }}
             >
               <div className="flex items-center my-2 gap-2">
                 {ReplyMSG()}
-                <Image
+                { !message.repliedMsg.issentbyme&& <Image
                   src={message.repliedMsg.avatar}
                   width={20}
                   height={20}
                   alt="user"
                   className="rounded-full aspect-square"
-                />
+                />}
                 <p className="text-[12px] font-semibold">
-                  {message.repliedMsg.name}
+                  {message.repliedMsg.username}
                 </p>
               </div>
               <p className="text-[15px] font-semibold text-start">
-                {message.repliedMsg.msg}
+                {message.repliedMsg.message}
               </p>
             </button>
           )}
