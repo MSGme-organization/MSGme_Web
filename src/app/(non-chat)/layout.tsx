@@ -13,7 +13,7 @@ export default function HomeLayout({
     return (
       <>
         <HeaderBar />
-        <div className="min-h-[calc(100dvh-68px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
+        <div className="min-h-[calc(100dvh-111px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
           {children}
         </div>
         <Footer />
@@ -23,7 +23,7 @@ export default function HomeLayout({
     return (
       <>
         <HeaderBar features={false} button="contact" />
-        <div className="min-h-[calc(100dvh-68px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
+        <div className="min-h-[calc(100dvh-111px)] pt-24 pb-4 px-4 bg-customGrey-light  dark:bg-customGrey-blackBg">
           {children}
         </div>
         <Footer />

@@ -125,7 +125,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
                 dismissOnClick={false}
                 className="bg-transparent w-[95%] md:w-auto dark:bg-transparent shadow-none border-none p-0 flex justify-center"
                 renderTrigger={() => (
-                  <div className="h-[41px] w-[41px] ms-4 cursor-pointer active:scale-110 active:opacity-100 bg-gray-100 rounded-full p-2 dark:bg-customGrey-blackBg hover:bg-opacity-50">
+                  <div className="h-[41px] w-[41px] cursor-pointer active:scale-110 p-2 active:opacity-100 bg-gray-100 rounded-full  dark:bg-customGrey-blackBg hover:bg-opacity-50">
                     <ReactionIcon />
                   </div>
                 )}
@@ -148,20 +148,22 @@ const Chats = ({ params }: { params: { id: string } }) => {
                   />
                 </Dropdown.Item>
               </Dropdown>
-              <Input
-                label={""}
-                type={"text"}
-                required={false}
-                classes={"select-none"}
-                iconClass={undefined}
-                LeftIcon={undefined}
-                RightIcon={undefined}
-                placeholder="Enter your Message Here"
-                {...formik.getFieldProps("msg")}
-                error={formik.errors.msg}
-                onChange={formik.handleChange}
-                value={formik.values?.msg}
-              />
+              <div className="flex-grow">
+                <Input
+                  label={""}
+                  type={"text"}
+                  required={false}
+                  classes={"select-none"}
+                  iconClass={undefined}
+                  LeftIcon={undefined}
+                  RightIcon={undefined}
+                  placeholder="Enter your Message Here"
+                  {...formik.getFieldProps("msg")}
+                  error={formik.errors.msg}
+                  onChange={formik.handleChange}
+                  value={formik.values?.msg}
+                />
+              </div>
               <button
                 type="submit"
                 className="text-white flex w-[40px] justify-center items-center  rounded-full hover:outline-primary hover:outline"

@@ -52,7 +52,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
             <button onClick={() => router.back()} className="md:hidden">
               <BackIcon />
             </button>
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer">
               <Image
                 width={40}
                 height={40}
@@ -61,7 +61,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
                 className="w-12 h-12 rounded-full"
               />
               <div className="ml-4">
-                <h1 className="text-xl font-bold">{name}</h1>
+                <h1 className="text-xl font-bold hover:opacity-70">{name}</h1>
               </div>
             </div>
           </div>

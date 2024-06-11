@@ -200,7 +200,7 @@ const Message: React.FC<MessageProps> = ({
           <p
             onContextMenu={handleContextMenu}
             onDoubleClick={handleContextMenu}
-            className="text-[16px] font-[550] active:scale-[.99] p-3"
+            className="text-[16px] font-[550] active:scale-[.99] p-3 relative"
           >
             <span className="select-none md:select-auto">
               {message.message}

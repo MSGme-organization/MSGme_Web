@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({
   RightIcon,
   field,
   rest,
-  rightIconToggle
+  rightIconToggle,
 }) => {
   return (
     <div className="w-full">
@@ -92,9 +92,11 @@ const Input: React.FC<InputProps> = ({
           </div>
         )}
       </div>
-      <p className="m-0 text-red-500 font-bold text-[13px] ms-2 mt-1">
-        {error}
-      </p>
+      {error && (
+        <p className="m-0 text-red-500 font-bold text-[13px] ms-2 mt-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 };
