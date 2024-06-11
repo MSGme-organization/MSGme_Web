@@ -63,7 +63,9 @@ const Message: React.FC<MessageProps> = ({
     onTriggered: () => setContextCord(null),
   });
   const [isLast, setLast] = useState(false);
-  const [emojiReaction, setEmojiReaction] = useState<null | string>(message.reaction || null);
+  const [emojiReaction, setEmojiReaction] = useState<null | string>(
+    message.reaction || null
+  );
   const dpItems = [
     {
       label: "Reply",
@@ -134,8 +136,9 @@ const Message: React.FC<MessageProps> = ({
   }, [contextCord]);
   return (
     <div
-      className={`flex flex-col w-full pb-1 px-4  ${message.issentbyme ? "items-end" : "items-start"
-        } `}
+      className={`flex flex-col w-full pb-1 px-4  ${
+        message.issentbyme ? "items-end" : "items-start"
+      } `}
     >
       <div className="flex py-2 items-center gap-2">
         {!isUserSame && !message.issentbyme && (
@@ -154,16 +157,20 @@ const Message: React.FC<MessageProps> = ({
         )}
       </div>
       <div
-        className={`flex relative  w-full  ${message.issentbyme ? "justify-end" : "justify-start"
-          }`}
+        className={`flex relative  w-full items-center  ${
+          message.issentbyme ? "justify-end" : "justify-start"
+        }`}
       >
-        {message.issentbyme && <Reaction setEmojiReaction={setEmojiReaction} position="left" />}
+        {message.issentbyme && (
+          <Reaction setEmojiReaction={setEmojiReaction} position="left" />
+        )}
         <div
           ref={(el) => handleMSGRef(index, el)}
-          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative  ${message.issentbyme
-            ? "bg-primary text-white "
-            : "bg-white text-black dark:border border-gray-700 dark:bg-customGrey-blackBg dark:text-white"
-            } rounded-md`}
+          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative  ${
+            message.issentbyme
+              ? "bg-primary text-white "
+              : "bg-white text-black dark:border border-gray-700 dark:bg-customGrey-blackBg dark:text-white"
+          } rounded-md`}
         >
           {message.repliedMsg && (
             <button
@@ -195,13 +202,16 @@ const Message: React.FC<MessageProps> = ({
             onDoubleClick={handleContextMenu}
             className="text-[16px] font-[550] active:scale-[.99] p-3"
           >
-            <span className="select-none md:select-auto">{message.message}</span>
+            <span className="select-none md:select-auto">
+              {message.message}
+            </span>
 
             {emojiReaction === null ? null : (
               <span
                 onClick={() => setEmojiReaction(null)}
-                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
-                  } cursor-pointer`}
+                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${
+                  message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
+                } cursor-pointer`}
               >
                 {emojiReaction}
               </span>
@@ -217,7 +227,9 @@ const Message: React.FC<MessageProps> = ({
             />
           ) : null}
         </div>
-        {!message.issentbyme && <Reaction setEmojiReaction={setEmojiReaction} position="right" />}
+        {!message.issentbyme && (
+          <Reaction setEmojiReaction={setEmojiReaction} position="right" />
+        )}
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ export const Toolbar = ({
       <div className="bg-white dark:bg-black dark:border-black border border-gray-300 rounded-full mx-auto mt-4 mb-4">
         <div className="grid items-center justify-start">
           <div className="p-2">
-            <div className="grid items-center justify-start grid-flow-col">
+            <div className="grid items-center justify-start grid-flow-col select-none">
               {REACTIONS.map((reaction) => (
                 <Emoji
                   key={reaction.emoji}

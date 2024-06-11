@@ -36,7 +36,7 @@ const Reaction = ({
         dismissOnClick={true}
         className="bg-transparent dark:bg-transparent shadow-none border-none p-0"
         renderTrigger={() => (
-          <span className="flex justify-center items-center mx-2 dark:text-customGrey cursor-pointer">
+          <span className="flex justify-center items-center mx-2 dark:text-customGrey cursor-pointer w-[21px] h-[21px]">
             <ReactionIcon />
           </span>
         )}
