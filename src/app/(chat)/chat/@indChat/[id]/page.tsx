@@ -84,7 +84,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
     msgRef.current = msgRef.current.slice(0, totalMessages.length);
   }, [totalMessages]);
-  console.log(totalMessages);
+
+  React.useEffect(()=>{
+    if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
+  },[replyMsg])
   return (
     <>
       <div
@@ -97,7 +100,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
         <ChatHeader name={user?.name} avatar={user?.avatarImage} />
 
         <div className="flex-grow">
-          <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-9">
+          <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-6">
             {totalMessages.map((message, index) => (
               <Message
                 index={index}
@@ -183,7 +186,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
               </div>
               <button
                 type="submit"
-                className="text-white flex w-[40px] justify-center items-center  rounded-full hover:outline-primary hover:outline"
+                className="text-white flex w-[40px] justify-center items-center  rounded-full "
               >
                 <Image
                   src={"/svgs/send.svg"}
