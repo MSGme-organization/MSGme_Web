@@ -1,6 +1,5 @@
 "use client";
 
-import { FormikFormProps } from "formik";
 import React from "react";
 
 interface InputProps {
@@ -20,6 +19,7 @@ interface InputProps {
   field?: any;
   rest?: any;
   rightIconToggle?: VoidFunction;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -38,6 +38,7 @@ const Input: React.FC<InputProps> = ({
   field,
   rest,
   rightIconToggle,
+  inputRef,
 }) => {
   return (
     <div className="w-full">
@@ -62,6 +63,7 @@ const Input: React.FC<InputProps> = ({
             value={value}
             onChange={onChange}
             name={name}
+            ref={inputRef}
             {...field}
             {...rest}
             id={name}
@@ -71,6 +73,7 @@ const Input: React.FC<InputProps> = ({
           />
         ) : (
           <input
+            ref={inputRef}
             onChange={onChange}
             name={name}
             value={value}

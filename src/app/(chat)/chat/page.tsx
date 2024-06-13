@@ -39,8 +39,9 @@ const Chat = () => {
         <div className="p-4 sticky top-0 bg-white dark:bg-customGrey-black">
           <Input
             type="text"
-            onChange={handleFilter}
             RightIcon={SearchIcon}
+            onChange={handleFilter}
+            iconClass="right-2"
             classes="text-customGrey"
             placeholder="Search Chat here"
           />

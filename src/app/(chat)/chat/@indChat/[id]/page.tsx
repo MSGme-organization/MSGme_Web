@@ -31,6 +31,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
   );
   const [totalMessages, setMessages] = React.useState<Message[] | []>(messages);
   const ref = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const user = React.useMemo(
     () => users.find((user) => user.id === parseInt(params.id)),
@@ -67,7 +68,6 @@ const Chats = ({ params }: { params: { id: string } }) => {
   );
 
   const gotoMSG = React.useCallback((index: number) => {
-    console.log(index);
     if (msgRef.current[index]) {
       msgRef.current[index - 3 > 3 ? index - 3 : index - 1].scrollIntoView();
     }
@@ -91,8 +91,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
+    if (replyMsg && inputRef.current) inputRef.current.focus();
   }, [replyMsg]);
-  console.log("id");
+
   return (
     <>
       <div
@@ -175,6 +176,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
               </Dropdown>
               <div className="flex-grow">
                 <Input
+                  inputRef={inputRef}
                   label={""}
                   type={"text"}
                   required={false}

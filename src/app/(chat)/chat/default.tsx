@@ -40,6 +40,7 @@ const Chat = () => {
           <Input
             type="text"
             onChange={handleFilter}
+            iconClass="right-2"
             RightIcon={SearchIcon}
             classes="text-customGrey"
             placeholder="Search Chat here"

@@ -175,35 +175,37 @@ const Message: React.FC<MessageProps> = ({
           } rounded-md`}
         >
           {message.repliedMsg && (
-            <button
-              className={`${
-                message.issentbyme
-                  ? "bg-[#3741517a] dark:bg-[#3741517a]"
-                  : "bg-gray-200 dark:bg-gray-700"
-              } text-black dark:text-white m-3 mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
-              onClick={() => {
-                gotoMSG(message.repliedMsg?.id);
-              }}
-            >
-              <div className="flex items-center my-2 gap-2">
-                {ReplyMSG()}
-                {!message.repliedMsg.issentbyme && (
-                  <Image
-                    src={message.repliedMsg.avatar}
-                    width={20}
-                    height={20}
-                    alt="user"
-                    className="rounded-full aspect-square"
-                  />
-                )}
-                <p className="text-[12px] font-semibold">
-                  {message.repliedMsg.username}
+            <div className="w-full pb-0 p-3">
+              <button
+                className={`${
+                  message.issentbyme
+                    ? "bg-[#ffffff31] dark:bg-[#3741514b]"
+                    : "bg-gray-200 dark:bg-gray-700"
+                } text-black w-full dark:text-white mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
+                onClick={() => {
+                  gotoMSG(message.repliedMsg?.id);
+                }}
+              >
+                <div className="flex items-center my-2 gap-2">
+                  {ReplyMSG()}
+                  {!message.repliedMsg.issentbyme && (
+                    <Image
+                      src={message.repliedMsg.avatar}
+                      width={20}
+                      height={20}
+                      alt="user"
+                      className="rounded-full aspect-square"
+                    />
+                  )}
+                  <p className="text-[12px] font-semibold">
+                    {message.repliedMsg.username}
+                  </p>
+                </div>
+                <p className="text-[15px] font-semibold text-start">
+                  {message.repliedMsg.message}
                 </p>
-              </div>
-              <p className="text-[15px] font-semibold text-start">
-                {message.repliedMsg.message}
-              </p>
-            </button>
+              </button>
+            </div>
           )}
           <p
             onContextMenu={handleContextMenu}
