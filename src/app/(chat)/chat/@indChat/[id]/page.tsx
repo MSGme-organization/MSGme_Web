@@ -1,16 +1,17 @@
 "use client";
 
-import ChatHeader from "@/components/client-components/chat/ChatHeader";
-import Message from "@/components/client-components/chat/Message";
+import React from "react";
+import Image from "next/image";
 import Picker from "emoji-picker-react";
+import Message from "@/components/client-components/chat/Message";
+import ChatHeader from "@/components/client-components/chat/ChatHeader";
 import Input from "@/components/client-components/common-components/Input";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
-import { messages, users } from "@/utils/data";
+
 import { CloseIcon, ReactionIcon } from "@/utils/svgs";
+import { messages, users } from "@/utils/data";
 import { Dropdown } from "flowbite-react";
 import { useFormik } from "formik";
-import Image from "next/image";
-import React, { useCallback, useMemo } from "react";
 
 export interface Message {
   username: string;
@@ -58,25 +59,28 @@ const Chats = ({ params }: { params: { id: string } }) => {
     },
   });
 
-  const handleMsgRef = useCallback((index: number, ref: HTMLDivElement) => {
-    msgRef.current[index] = ref;
-  }, []);
+  const handleMsgRef = React.useCallback(
+    (index: number, ref: HTMLDivElement) => {
+      msgRef.current[index] = ref;
+    },
+    []
+  );
 
-  const gotoMSG = useCallback((index: number) => {
+  const gotoMSG = React.useCallback((index: number) => {
     console.log(index);
     if (msgRef.current[index]) {
       msgRef.current[index - 3 > 3 ? index - 3 : index - 1].scrollIntoView();
     }
   }, []);
 
-  const handleReply = useCallback((msg: any) => {
+  const handleReply = React.useCallback((msg: any) => {
     if (Object.keys(msg).includes("repliedMsg")) {
       delete msg["repliedMsg"];
     }
     setReplyMsg(msg);
   }, []);
 
-  const handleForward = useCallback((msg: any) => {
+  const handleForward = React.useCallback((msg: any) => {
     setForwardMsg(msg);
   }, []);
 
