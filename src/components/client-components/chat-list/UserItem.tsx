@@ -31,6 +31,7 @@ const UserItem: React.FC<Data> = ({
   const handle = () => {
     handleNavigation(`/chat/${id}`);
   };
+  console.log("user iterm", id, name);
   return (
     <div
       className={`w-full flex border-r-4 items-center justify-between p-4 hover:bg-gray-100 hover:dark:bg-gray-700 select-none cursor-pointer hide-scrollbar   text-black dark:text-white ${
@@ -75,4 +76,4 @@ const UserItem: React.FC<Data> = ({
   );
 };
 
-export default UserItem;
+export default React.memo(UserItem);

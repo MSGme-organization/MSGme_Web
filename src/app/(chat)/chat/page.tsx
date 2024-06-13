@@ -1,17 +1,18 @@
 "use client";
 
+import React from "react";
 import ChatListNavBar from "@/components/client-components/chat-list/ChatListNavBar";
 import UserItem from "@/components/client-components/chat-list/UserItem";
+
 import { users } from "@/utils/data";
-import { BarIcon, SearchIcon } from "@/utils/svgs";
+import { SearchIcon } from "@/utils/svgs";
 import { TextInput } from "flowbite-react";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import Input from "@/components/client-components/common-components/Input";
 
 const Chat = () => {
   const [filteredList, setFilteredList] = React.useState(users);
   const [searchString, setSearchString] = React.useState("");
-  const [isOpen, setIsOpen] = React.useState(true);
   const router = useRouter();
   const params = useParams();
 
@@ -24,29 +25,23 @@ const Chat = () => {
     setFilteredList(filtered);
   };
 
-  const handleNavigation = (path: string, state: object = {}) => {
-    router.push(path, state);
-  };
+  const handleNavigation = React.useCallback(
+    (path: string, state: object = {}) => {
+      router.push(path, state);
+    },
+    []
+  );
 
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <>
-      <div
-        className={`w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white ${
-          isOpen ? "" : "-translate-x-[100%] duration-90 transition-all hidden"
-        }`}
-      >
-        <ChatListNavBar
-          handleNavigation={handleNavigation}
-          handleOpen={handleOpen}
-        />
+      <div className="w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
+        <ChatListNavBar handleNavigation={handleNavigation} />
         <div className="p-4 sticky top-0 bg-white dark:bg-customGrey-black">
-          <TextInput
+          <Input
+            type="text"
             onChange={handleFilter}
-            rightIcon={SearchIcon}
-            className="text-customGrey"
+            RightIcon={SearchIcon}
+            classes="text-customGrey"
             placeholder="Search Chat here"
           />
         </div>

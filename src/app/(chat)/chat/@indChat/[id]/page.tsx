@@ -85,9 +85,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
     msgRef.current = msgRef.current.slice(0, totalMessages.length);
   }, [totalMessages]);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
-  },[replyMsg])
+  }, [replyMsg]);
+  console.log("id");
   return (
     <>
       <div
@@ -204,4 +205,6 @@ const Chats = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default Chats;
+export default React.memo(Chats, (prevProps, nextProps) => {
+  return prevProps.params.id === nextProps.params.id;
+});

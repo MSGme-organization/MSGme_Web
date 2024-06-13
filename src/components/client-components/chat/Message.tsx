@@ -135,6 +135,7 @@ const Message: React.FC<MessageProps> = ({
       setLast(false);
     }
   }, [contextCord]);
+  console.log("mesaage", message.id);
   return (
     <div
       className={`flex flex-col w-full pb-1 px-4  ${
@@ -175,20 +176,26 @@ const Message: React.FC<MessageProps> = ({
         >
           {message.repliedMsg && (
             <button
-              className="bg-gray-200 text-black dark:text-white dark:bg-gray-700 m-3 p-2 rounded-md border-s-[4px] border-primary"
+              className={`${
+                message.issentbyme
+                  ? "bg-[#3741517a] dark:bg-[#3741517a]"
+                  : "bg-gray-200 dark:bg-gray-700"
+              } text-black dark:text-white m-3 mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
               onClick={() => {
                 gotoMSG(message.repliedMsg?.id);
               }}
             >
               <div className="flex items-center my-2 gap-2">
                 {ReplyMSG()}
-                { !message.repliedMsg.issentbyme&& <Image
-                  src={message.repliedMsg.avatar}
-                  width={20}
-                  height={20}
-                  alt="user"
-                  className="rounded-full aspect-square"
-                />}
+                {!message.repliedMsg.issentbyme && (
+                  <Image
+                    src={message.repliedMsg.avatar}
+                    width={20}
+                    height={20}
+                    alt="user"
+                    className="rounded-full aspect-square"
+                  />
+                )}
                 <p className="text-[12px] font-semibold">
                   {message.repliedMsg.username}
                 </p>
@@ -210,7 +217,7 @@ const Message: React.FC<MessageProps> = ({
             {emojiReaction === null ? null : (
               <span
                 onClick={() => setEmojiReaction(null)}
-                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] border dark:border-gray-800 border-gray-100 ${
+                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] aspect-square border dark:border-gray-800 border-gray-100 ${
                   message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
                 } cursor-pointer`}
               >

@@ -1,18 +1,18 @@
 "use client";
 
-import { AvatarIcon, BarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
-import { useThemeMode } from "flowbite-react";
-import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import AddModal from "../modals/AddModal";
+import Image from "next/image";
+
+import { AvatarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
+import { useThemeMode } from "flowbite-react";
 
 const ChatListNavBar = ({
   handleNavigation,
-  handleOpen,
 }: {
   handleNavigation: (path: string) => void;
-  handleOpen: () => void;
 }) => {
+  const [showModal, setShowModal] = React.useState(false);
   const theme = useThemeMode();
   const Icons = [
     {
@@ -34,8 +34,8 @@ const ChatListNavBar = ({
       fn: () => handleNavigation("/chat/settings"),
     },
   ];
-  const [showModal, setShowModal] = useState(false)
 
+  console.log('chat navbar')
   return (
     <>
       <div className="w-full flex justify-between items-center p-4 h-[70px]">
@@ -60,4 +60,4 @@ const ChatListNavBar = ({
   );
 };
 
-export default ChatListNavBar;
+export default React.memo(ChatListNavBar, () => true);

@@ -52,4 +52,4 @@ const Context: React.FC<ContextProps> = ({
   );
 };
 
-export default Context;
+export default React.memo(Context);
