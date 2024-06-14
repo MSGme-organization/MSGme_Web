@@ -31,8 +31,8 @@ const Chats = ({ params }: { params: { id: string } }) => {
   );
   const [totalMessages, setMessages] = React.useState<Message[] | []>(messages);
   const ref = React.useRef<HTMLDivElement>(null);
-  const inputRef = React.useRef<HTMLInputElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
+  const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const user = React.useMemo(
     () => users.find((user) => user.id === parseInt(params.id)),
     [users]
@@ -91,9 +91,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
-    if (replyMsg && inputRef.current) inputRef.current.focus();
+    if (replyMsg) {
+      inputRef.current?.focus();
+    }
   }, [replyMsg]);
-
   return (
     <>
       <div
@@ -176,7 +177,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
               </Dropdown>
               <div className="flex-grow">
                 <Input
-                  inputRef={inputRef}
+                  ref={inputRef}
                   label={""}
                   type={"text"}
                   required={false}
