@@ -48,7 +48,7 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
             <Image
               src={image}
               alt="profile"
-              className="rounded-full"
+              className="rounded-full aspect-square"
               width={150}
               height={150}
             />

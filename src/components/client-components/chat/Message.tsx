@@ -13,6 +13,7 @@ import {
 } from "@/utils/svgs";
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import Highlighter from "react-highlight-words";
 
 interface MessageProps {
   message: {
@@ -39,6 +40,7 @@ interface MessageProps {
   handleMSGRef: Function;
   isContextActive: number | null;
   setContextActive: Function;
+  searchString?: string | null | undefined;
 }
 
 interface ContextCord {
@@ -56,6 +58,7 @@ const Message: React.FC<MessageProps> = ({
   gotoMSG,
   isContextActive,
   setContextActive,
+  searchString,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
@@ -213,13 +216,18 @@ const Message: React.FC<MessageProps> = ({
             className="text-[16px] font-[550] active:scale-[.99] p-3 relative"
           >
             <span className="select-none md:select-auto">
-              {message.message}
+              <Highlighter
+                highlightClassName="bg-yellow-200 bg-opacity-75"
+                searchWords={searchString ? [searchString] : []}
+                textToHighlight={message.message}
+                autoEscape={true}
+              />
             </span>
 
             {emojiReaction === null ? null : (
               <span
                 onClick={() => setEmojiReaction(null)}
-                className={`absolute hover:scale-125 aspect-square rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] aspect-square border dark:border-gray-800 border-gray-100 ${
+                className={`absolute hover:scale-125 rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] aspect-square border dark:border-gray-800 border-gray-100 ${
                   message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
                 } cursor-pointer`}
               >

@@ -16,9 +16,16 @@ import { useRouter } from "next/navigation";
 interface ChatHeaderProps {
   name: string | undefined;
   avatar: string | undefined;
+  searchString?: string | null | undefined;
+  handleSearch: React.ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({
+  name,
+  avatar,
+  handleSearch,
+  searchString,
+}) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
   const router = useRouter();
@@ -44,11 +51,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
     setSearchOpen((prev) => !prev);
   };
 
-  console.log('id header')
-
   return (
     <>
-      <div className="w-full sticky top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white">
+      <div
+        className={`w-full sticky ${searchOpen? "mb-[66px]" : "mb-0"} top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
+      >
         <div className="w-full px-4 flex items-center justify-between z-[21]  dark:bg-customGrey-blackBg bg-white">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="md:hidden">
@@ -102,6 +109,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
           }`}
         >
           <TextInput
+            onChange={handleSearch}
+            value={searchString || ""}
             placeholder="search here"
             className="w-[95%] z-[20]"
             style={{
@@ -128,4 +137,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar }) => {
   );
 };
 
-export default React.memo(ChatHeader, () => true);
+export default React.memo(
+  ChatHeader,
+  (pre, next) => pre.searchString === next.searchString
+);

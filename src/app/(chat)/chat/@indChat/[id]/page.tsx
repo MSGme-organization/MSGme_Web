@@ -26,6 +26,7 @@ export interface Message {
 const Chats = ({ params }: { params: { id: string } }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
+  const [searchString, setSearchString] = React.useState<string | null>(null);
   const [isContextActive, setContextActive] = React.useState<number | null>(
     null
   );
@@ -84,6 +85,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
     setForwardMsg(msg);
   }, []);
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchString(e.target.value);
+  };
+
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
     msgRef.current = msgRef.current.slice(0, totalMessages.length);
@@ -104,12 +109,18 @@ const Chats = ({ params }: { params: { id: string } }) => {
           isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
         } relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
       >
-        <ChatHeader name={user?.name} avatar={user?.avatarImage} />
+        <ChatHeader
+          name={user?.name}
+          handleSearch={handleSearch}
+          searchString={searchString}
+          avatar={user?.avatarImage}
+        />
 
         <div className="flex-grow">
           <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-6">
             {totalMessages.map((message, index) => (
               <Message
+                searchString={searchString}
                 index={index}
                 gotoMSG={gotoMSG}
                 handleMSGRef={handleMsgRef}
