@@ -13,7 +13,6 @@ import {
 } from "@/utils/svgs";
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
-import Highlighter from "react-highlight-words";
 
 interface MessageProps {
   message: {
@@ -41,6 +40,8 @@ interface MessageProps {
   isContextActive: number | null;
   setContextActive: Function;
   searchString?: string | null | undefined;
+  searchActiveIndex: number | null;
+  highlightText: (text, index) => any;
 }
 
 interface ContextCord {
@@ -59,6 +60,8 @@ const Message: React.FC<MessageProps> = ({
   isContextActive,
   setContextActive,
   searchString,
+  highlightText,
+  searchActiveIndex,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
@@ -138,7 +141,6 @@ const Message: React.FC<MessageProps> = ({
       setLast(false);
     }
   }, [contextCord]);
-  console.log("mesaage", message.id);
   return (
     <div
       className={`flex flex-col w-full pb-1 px-4  ${
@@ -170,8 +172,9 @@ const Message: React.FC<MessageProps> = ({
           <Reaction setEmojiReaction={setEmojiReaction} position="left" />
         )}
         <div
+          id={`msg-${index}`}
           ref={(el) => handleMSGRef(index, el)}
-          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative  ${
+          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative transition-all duration-100 ${
             message.issentbyme
               ? "bg-primary text-white "
               : "bg-white text-black dark:border border-gray-700 dark:bg-customGrey-blackBg dark:text-white"
@@ -215,14 +218,12 @@ const Message: React.FC<MessageProps> = ({
             onDoubleClick={handleContextMenu}
             className="text-[16px] font-[550] active:scale-[.99] p-3 relative"
           >
-            <span className="select-none md:select-auto">
-              <Highlighter
-                highlightClassName="bg-yellow-200 bg-opacity-75"
-                searchWords={searchString ? [searchString] : []}
-                textToHighlight={message.message}
-                autoEscape={true}
-              />
-            </span>
+            <span
+              className="select-none md:select-auto"
+              dangerouslySetInnerHTML={{
+                __html: highlightText(message.message, index),
+              }}
+            ></span>
 
             {emojiReaction === null ? null : (
               <span

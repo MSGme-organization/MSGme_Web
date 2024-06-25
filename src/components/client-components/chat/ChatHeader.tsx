@@ -12,22 +12,30 @@ import Image from "next/image";
 import React from "react";
 import ShareModal from "../modals/ShareModal";
 import { useRouter } from "next/navigation";
+import { DownArrow } from "../HomeLayout/Svgs";
+import Input from "../common-components/Input";
 
 interface ChatHeaderProps {
   name: string | undefined;
   avatar: string | undefined;
   searchString?: string | null | undefined;
   handleSearch: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  downActiveIndex: () => void;
+  upActiveIndex: () => void;
+  searchActiveIndex: number | null;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
   name,
   avatar,
   handleSearch,
+  downActiveIndex,
+  upActiveIndex,
   searchString,
 }) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
+  const searchRef = React.useRef(null);
   const router = useRouter();
   const dpItems = [
     {
@@ -49,12 +57,15 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   const handleSearchBar = () => {
     setSearchOpen((prev) => !prev);
+    searchRef?.current?.focus();
   };
 
   return (
     <>
       <div
-        className={`w-full sticky ${searchOpen? "mb-[66px]" : "mb-0"} top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
+        className={`w-full sticky ${
+          searchOpen ? "mb-[66px]" : "mb-0"
+        } top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
       >
         <div className="w-full px-4 flex items-center justify-between z-[21]  dark:bg-customGrey-blackBg bg-white">
           <div className="flex items-center gap-3">
@@ -109,6 +120,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           }`}
         >
           <TextInput
+            ref={searchRef}
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"
@@ -119,9 +131,26 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
               outlineColor: "#38C585",
             }}
           />
+
           <Button
             size={"sm"}
             style={{ boxShadow: "none" }}
+            className="rotate-180 text-black dark:text-white"
+            onClick={upActiveIndex}
+          >
+            {DownArrow()}
+          </Button>
+          <Button
+            size={"sm"}
+            style={{ boxShadow: "none" }}
+            className="text-black dark:text-white"
+            onClick={downActiveIndex}
+          >
+            {DownArrow()}
+          </Button>
+          <Button
+            size={"sm"}
+            style={{ boxShadow: "none", padding: 0 }}
             onClick={handleSearchBar}
           >
             {CloseIcon()}

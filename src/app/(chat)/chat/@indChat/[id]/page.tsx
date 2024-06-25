@@ -27,12 +27,16 @@ const Chats = ({ params }: { params: { id: string } }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
   const [searchString, setSearchString] = React.useState<string | null>(null);
+  const [searchActiveIndex, setSearchActiveIndex] = React.useState<
+    number | null
+  >(0);
   const [isContextActive, setContextActive] = React.useState<number | null>(
     null
   );
   const [totalMessages, setMessages] = React.useState<Message[] | []>(messages);
   const ref = React.useRef<HTMLDivElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
+  const searchDivs = React.useRef<HTMLDivElement[]>([]);
   const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const user = React.useMemo(
     () => users.find((user) => user.id === parseInt(params.id)),
@@ -89,6 +93,56 @@ const Chats = ({ params }: { params: { id: string } }) => {
     setSearchString(e.target.value);
   };
 
+  const focusToMsg = (index) => {
+    const eleIndex = searchDivs.current[index]?.id.replace("msg-", "");
+    const scrollEle = document.getElementById(
+      `msg-${parseInt(eleIndex) === 0 ? eleIndex : parseInt(eleIndex) - 2}`
+    );
+    scrollEle?.scrollIntoView();
+    searchDivs.current[index]?.classList.add("bg-blue-300");
+    setTimeout(() => {
+      searchDivs.current[index]?.classList.remove("bg-blue-300");
+    }, 1000);
+  };
+
+  const downActiveIndex = () => {
+    setSearchActiveIndex((prev) => {
+      if (prev === null || prev === searchDivs.current.length - 1) {
+        return searchDivs.current.length - 1;
+      }
+      focusToMsg(prev + 1);
+      return prev + 1;
+    });
+  };
+
+  const upActiveIndex = () => {
+    setSearchActiveIndex((prev) => {
+      if (prev === null || prev === 0) {
+        return 0;
+      }
+      focusToMsg(prev - 1);
+      return prev - 1;
+    });
+  };
+
+  let count = 0;
+
+  const highlightText = (text, index) => {
+    if (text.toLowerCase()?.includes(searchString?.toLowerCase())) {
+      if (!searchDivs.current.includes(msgRef?.current[index]))
+        searchDivs.current.push(msgRef?.current[index]);
+      let regexp = new RegExp(searchString || "", "gi");
+      count += text.match(regexp).length;
+      return text.replace(regexp, "<mark>$&</mark>");
+    } else {
+      if (searchDivs.current.includes(msgRef?.current[index])) {
+        const eleIndex = searchDivs.current.indexOf(msgRef?.current[index]);
+        searchDivs.current.splice(eleIndex, 1);
+      }
+      return text;
+    }
+  };
+
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
     msgRef.current = msgRef.current.slice(0, totalMessages.length);
@@ -100,6 +154,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
       inputRef.current?.focus();
     }
   }, [replyMsg]);
+
   return (
     <>
       <div
@@ -114,6 +169,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
           handleSearch={handleSearch}
           searchString={searchString}
           avatar={user?.avatarImage}
+          searchActiveIndex={searchActiveIndex}
+          downActiveIndex={downActiveIndex}
+          upActiveIndex={upActiveIndex}
         />
 
         <div className="flex-grow">
@@ -125,8 +183,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
                 gotoMSG={gotoMSG}
                 handleMSGRef={handleMsgRef}
                 handleReply={handleReply}
+                highlightText={highlightText}
                 handleForward={handleForward}
                 isContextActive={isContextActive}
+                searchActiveIndex={searchActiveIndex}
                 setContextActive={setContextActive}
                 message={{
                   ...message,
