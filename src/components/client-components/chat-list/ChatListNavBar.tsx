@@ -35,7 +35,6 @@ const ChatListNavBar = ({
     },
   ];
 
-  console.log('chat navbar')
   return (
     <>
       <div className="w-full flex justify-between items-center p-4 h-[70px]">

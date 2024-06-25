@@ -1,17 +1,12 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import Picker from "emoji-picker-react";
+import React, { useCallback } from "react";
 import Message from "@/components/client-components/chat/Message";
 import ChatHeader from "@/components/client-components/chat/ChatHeader";
-import Input from "@/components/client-components/common-components/Input";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
 
-import { CloseIcon, ReactionIcon } from "@/utils/svgs";
 import { messages, users } from "@/utils/data";
-import { Dropdown } from "flowbite-react";
-import { useFormik } from "formik";
+import TextMessageField from "@/components/client-components/chat/TextMessageField";
 
 export interface Message {
   username: string;
@@ -27,43 +22,19 @@ const Chats = ({ params }: { params: { id: string } }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
   const [searchString, setSearchString] = React.useState<string | null>(null);
-  const [searchActiveIndex, setSearchActiveIndex] = React.useState<
-    number | null
-  >(0);
+  const [searchActiveIndex, setSearchActiveIndex] = React.useState<number>(0);
   const [isContextActive, setContextActive] = React.useState<number | null>(
     null
   );
+  const [searchDivsLength, setSearchDivsLength] = React.useState(0);
   const [totalMessages, setMessages] = React.useState<Message[] | []>(messages);
   const ref = React.useRef<HTMLDivElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const searchDivs = React.useRef<HTMLDivElement[]>([]);
-  const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const user = React.useMemo(
     () => users.find((user) => user.id === parseInt(params.id)),
     [users]
   );
-
-  const formik = useFormik({
-    initialValues: {
-      msg: "",
-    },
-    onSubmit: (values, { resetForm }) => {
-      if (replyMsg !== null || values.msg) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: prev[prev.length - 1].id + 1,
-            username: "Me",
-            issentbyme: true,
-            message: values.msg,
-            repliedMsg: replyMsg,
-          },
-        ]);
-        setReplyMsg(null);
-        resetForm();
-      }
-    },
-  });
 
   const handleMsgRef = React.useCallback(
     (index: number, ref: HTMLDivElement) => {
@@ -105,32 +76,41 @@ const Chats = ({ params }: { params: { id: string } }) => {
     }, 1000);
   };
 
-  const downActiveIndex = () => {
-    setSearchActiveIndex((prev) => {
-      if (prev === null || prev === searchDivs.current.length - 1) {
-        return searchDivs.current.length - 1;
-      }
-      focusToMsg(prev + 1);
-      return prev + 1;
-    });
-  };
+  const downActiveIndex = useCallback(() => {
+    if (searchDivsLength !== 0 && searchDivsLength > searchActiveIndex) {
+      setSearchActiveIndex((prev) => {
+        if (prev === null || prev === searchDivs.current.length - 1) {
+          return searchDivs.current.length - 1;
+        }
+        focusToMsg(prev + 1);
+        return prev + 1;
+      });
+    }
+  }, [searchDivs.current.length]);
 
-  const upActiveIndex = () => {
-    setSearchActiveIndex((prev) => {
-      if (prev === null || prev === 0) {
-        return 0;
-      }
-      focusToMsg(prev - 1);
-      return prev - 1;
-    });
-  };
+  const upActiveIndex = useCallback(() => {
+    if (searchDivsLength !== 0) {
+      setSearchActiveIndex((prev) => {
+        if (prev === null || prev === 0) {
+          return 0;
+        }
+        focusToMsg(prev - 1);
+        return prev - 1;
+      });
+    }
+  }, [searchDivs.current.length]);
 
   let count = 0;
 
   const highlightText = (text, index) => {
-    if (text.toLowerCase()?.includes(searchString?.toLowerCase())) {
-      if (!searchDivs.current.includes(msgRef?.current[index]))
+    if (
+      searchString?.trim() !== "" &&
+      text.toLowerCase()?.includes(searchString?.toLowerCase())
+    ) {
+      if (!searchDivs.current.includes(msgRef?.current[index])) {
         searchDivs.current.push(msgRef?.current[index]);
+        setSearchDivsLength(searchDivs.current.length);
+      }
       let regexp = new RegExp(searchString || "", "gi");
       count += text.match(regexp).length;
       return text.replace(regexp, "<mark>$&</mark>");
@@ -138,6 +118,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
       if (searchDivs.current.includes(msgRef?.current[index])) {
         const eleIndex = searchDivs.current.indexOf(msgRef?.current[index]);
         searchDivs.current.splice(eleIndex, 1);
+        setSearchDivsLength(searchDivs.current.length);
       }
       return text;
     }
@@ -150,10 +131,15 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
-    if (replyMsg) {
-      inputRef.current?.focus();
-    }
   }, [replyMsg]);
+
+  React.useEffect(() => {
+    if (searchDivsLength === 0) {
+      setSearchActiveIndex(0);
+    } else if (searchDivsLength < searchActiveIndex) {
+      setSearchActiveIndex(searchDivsLength-1);
+    }
+  }, [searchDivsLength]);
 
   return (
     <>
@@ -172,6 +158,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
           searchActiveIndex={searchActiveIndex}
           downActiveIndex={downActiveIndex}
           upActiveIndex={upActiveIndex}
+          count={searchDivsLength}
         />
 
         <div className="flex-grow">
@@ -205,78 +192,11 @@ const Chats = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <div className="w-full p-4  sticky bottom-0 left-0 flex shadow border-t border-gray-100 dark:border-gray-600 flex-col bg-white dark:bg-customGrey-black z-10">
-          {replyMsg && (
-            <div className="w-full mb-4 bg-white dark:bg-customGrey-black text-black dark:text-white">
-              <div className="border-l-[5px] flex justify-between items-center border-primary p-3 bg-gray-100 dark:bg-customGrey-blackBg rounded-md font-semibold">
-                <p> {replyMsg.message}</p>
-                <button className="" onClick={() => setReplyMsg(null)}>
-                  {CloseIcon()}
-                </button>
-              </div>
-            </div>
-          )}
-          <form onSubmit={formik.handleSubmit} autoComplete="off">
-            <div className="w-full flex gap-4 items-center">
-              <Dropdown
-                label=""
-                dismissOnClick={false}
-                className="bg-transparent w-[95%] md:w-auto dark:bg-transparent shadow-none border-none p-0 flex justify-center"
-                renderTrigger={() => (
-                  <div className="h-[41px] w-[41px] cursor-pointer active:scale-110 p-2 active:opacity-100 bg-gray-100 rounded-full  dark:bg-customGrey-blackBg hover:bg-opacity-50">
-                    <ReactionIcon />
-                  </div>
-                )}
-              >
-                <Dropdown.Item
-                  className="w-full bg-transparent shadow-none p-0 border-none hover:bg-transparent"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  <Picker
-                    className="dark:bg-black dark:border-black"
-                    style={{ width: "100%" }}
-                    reactionsDefaultOpen={false}
-                    searchDisabled={true}
-                    onEmojiClick={(emoji) =>
-                      formik.setFieldValue(
-                        "msg",
-                        formik.values.msg + emoji.emoji
-                      )
-                    }
-                  />
-                </Dropdown.Item>
-              </Dropdown>
-              <div className="flex-grow">
-                <Input
-                  ref={inputRef}
-                  label={""}
-                  type={"text"}
-                  required={false}
-                  classes={"select-none"}
-                  iconClass={undefined}
-                  LeftIcon={undefined}
-                  RightIcon={undefined}
-                  placeholder="Enter your Message Here"
-                  {...formik.getFieldProps("msg")}
-                  error={formik.errors.msg}
-                  onChange={formik.handleChange}
-                  value={formik.values?.msg}
-                />
-              </div>
-              <button
-                type="submit"
-                className="text-white flex w-[40px] justify-center items-center  rounded-full "
-              >
-                <Image
-                  src={"/svgs/send.svg"}
-                  width={30}
-                  height={30}
-                  alt="send"
-                />
-              </button>
-            </div>
-          </form>
-        </div>
+        <TextMessageField
+          setMessages={setMessages}
+          setReplyMsg={setReplyMsg}
+          replyMsg={replyMsg}
+        />
       </div>
       <ForwardModal forwardMsg={forwardMsg} setForwardMsg={setForwardMsg} />
     </>

@@ -22,7 +22,8 @@ interface ChatHeaderProps {
   handleSearch: React.ChangeEventHandler<HTMLInputElement> | undefined;
   downActiveIndex: () => void;
   upActiveIndex: () => void;
-  searchActiveIndex: number | null;
+  searchActiveIndex: number;
+  count: number;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
@@ -32,10 +33,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   downActiveIndex,
   upActiveIndex,
   searchString,
+  searchActiveIndex,
+  count,
 }) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
-  const searchRef = React.useRef(null);
+  const searchRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
   const dpItems = [
     {
@@ -59,7 +62,6 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     setSearchOpen((prev) => !prev);
     searchRef?.current?.focus();
   };
-
   return (
     <>
       <div
@@ -124,14 +126,16 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"
-            className="w-[95%] z-[20]"
+            className="w-[70%] z-[20]"
             style={{
               boxShadow: "none",
               outlineWidth: 1,
               outlineColor: "#38C585",
             }}
           />
-
+          <div className="text-textColor dark:text-textColor-dark">
+            {count === 0 ? 0 : searchActiveIndex + 1} / {count}
+          </div>
           <Button
             size={"sm"}
             style={{ boxShadow: "none" }}
@@ -166,7 +170,4 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   );
 };
 
-export default React.memo(
-  ChatHeader,
-  (pre, next) => pre.searchString === next.searchString
-);
+export default React.memo(ChatHeader);
