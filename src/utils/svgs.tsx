@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ReactionIcon = () => (
   <svg
     viewBox="0 0 24 24"
@@ -334,11 +332,11 @@ export const BackIcon = () => (
 
 export const CloseIcon = () => (
   <svg
-    className="w-6 h-6 text-gray-800 dark:text-gray-500"
+    className="w-4 h-4 text-gray-800 dark:text-gray-500"
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    width="20"
+    height="20"
     fill="none"
     viewBox="0 0 24 24"
   >

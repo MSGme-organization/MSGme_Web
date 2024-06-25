@@ -7,13 +7,12 @@ import {
   ShareIcon,
   ThreeDotsIcon,
 } from "@/utils/svgs";
-import { Button, Dropdown, TextInput } from "flowbite-react";
+import { Dropdown, TextInput } from "flowbite-react";
 import Image from "next/image";
-import React from "react";
-import ShareModal from "../modals/ShareModal";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { DownArrow } from "../HomeLayout/Svgs";
-import Input from "../common-components/Input";
+import ShareModal from "../modals/ShareModal";
 
 interface ChatHeaderProps {
   name: string | undefined;
@@ -117,7 +116,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         </div>
         <div
-          className={`absolute w-full top-[100%] left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${
+          className={`absolute w-full top-[100%] gap-2 left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${
             searchOpen ? "translate-y-[0%]" : ""
           }`}
         >
@@ -126,39 +125,25 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"
-            className="w-[70%] z-[20]"
+            className=" flex-1 z-[20]"
             style={{
               boxShadow: "none",
               outlineWidth: 1,
               outlineColor: "#38C585",
             }}
           />
-          <div className="text-textColor dark:text-textColor-dark">
+          <div className="text-textColor dark:text-textColor-dark text-nowrap">
             {count === 0 ? 0 : searchActiveIndex + 1} / {count}
           </div>
-          <Button
-            size={"sm"}
-            style={{ boxShadow: "none" }}
-            className="rotate-180 text-black dark:text-white"
-            onClick={upActiveIndex}
-          >
+          <button className="p-2 rotate-180" onClick={upActiveIndex}>
             {DownArrow()}
-          </Button>
-          <Button
-            size={"sm"}
-            style={{ boxShadow: "none" }}
-            className="text-black dark:text-white"
-            onClick={downActiveIndex}
-          >
+          </button>
+          <button className="p-2" onClick={downActiveIndex}>
             {DownArrow()}
-          </Button>
-          <Button
-            size={"sm"}
-            style={{ boxShadow: "none", padding: 0 }}
-            onClick={handleSearchBar}
-          >
+          </button>
+          <button className="p-2" onClick={handleSearchBar}>
             {CloseIcon()}
-          </Button>
+          </button>
         </div>
       </div>
       <ShareModal
