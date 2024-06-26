@@ -70,9 +70,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
       `msg-${parseInt(eleIndex) === 0 ? eleIndex : parseInt(eleIndex) - 2}`
     );
     scrollEle?.scrollIntoView();
-    searchDivs.current[index]?.classList.add("bg-blue-300");
+    searchDivs.current[index]?.classList.add("search-focus-message");
     setTimeout(() => {
-      searchDivs.current[index]?.classList.remove("bg-blue-300");
+      searchDivs.current[index]?.classList.remove("search-focus-message");
     }, 1000);
   };
 
@@ -137,7 +137,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
     if (searchDivsLength === 0) {
       setSearchActiveIndex(0);
     } else if (searchDivsLength < searchActiveIndex) {
-      setSearchActiveIndex(searchDivsLength-1);
+      setSearchActiveIndex(searchDivsLength - 1);
     }
   }, [searchDivsLength]);
 

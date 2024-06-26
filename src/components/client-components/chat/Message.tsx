@@ -141,7 +141,6 @@ const Message: React.FC<MessageProps> = ({
       setLast(false);
     }
   }, [contextCord]);
-  console.log("Message");
   return (
     <div
       className={`flex flex-col w-full pb-1 px-4  ${

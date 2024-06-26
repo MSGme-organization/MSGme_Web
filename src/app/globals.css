@@ -78,3 +78,8 @@
 .dark .RSPBstep {
   background-color: rgb(57 69 90 );
 }
+
+
+.search-focus-message{
+  background-color: #a4cafe !important;
+}
