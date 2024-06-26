@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "crypto";
-import { lucia } from "@/lib/auth/lucia";
+// import { lucia } from "@/lib/auth/lucia";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 
 export const GET = async (request: NextRequest) => {
