@@ -58,8 +58,20 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   ];
 
   const handleSearchBar = () => {
-    setSearchOpen((prev) => !prev);
-    searchRef?.current?.focus();
+    setSearchOpen((prev) => {
+      if (prev) {
+        searchRef?.current?.blur();
+        if (handleSearch) {
+          const fakeEvent: React.ChangeEvent<HTMLInputElement> = {
+            target: { value: "" },
+          } as React.ChangeEvent<HTMLInputElement>;
+          handleSearch(fakeEvent);
+        }
+      } else {
+        searchRef?.current?.focus();
+      }
+      return !prev;
+    });
   };
   return (
     <>

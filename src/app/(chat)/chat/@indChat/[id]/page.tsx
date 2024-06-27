@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback } from "react";
-import Message from "@/components/client-components/chat/Message";
 import ChatHeader from "@/components/client-components/chat/ChatHeader";
+import Message from "@/components/client-components/chat/Message";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
+import React, { useCallback } from "react";
 
-import { messages, users } from "@/utils/data";
 import TextMessageField from "@/components/client-components/chat/TextMessageField";
+import { messages, users } from "@/utils/data";
 
 export interface Message {
   username: string;
@@ -139,6 +139,8 @@ const Chats = ({ params }: { params: { id: string } }) => {
     } else if (searchDivsLength < searchActiveIndex) {
       setSearchActiveIndex(searchDivsLength - 1);
     }
+
+    setSearchActiveIndex(searchDivsLength);
   }, [searchDivsLength]);
 
   return (
