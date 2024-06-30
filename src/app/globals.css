@@ -60,7 +60,6 @@
 }
 
 @keyframes l32 {
-
   80%,
   100% {
     transform: rotate(0.5turn);
@@ -70,16 +69,19 @@
 .RSPBstep {
   width: 33px;
   height: 33px;
-  border: 3px solid #38C585;
+  border: 3px solid #38c585;
   border-radius: 100%;
   background-color: white;
 }
 
 .dark .RSPBstep {
-  background-color: rgb(57 69 90 );
+  background-color: rgb(57 69 90);
 }
 
-
-.search-focus-message{
+.search-focus-message {
   background-color: #a4cafe !important;
+}
+
+.search-bar-focus:focus {
+  border: 1 px solid #38c585;
 }

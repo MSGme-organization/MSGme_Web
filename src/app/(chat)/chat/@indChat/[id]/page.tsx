@@ -66,10 +66,14 @@ const Chats = ({ params }: { params: { id: string } }) => {
 
   const focusToMsg = (index) => {
     const eleIndex = searchDivs.current[index]?.id.replace("msg-", "");
-    const scrollEle = document.getElementById(
-      `msg-${parseInt(eleIndex) === 0 ? eleIndex : parseInt(eleIndex) - 2}`
-    );
-    scrollEle?.scrollIntoView();
+    if (parseInt(eleIndex) > 3) {
+      const scrollEle = document.getElementById(
+        `msg-${parseInt(eleIndex) === 0 ? eleIndex : parseInt(eleIndex) - 2}`
+      );
+      scrollEle?.scrollIntoView();
+    } else {
+      document.getElementById("chat")?.scroll({ top: 0 });
+    }
     searchDivs.current[index]?.classList.add("search-focus-message");
     setTimeout(() => {
       searchDivs.current[index]?.classList.remove("search-focus-message");
@@ -86,7 +90,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
         return prev + 1;
       });
     }
-  }, [searchDivs.current.length]);
+  }, [searchDivsLength]);
 
   const upActiveIndex = useCallback(() => {
     if (searchDivsLength !== 0) {
@@ -98,7 +102,7 @@ const Chats = ({ params }: { params: { id: string } }) => {
         return prev - 1;
       });
     }
-  }, [searchDivs.current.length]);
+  }, [searchDivsLength]);
 
   let count = 0;
 
@@ -136,11 +140,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
   React.useEffect(() => {
     if (searchDivsLength === 0) {
       setSearchActiveIndex(0);
-    } else if (searchDivsLength < searchActiveIndex) {
+    } else {
       setSearchActiveIndex(searchDivsLength - 1);
     }
-
-    setSearchActiveIndex(searchDivsLength);
   }, [searchDivsLength]);
 
   return (
@@ -164,7 +166,10 @@ const Chats = ({ params }: { params: { id: string } }) => {
         />
 
         <div className="flex-grow">
-          <div className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-6">
+          <div
+            className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-6"
+            id="msg-list"
+          >
             {totalMessages.map((message, index) => (
               <Message
                 searchString={searchString}

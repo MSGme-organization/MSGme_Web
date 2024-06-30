@@ -15,7 +15,7 @@ import {
   StartIcon,
   SunIcon,
 } from "@/utils/svgs";
-import { ToggleSwitch, useThemeMode } from "flowbite-react";
+import { useThemeMode } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 

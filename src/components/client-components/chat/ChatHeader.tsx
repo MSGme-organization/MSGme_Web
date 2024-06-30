@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { DownArrow } from "../HomeLayout/Svgs";
 import ShareModal from "../modals/ShareModal";
+import Input from "../common-components/Input";
 
 interface ChatHeaderProps {
   name: string | undefined;
@@ -132,17 +133,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
             searchOpen ? "translate-y-[0%]" : ""
           }`}
         >
-          <TextInput
+          <Input
+            type="text"
             ref={searchRef}
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"
-            className=" flex-1 z-[20]"
-            style={{
-              boxShadow: "none",
-              outlineWidth: 1,
-              outlineColor: "#38C585",
-            }}
+            classes="flex-1 z-[20]"
           />
           <div className="text-textColor dark:text-textColor-dark text-nowrap">
             {count === 0 ? 0 : searchActiveIndex + 1} / {count}
