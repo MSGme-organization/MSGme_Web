@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
-import FullName from "@/components/client-components/profile-setup/FullName";
-import DOB from "@/components/client-components/profile-setup/DOB";
+
 import AddProfilePhoto from "@/components/client-components/profile-setup/AddProfilePhoto";
+import DOB from "@/components/client-components/profile-setup/DOB";
+import FullName from "@/components/client-components/profile-setup/FullName";
 import { useProfile } from "@/components/client-components/profile-setup/ProfileContext";
 
 type PageContext = {

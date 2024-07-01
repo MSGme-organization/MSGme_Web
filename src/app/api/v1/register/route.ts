@@ -1,37 +1,74 @@
 import prisma from "@/lib/prisma/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import { hash } from "crypto";
-// import { lucia } from "@/lib/auth/lucia";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
-  const data = await prisma.user.findMany();
+  const data = await prisma.user.findMany({
+    select: { id: true, username: true, email: true },
+  });
   console.log(data);
-  // console.log(hash("sha1", "sahil"));
-  //   return new Response("hello");
   return NextResponse.json(data);
+};
+
+const validateReq = async (body: any) => {
+  if (!body.username) {
+    throw new Error("username is required");
+  }
+  if (!body.email) {
+    throw new Error("email is required");
+  } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
+    throw new Error("email is not valid");
+  }
+  if (!body.password) {
+    throw new Error("password is required");
+  } else if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/.test(
+      body.password
+    )
+  ) {
+    throw new Error(
+      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character"
+    );
+  }
+
+  if ((await userNameFetch(body.username)) || (await emailFetch(body.email))) {
+    throw new Error("User already exist");
+  }
 };
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    if (await userNameFetch(body?.username)) {
-      throw new Error("user Name already exist");
-    }
-    if (await emailFetch(body?.email)) {
-      throw new Error("EmailId already exist");
-    }
+    await validateReq(body);
 
-    body.password = hash("sha1", body.password);
-    const feed = await prisma.user.create({ data: body });
-    return NextResponse.json({
-      message: "Register successful",
-      registerData: "hello",
+    const hash = crypto.createHash("sha1");
+    hash.update(body.password);
+    body.password = hash.digest("hex");
+
+    const user = await prisma.user.create({
+      data: body,
+      select: { id: true, username: true, email: true },
     });
-  } catch (error) {
+
+    cookies().set("currentUser", JSON.stringify(user), { secure: true });
+    cookies().set(
+      "token",
+      jwt.sign(
+        { id: user.id, username: user.username, email: user.email },
+        process.env.JWT_SECRET
+      ),
+      { secure: true }
+    );
+
+    return NextResponse.redirect(new URL("/chat", request.url));
+  } catch (error: any) {
     return NextResponse.json(
       {
-        message: String(error),
+        message: error.message,
+        data: null,
       },
       { status: 500 }
     );

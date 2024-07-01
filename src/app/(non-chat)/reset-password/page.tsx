@@ -1,11 +1,11 @@
 "use client";
+
 import Input from "@/components/client-components/common-components/Input";
 import { MailSvg } from "@/components/client-components/HomeLayout/Svgs";
 import { EmailValidation } from "@/utils/formik-validation";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const ResetPassword = () => {
   const router = useRouter();

@@ -2,11 +2,10 @@
 
 import ChatHeader from "@/components/client-components/chat/ChatHeader";
 import Message from "@/components/client-components/chat/Message";
-import ForwardModal from "@/components/client-components/modals/ForwardModal";
-import React, { useCallback } from "react";
-
 import TextMessageField from "@/components/client-components/chat/TextMessageField";
+import ForwardModal from "@/components/client-components/modals/ForwardModal";
 import { messages, users } from "@/utils/data";
+import React, { useCallback } from "react";
 
 export interface Message {
   username: string;

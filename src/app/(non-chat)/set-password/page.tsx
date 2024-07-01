@@ -1,12 +1,12 @@
 "use client";
+
 import Input from "@/components/client-components/common-components/Input";
 import { PasswordSvg } from "@/components/client-components/HomeLayout/Svgs";
 import { SetPassword } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
 import { Field, Form, Formik } from "formik";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ResetPassword = () => {
   const router = useRouter();

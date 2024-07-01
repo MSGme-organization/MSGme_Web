@@ -1,7 +1,6 @@
 "use client";
 
 import Lottie from "lottie-react";
-import React from "react";
 import animationData from "../../../../../public/animations/chatPage.json";
 
 const IndChat = () => {

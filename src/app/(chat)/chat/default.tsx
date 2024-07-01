@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
 import ChatListNavBar from "@/components/client-components/chat-list/ChatListNavBar";
 import UserItem from "@/components/client-components/chat-list/UserItem";
-
+import Input from "@/components/client-components/common-components/Input";
 import { users } from "@/utils/data";
 import { SearchIcon } from "@/utils/svgs";
-import { TextInput } from "flowbite-react";
 import { useParams, useRouter } from "next/navigation";
-import Input from "@/components/client-components/common-components/Input";
+import React from "react";
 
 const Chat = () => {
   const [filteredList, setFilteredList] = React.useState(users);

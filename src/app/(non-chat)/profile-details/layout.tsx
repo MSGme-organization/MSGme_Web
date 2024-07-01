@@ -1,12 +1,12 @@
 "use client";
-// @ts-ignore
+
 import "react-step-progress-bar/styles.css";
 
-import { ProgressBar, Step } from "react-step-progress-bar";
-import { CheckCircle } from "@/utils/svgs";
-import { useState } from "react";
-import { Inter } from "next/font/google";
 import { ProfileProvider } from "@/components/client-components/profile-setup/ProfileContext";
+import { CheckCircle } from "@/utils/svgs";
+import { Inter } from "next/font/google";
+import { useState } from "react";
+import { ProgressBar, Step } from "react-step-progress-bar";
 
 const inter = Inter({ subsets: ["latin"] });
 

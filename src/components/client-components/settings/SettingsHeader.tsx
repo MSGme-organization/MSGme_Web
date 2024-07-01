@@ -2,14 +2,15 @@
 
 import { BackIcon, LogoutIcon } from "@/utils/svgs";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const SettingsHeader = ({
   showLogout,
   headerText,
+  logout,
 }: {
   headerText: string;
   showLogout: Boolean | undefined;
+  logout?: any;
 }) => {
   const navigation = useRouter();
   return (
@@ -26,7 +27,7 @@ const SettingsHeader = ({
       {showLogout && (
         <button
           className="bg-[#FFEEEE] dark:bg-gray-700 text-[#E75F5F] dark:text-red-500 font-semibold flex gap-1 p-3 py-2 rounded-full items-center active:scale-[.97]"
-          onClick={() => navigation.push("/login")}
+          onClick={() => logout.mutate()}
         >
           <span>Logout</span>
           {LogoutIcon()}

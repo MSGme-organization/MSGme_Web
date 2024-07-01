@@ -1,4 +1,5 @@
 "use client";
+
 import Footer from "@/components/client-components/HomeLayout/Footer";
 import HeaderBar from "@/components/client-components/HomeLayout/Header";
 import { usePathname } from "next/navigation";

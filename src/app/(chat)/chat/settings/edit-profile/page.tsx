@@ -9,7 +9,6 @@ import {
 import { CalendarIcon, DeleteIcon, EmailIcon, UserIcon } from "@/utils/svgs";
 import { useFormik } from "formik";
 import Image from "next/image";
-import React from "react";
 
 const fields = [
   {

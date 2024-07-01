@@ -30,7 +30,6 @@ const Layout = ({
     };
   }, []);
 
-
   if (!isMounted) {
     return null;
   }
