@@ -1,8 +1,12 @@
+import { generateToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { permanentRedirect, redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
+import { useRouter } from "next/navigation";
+import { NextApiResponse } from "next";
 
 export const GET = async (request: NextRequest) => {
   const data = await prisma.user.findMany();
@@ -31,6 +35,7 @@ const validateReq = async (body: any) => {
 
 export const POST = async (request: NextRequest) => {
   try {
+    console.log("first");
     const body = await request.json();
     await validateReq(body);
 
@@ -48,22 +53,29 @@ export const POST = async (request: NextRequest) => {
     ) {
       cookies().set(
         "token",
-        jwt.sign(
-          { id: user.id, username: user.username, email: user.email },
-          process.env.JWT_SECRET
-        ),
+        generateToken({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        }),
         { secure: true }
       );
       const { password, ...userWithoutPassword } = user;
       cookies().set("currentUser", JSON.stringify(userWithoutPassword), {
         secure: true,
       });
-
-      return NextResponse.redirect(new URL("/chat", request.url));
+      return NextResponse.json(
+        {
+          message: "logged in successfully.",
+          data: userWithoutPassword,
+        },
+        { status: 200, statusText: "logged in successfully." }
+      );
     } else {
       throw new Error("Invalid credentials");
     }
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json(
       {
         message: error.message,

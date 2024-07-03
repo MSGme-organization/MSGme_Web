@@ -25,11 +25,11 @@ const Login = () => {
   const loginQuery = useMutation({
     mutationFn: login,
     onSuccess: (res) => {
+      router.push("/chat");
       toast.success("Logged in successfully", {
         duration: 0,
         position: "bottom-center",
       });
-      router.push("/chat");
     },
     onError: (error: any) => {
       toast.error(error.response.statusText, {

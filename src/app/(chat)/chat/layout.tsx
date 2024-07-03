@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppDispatch, useAppStore } from "@/redux/hooks";
+import { fetchProfile } from "@/redux/profile/profileSlice";
 import { useParams } from "next/navigation";
 import React from "react";
 
@@ -16,6 +18,10 @@ const Layout = ({
   const params = useParams();
   const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
   const [isMounted, setIsMounted] = React.useState<Boolean>(false);
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    dispatch(fetchProfile());
+  }, []);
 
   React.useEffect(() => {
     setIsMounted(true);

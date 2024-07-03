@@ -1,8 +1,11 @@
 "use client";
+import { editProfile } from "@/query/profile/editprofile";
 import { PencilIcon, ProfileIcon, UploadIcon } from "@/utils/svgs";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import toast from "react-hot-toast";
 type Props = {
   handleDecrement: () => void;
 };
@@ -10,22 +13,49 @@ type Props = {
 const AddProfilePhoto = ({ handleDecrement }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState(null as any);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const router = useRouter();
   const handleSelect = (e: any) => {
     const imageFile = e.target.files[0];
+    setImageFile(imageFile);
+
     const imageUrl = URL.createObjectURL(imageFile);
     setImage(imageUrl);
   };
+
   const handleClick = () => {
     if (inputRef.current) {
       inputRef.current.click();
     }
   };
 
-  const handleContinue = () => {
-    router.push("/chat");
-  };
+  const dataQuery = useMutation({
+    mutationFn: editProfile,
+    onSuccess: (res) => {
+      router.push("/chat");
+    },
+    onError: (error: any) => {
+      toast.error(error.response.statusText, {
+        duration: 0,
+        position: "bottom-center",
+      });
+    },
+  });
 
+  const handleContinue = async () => {
+    const fr = new FileReader();
+
+    fr.onload = function (event: any) {
+      const base64String = event.target.result.split(",")[1];
+      dataQuery.mutate({ step: 3, avatar: base64String });
+    };
+    fr.onerror = function (event: any) {
+      console.error("File could not be read! Code " + event.target.error.code);
+    };
+
+    fr.readAsDataURL(imageFile as Blob);
+  };
   return (
     <div className="mt-14">
       <div className="text-center flex flex-col items-center justify-center">

@@ -29,11 +29,11 @@ const Register = () => {
   const registerQuery = useMutation({
     mutationFn: register,
     onSuccess: (res) => {
+      router.push("/chat");
       toast.success("Registered successfully", {
         duration: 0,
         position: "bottom-center",
       });
-      router.push("/chat");
     },
     onError: (error: any) => {
       toast.error(error.response.statusText, {

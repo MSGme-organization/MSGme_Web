@@ -67,7 +67,7 @@ const Input = React.forwardRef<
           {type === "textArea" ? (
             <textarea
               ref={ref}
-              value={value}
+              value={value || ""}
               onChange={onChange}
               name={name}
               {...field}

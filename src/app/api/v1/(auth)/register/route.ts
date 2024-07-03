@@ -1,7 +1,7 @@
+import { generateToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 import crypto from "crypto";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -56,14 +56,22 @@ export const POST = async (request: NextRequest) => {
     cookies().set("currentUser", JSON.stringify(user), { secure: true });
     cookies().set(
       "token",
-      jwt.sign(
-        { id: user.id, username: user.username, email: user.email },
-        process.env.JWT_SECRET
-      ),
+      generateToken({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      }),
       { secure: true }
     );
 
-    return NextResponse.redirect(new URL("/chat", request.url));
+    const { password, ...userWithoutPassword } = user;
+    return NextResponse.json(
+      {
+        message: "signed up successfully.",
+        data: userWithoutPassword,
+      },
+      { status: 200, statusText: "signed up successfully." }
+    );
   } catch (error: any) {
     return NextResponse.json(
       {
