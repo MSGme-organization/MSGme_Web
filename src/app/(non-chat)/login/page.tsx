@@ -9,12 +9,12 @@ import Loading from "@/components/client-components/loader/Loading";
 import { login } from "@/query/auth/auth";
 import { LoginValidation } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 const loginInitialValue = {
   email: "",
@@ -22,27 +22,25 @@ const loginInitialValue = {
 };
 
 const Login = () => {
+  const [isShown, setShown] = useState(false);
+  const router = useRouter();
+
   const loginQuery = useMutation({
     mutationFn: login,
-    onSuccess: (res) => {
+    onSuccess: () => {
       router.push("/chat");
-      toast.success("Logged in successfully", {
-        duration: 0,
-        position: "bottom-center",
-      });
+      successToast("Logged in successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      console.log(error.response)
+      errorToast(error.response.data.message)
     },
   });
-  const router = useRouter();
-  const [isShown, setShown] = useState(false);
+
   const handleSubmit = (value: any) => {
     loginQuery.mutate(value);
   };
+
   return (
     <Loading isLoading={loginQuery.isPending}>
       <div className="flex justify-center w-[100%] h-[100%] mt-28 mb-20">
@@ -72,11 +70,10 @@ const Login = () => {
                           rest={rest}
                           type="text"
                           placeholder="abc@example.com"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.email && form?.touched?.email
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.email && form?.touched?.email
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={MailSvg}
                           iconClass="h-[18px] w-[18px]"
                           error={
@@ -101,11 +98,10 @@ const Login = () => {
                           rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.password && form?.touched?.password
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.password && form?.touched?.password
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown((prev) => !prev)}
                           RightIcon={isShown ? EyeSvg : CloseEyeSvg}

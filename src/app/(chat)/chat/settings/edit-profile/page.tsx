@@ -4,16 +4,15 @@ import Input from "@/components/client-components/common-components/Input";
 import Loading from "@/components/client-components/loader/Loading";
 import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
 import { editProfile } from "@/query/profile/editprofile";
-import { useAppSelector } from "@/redux/hooks";
-import {
-  EditProfileInitialValues,
-  EditProfileValidationSchema,
-} from "@/utils/formik-validation";
-import { CalendarIcon, DeleteIcon, EmailIcon, UserIcon } from "@/utils/svgs";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateProfileData } from "@/redux/profile/profileSlice";
+import { EditProfileValidationSchema } from "@/utils/formik-validation";
+import { CalendarIcon, EmailIcon, PencilIcon, UserIcon } from "@/utils/svgs";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import Image from "next/image";
-import toast from "react-hot-toast";
+import { CldImage } from 'next-cloudinary';
+import React from "react";
 
 const fields = [
   {
@@ -65,31 +64,51 @@ const fields = [
 ];
 
 const EditProfile = () => {
+  const [imageData, setImageData] = React.useState(null);
   const data = useAppSelector((state) => state.profile);
+  const ref = React.useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch()
+
   const dataQuery = useMutation({
     mutationFn: editProfile,
-    onSuccess: (res) => {
-      toast.success("profile updated.", {
-        duration: 0,
-        position: "bottom-center",
-      });
+    onSuccess: (res: any) => {
+      dispatch(updateProfileData(res.data.data))
+      successToast("profile updated.")
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.statusText)
     },
   });
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: data,
     validationSchema: EditProfileValidationSchema,
     onSubmit: (values: any) => {
-      console.log(values);
-      dataQuery.mutate(values);
+      if (imageData) {
+        const fr = new FileReader();
+        fr.onload = function (event: any) {
+          const base64String = event.target.result.split(",")[1];
+          dataQuery.mutate({ ...values, avatar: base64String });
+        };
+        fr.onerror = function (event: any) {
+          console.error("File could not be read! Code " + event.target.error.code);
+        };
+        fr.readAsDataURL(imageData as Blob);
+      } else {
+        dataQuery.mutate(values);
+      }
     },
   });
+  const handleProfile = () => {
+    ref.current?.click()
+  }
+  const handleFile = (event: any) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    formik.setFieldValue("avatar", imageUrl)
+    setImageData(imageFile)
+  }
   return (
     <>
       <Loading isLoading={dataQuery.isPending}>
@@ -99,22 +118,23 @@ const EditProfile = () => {
           className="w-full flex flex-col gap-3 items-center p-4"
         >
           <div className="relative rounded-full w-fit">
-            <Image
-              src="https://picsum.photos/200/300"
-              alt="user"
+            <CldImage
               width={150}
               height={150}
-              className="rounded-full aspect-square"
+              src={formik.values.avatar || "MSGme/default_profile"}
+              alt="profile image"
+              className="rounded-full aspect-square object-contain"
             />
-            <button className="absolute bottom-2 right-2 bg-primary rounded-full p-1 active:scale-[.97] border-[.5] border-white text-white">
-              {DeleteIcon()}
+            <input type="file" className="hidden" ref={ref} onChange={handleFile} />
+            <button type="button" className="absolute bottom-2 right-2 bg-primary rounded-full p-1 active:scale-[.97] border-[.5] border-white text-white h-[30px] w-[30px]" onClick={handleProfile}>
+              {PencilIcon()}
             </button>
           </div>
           <div className="w-full flex gap-3">
             <div className="w-[50%]">
               <Input
                 {...formik.getFieldProps("first_name")}
-                error={formik.errors.first_name}
+                error={formik.errors.first_name as string}
                 placeholder="First Name"
                 type="text"
                 required={false}
@@ -128,7 +148,7 @@ const EditProfile = () => {
             <div className="w-[50%]">
               <Input
                 {...formik.getFieldProps("last_name")}
-                error={formik.errors.last_name}
+                error={formik.errors.last_name as string}
                 placeholder="Last Name"
                 type="text"
                 required={false}
@@ -145,7 +165,7 @@ const EditProfile = () => {
               key={index}
               {...formik.getFieldProps(field.name)}
               {...field}
-              error={formik.errors[field.name as keyof typeof formik.errors]}
+              error={formik.errors[field.name as keyof typeof formik.errors] as string}
             />
           ))}
           <button

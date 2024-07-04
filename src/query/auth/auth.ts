@@ -35,3 +35,9 @@ export const logout = async () => {
   const response = await axios.post("/api/v1/logout");
   return response;
 };
+
+export const resetPassword = async (value: any) => {
+  const response = await axios.post("/api/v1/reset-password", value);
+  return response;
+}
+

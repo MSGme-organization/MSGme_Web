@@ -17,11 +17,11 @@ import {
   StartIcon,
   SunIcon,
 } from "@/utils/svgs";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { useThemeMode } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import toast from "react-hot-toast";
 
 const Settings = () => {
   const [shareModel, setShareModel] = React.useState(false);
@@ -29,18 +29,12 @@ const Settings = () => {
   const theme = useThemeMode();
   const logoutQuery = useMutation({
     mutationFn: logout,
-    onSuccess: (res) => {
-      toast.success("Logged out successfully", {
-        duration: 0,
-        position: "bottom-center",
-      });
+    onSuccess: () => {
+      successToast("Logged out successfully")
       router.push("/login");
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.data.message)
     },
   });
 
@@ -55,13 +49,13 @@ const Settings = () => {
       label: "Review",
       showArrow: true,
       icon: StartIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Change Language",
       showArrow: true,
       icon: LanguageIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Change Theme",
@@ -77,17 +71,17 @@ const Settings = () => {
     {
       label: "Help & Support",
       icon: HelpIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Privacy Policy",
       icon: PrivacyIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Version 1.0.0",
       icon: InfoIcon,
-      fn: () => {},
+      fn: () => { },
     },
   ];
 

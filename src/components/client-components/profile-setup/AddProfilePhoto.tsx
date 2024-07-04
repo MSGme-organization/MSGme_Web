@@ -1,26 +1,30 @@
 "use client";
 import { editProfile } from "@/query/profile/editprofile";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateProfileData } from "@/redux/profile/profileSlice";
 import { PencilIcon, ProfileIcon, UploadIcon } from "@/utils/svgs";
+import { errorToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { useRef, useState } from "react";
+
 type Props = {
   handleDecrement: () => void;
 };
 
 const AddProfilePhoto = ({ handleDecrement }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState(null as any);
+  const data = useAppSelector(state => state.profile);
+  const [image, setImage] = useState(data.avatar);
   const [imageFile, setImageFile] = useState<File | null>(null);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
   const handleSelect = (e: any) => {
     const imageFile = e.target.files[0];
-    setImageFile(imageFile);
-
     const imageUrl = URL.createObjectURL(imageFile);
+    setImageFile(imageFile);
     setImage(imageUrl);
   };
 
@@ -32,20 +36,17 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
 
   const dataQuery = useMutation({
     mutationFn: editProfile,
-    onSuccess: (res) => {
+    onSuccess: (res: any) => {
+      dispatch(updateProfileData(res.data.data));
       router.push("/chat");
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.data.message);
     },
   });
 
   const handleContinue = async () => {
     const fr = new FileReader();
-
     fr.onload = function (event: any) {
       const base64String = event.target.result.split(",")[1];
       dataQuery.mutate({ step: 3, avatar: base64String });
@@ -53,9 +54,9 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
     fr.onerror = function (event: any) {
       console.error("File could not be read! Code " + event.target.error.code);
     };
-
     fr.readAsDataURL(imageFile as Blob);
   };
+
   return (
     <div className="mt-14">
       <div className="text-center flex flex-col items-center justify-center">
@@ -75,12 +76,12 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
         >
           <input ref={inputRef} onChange={handleSelect} type="file" hidden />
           {image ? (
-            <Image
-              src={image}
-              alt="profile"
-              className="rounded-full aspect-square"
+            <CldImage
               width={150}
               height={150}
+              src={image || "MSGme/default_profile"}
+              alt="profile image"
+              className="rounded-full aspect-square object-contain"
             />
           ) : (
             ProfileIcon()

@@ -1,7 +1,7 @@
+import { response } from "@/api-modules/helpers/response";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
@@ -12,21 +12,9 @@ export const GET = async () => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
+    return response.success("fetched user data success.", user)
 
-    return NextResponse.json(
-      {
-        message: "fetched user data success.",
-        data: user,
-      },
-      { status: 200, statusText: "fetched user data success." }
-    );
   } catch (error: any) {
-    return NextResponse.json(
-      {
-        message: error.message,
-        data: null,
-      },
-      { status: 500 }
-    );
+    return response.error(error.message)
   }
 };

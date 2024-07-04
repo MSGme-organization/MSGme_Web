@@ -1,8 +1,7 @@
 import { useAppSelector } from "@/redux/hooks";
 import { EditIcon } from "@/utils/svgs";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const ProfileSection = () => {
   const router = useRouter();
@@ -11,13 +10,14 @@ const ProfileSection = () => {
   return (
     <section className="w-full flex justify-between items-center p-4 h-[100px] text-black dark:text-white bg-white dark:bg-customGrey-black border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center gap-2 w-[95%]">
-        <Image
-          src="https://picsum.photos/200/300"
-          alt="user"
+        <CldImage
           width={60}
           height={60}
-          className="rounded-full aspect-square"
+          src={data.avatar || "MSGme/default_profile"}
+          alt="profile image"
+          className="rounded-full aspect-square object-contain"
         />
+
         <p className="text-[20px] font-semibold">{data.username}</p>
       </div>
       <div className="w-[5%]">

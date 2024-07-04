@@ -19,7 +19,7 @@ export const EditProfileValidationSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  bio: Yup.string().required("Bio is required"),
+  bio: Yup.string(),
 });
 
 export const ChangePasswordValidationSchema = Yup.object({

@@ -9,12 +9,12 @@ import Loading from "@/components/client-components/loader/Loading";
 import { register } from "@/query/auth/auth";
 import { RegisterValidation } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg, UserIcon } from "@/utils/svgs";
+import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 const RegisterInitialValue = {
   email: "",
@@ -26,24 +26,19 @@ const RegisterInitialValue = {
 const Register = () => {
   const [isShown, setShown] = useState(false);
   const [isShown2, setShown2] = useState(false);
+  const router = useRouter();
+
   const registerQuery = useMutation({
     mutationFn: register,
-    onSuccess: (res) => {
+    onSuccess: () => {
       router.push("/chat");
-      toast.success("Registered successfully", {
-        duration: 0,
-        position: "bottom-center",
-      });
+      successToast("Registered successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.data.message)
     },
   });
 
-  const router = useRouter();
   const handleSubmit = (value: any) => {
     registerQuery.mutate(value);
   };
@@ -80,11 +75,10 @@ const Register = () => {
                           rest={rest}
                           type="text"
                           placeholder="Username"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.userName && form?.touched?.userName
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.userName && form?.touched?.userName
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={UserIcon}
                           iconClass="h-[20px] w-[20px]"
                           error={
@@ -109,11 +103,10 @@ const Register = () => {
                           rest={rest}
                           type="text"
                           placeholder="email@example.com"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.email && form?.touched?.email
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.email && form?.touched?.email
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={MailSvg}
                           iconClass="h-[20px] w-[20px]"
                           error={
@@ -141,11 +134,10 @@ const Register = () => {
                           rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.password && form?.touched?.password
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.password && form?.touched?.password
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown((prev) => !prev)}
                           RightIcon={isShown ? EyeSvg : CloseEyeSvg}
@@ -175,19 +167,18 @@ const Register = () => {
                           rest={rest}
                           type={isShown2 ? "text" : "password"}
                           placeholder="Confirm Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
-                            form?.errors?.confirmPassword &&
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.confirmPassword &&
                             form?.touched?.confirmPassword
-                              ? "dark:border-red-500 border-red-500"
-                              : ""
-                          }`}
+                            ? "dark:border-red-500 border-red-500"
+                            : ""
+                            }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown2((prev) => !prev)}
                           RightIcon={isShown2 ? EyeSvg : CloseEyeSvg}
                           iconClass="h-[18px] w-[18px] right-5"
                           error={
                             form?.errors?.confirmPassword &&
-                            form?.touched?.confirmPassword
+                              form?.touched?.confirmPassword
                               ? form?.errors?.confirmPassword
                               : ""
                           }

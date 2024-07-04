@@ -1,21 +1,12 @@
+import { response } from "@/api-modules/helpers/response";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (request: NextRequest) => {
+export const POST = async () => {
   try {
     cookies().delete("currentUser");
     cookies().delete("token");
-    return NextResponse.json(
-      { message: "logout successFull.", data: null },
-      { status: 200, statusText: "logged out successfully." }
-    );
+    return response.success("logout successFull.", null)
   } catch (error: any) {
-    return NextResponse.json(
-      {
-        message: error.message,
-        data: null,
-      },
-      { status: 500 }
-    );
+    return response.error(error.message)
   }
 };

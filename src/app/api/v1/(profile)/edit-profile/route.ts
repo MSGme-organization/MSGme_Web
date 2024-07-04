@@ -1,40 +1,46 @@
-import { uploadCloudinary } from "@/api-modules/helpers/cloudinary";
+import { deleteCloudinary, uploadCloudinary } from "@/api-modules/helpers/cloudinary";
+import { response } from "@/api-modules/helpers/response";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
-import { emailFetch, userNameFetch } from "@/utils/user_fetch";
+import { userNameFetch } from "@/utils/user_fetch";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
+  const emailExist: any = await userNameFetch(body.email);
+  const decodedUser: any = decodedToken(cookies().get("token")?.value);
+  const nameExist: any = await userNameFetch(body.username);
+  const user: any = await prisma.user.findFirst({ where: { id: decodedUser.id } })
   if (body.step) {
     if (body.step === 1) {
       if (body.last_name && body.first_name) {
-        const { step, ...userData } = body;
-        console.log(userData, body);
+        const userData = { last_name: body.last_name, first_name: body.first_name };
         return userData;
       } else {
-        throw new Error("data is required.");
+        return response.dataInvalid("data is required.");
       }
     } else if (body.step === 2) {
       if (body.dob) {
-        const { step = null, ...userData } = {
-          ...body,
+        const userData = {
           dob: new Date(body.dob).toISOString(),
         };
         return userData;
       } else {
-        throw new Error("date of birth is required.");
+        return response.dataInvalid("date of birth is required.");
       }
     } else if (body.step === 3) {
-      if (body.avatar) {
-        const avatar = await uploadCloudinary(body.avatar);
-        const { step = null, ...userData } = { avatar };
+      if (body?.avatar) {
+        if (user.avatar !== null) {
+          await deleteCloudinary(user.avatar)
+        }
+        const { public_id } = await uploadCloudinary(body.avatar);
+        const userData = { avatar: public_id };
         return userData;
       } else {
-        throw new Error("profile photo is required.");
+        return response.dataInvalid("profile photo is required.");
       }
     } else {
-      throw new Error("step is invalid.");
+      return response.dataInvalid("step is invalid.");
     }
   } else {
     if (
@@ -45,29 +51,33 @@ const validateReq = async (body: any) => {
       body.dob
     ) {
       if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-        throw new Error("email is not valid");
+        return response.dataInvalid("email is not valid.");
       }
 
-      const nameExist = await userNameFetch(body.username);
-      const emailExist = await userNameFetch(body.email);
-      const decodedUser = decodedToken(cookies().get("token")?.value);
-
       if (nameExist && decodedUser.id !== nameExist.id) {
-        throw new Error("username already taken.");
+        return response.dataConflict("username already taken.")
       }
 
       if (emailExist && decodedUser.id !== emailExist.id) {
-        throw new Error("email already taken.");
-      }
+        return response.dataConflict("email already taken.")
 
-      const { step = null, ...userData } = {
+      }
+      let { step = null, ...userData } = {
         ...body,
         dob: new Date(body.dob).toISOString(),
       };
 
+      if (body?.avatar) {
+        if (user.avatar !== null) {
+          await deleteCloudinary(user.avatar)
+        }
+        const { public_id } = await uploadCloudinary(body.avatar);
+        userData = { ...userData, avatar: public_id };
+      }
+
       return userData;
     } else {
-      throw new Error("data is invalid.");
+      return response.dataInvalid("Invalid credentials.")
     }
   }
 };
@@ -84,21 +94,8 @@ export const POST = async (request: NextRequest) => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
-
-    return NextResponse.json(
-      {
-        message: "user data updated successfully.",
-        data: user,
-      },
-      { status: 200, statusText: "signed up successfully." }
-    );
+    return response.success("user data updated successfully.", user)
   } catch (error: any) {
-    return NextResponse.json(
-      {
-        message: error.message,
-        data: null,
-      },
-      { status: 500, statusText: error.message }
-    );
+    return response.error(error.message)
   }
 };

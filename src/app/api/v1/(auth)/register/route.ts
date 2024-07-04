@@ -1,41 +1,32 @@
+import { response } from "@/api-modules/helpers/response";
 import { generateToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 import crypto from "crypto";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
-
-export const GET = async (request: NextRequest) => {
-  const data = await prisma.user.findMany({
-    select: { id: true, username: true, email: true },
-  });
-  console.log(data);
-  return NextResponse.json(data);
-};
+import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.username) {
-    throw new Error("username is required");
+    return response.dataInvalid("username is required.");
   }
   if (!body.email) {
-    throw new Error("email is required");
+    return response.dataInvalid("email is required.");
   } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-    throw new Error("email is not valid");
+    return response.dataInvalid("email is not valid.");
   }
   if (!body.password) {
-    throw new Error("password is required");
+    return response.dataInvalid("password is required.");
   } else if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/.test(
       body.password
     )
   ) {
-    throw new Error(
-      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character"
-    );
+    return response.dataInvalid("Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.");
   }
 
   if ((await userNameFetch(body.username)) || (await emailFetch(body.email))) {
-    throw new Error("User already exist");
+    return response.dataConflict("User already exists.")
   }
 };
 
@@ -65,20 +56,8 @@ export const POST = async (request: NextRequest) => {
     );
 
     const { password, ...userWithoutPassword } = user;
-    return NextResponse.json(
-      {
-        message: "signed up successfully.",
-        data: userWithoutPassword,
-      },
-      { status: 200, statusText: "signed up successfully." }
-    );
+    return response.success("signed up successfully.", userWithoutPassword)
   } catch (error: any) {
-    return NextResponse.json(
-      {
-        message: error.message,
-        data: null,
-      },
-      { status: 500 }
-    );
+    return response.error(error.message)
   }
 };

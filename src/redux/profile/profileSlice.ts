@@ -1,8 +1,6 @@
+import { getProfile } from "@/query/profile/getProfile";
 import { createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
-import { useMutation } from "@tanstack/react-query";
-import { getProfile } from "@/query/profile/getProfile";
-import toast from "react-hot-toast";
 
 const initialState = {
   first_name: "",
@@ -11,27 +9,38 @@ const initialState = {
   username: "",
   dob: "",
   bio: "",
-  avatar: "blank-profile-picture-973460_960_720_mkhsln",
+  avatar: "",
 };
 
 const profileSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
+    addProfileData(state: any, action: any) {
+      state = action.payload
+      return state
+    },
     updateProfile(state: any, action: any) {
-      state = { ...state, ...action.payload };
-      return state;
+      state = { ...state, ...action.payload }
+      return state
     },
   },
 });
 
-const { updateProfile } = profileSlice.actions;
+const { updateProfile, addProfileData } = profileSlice.actions;
 
 export const fetchProfile = () => {
   return async (dispatch: AppDispatch) => {
     const res = await getProfile();
-    dispatch(updateProfile(res.data.data));
+    dispatch(addProfileData(res.data.data));
   };
 };
+
+export const updateProfileData = (data: any) => {
+  return (dispatch: AppDispatch) => {
+    dispatch(updateProfile(data));
+  };
+};
+
 
 export default profileSlice.reducer;

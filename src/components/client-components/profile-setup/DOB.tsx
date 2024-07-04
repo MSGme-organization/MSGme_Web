@@ -1,37 +1,42 @@
 "use client";
-import { Field, Form, Formik } from "formik";
-import React from "react";
-import Input from "../common-components/Input";
-import * as Yup from "yup";
-import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "@/query/profile/editprofile";
-import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateProfileData } from "@/redux/profile/profileSlice";
+import { errorToast } from "@/utils/toast";
+import { useMutation } from "@tanstack/react-query";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import Input from "../common-components/Input";
 import Loading from "../loader/Loading";
 
 const validationSchema = Yup.object({
   dob: Yup.date().required("Required"),
 });
+
 type Props = {
   handleIncrement: () => void;
   handleDecrement: () => void;
 };
 
 const DOB = ({ handleDecrement, handleIncrement }: Props) => {
+  const data = useAppSelector(state => state.profile);
+  const dispatch = useAppDispatch();
+
   const dataQuery = useMutation({
     mutationFn: editProfile,
-    onSuccess: (res) => {
+    onSuccess: (res: any) => {
       handleIncrement();
+      dispatch(updateProfileData(res.data.data));
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.data.message);
     },
   });
+
   const handleSubmit = (value: any) => {
     dataQuery.mutate({ step: 2, ...value });
   };
+
   return (
     <Loading isLoading={dataQuery.isPending}>
       <div className="mt-14">
@@ -40,7 +45,7 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
           <p className="font-regular text-[14px]">It will not show publicly</p>
         </div>
         <Formik
-          initialValues={{ dob: "Select date" }}
+          initialValues={{ dob: data.dob }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -57,11 +62,10 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
                       rest={rest}
                       type="date"
                       placeholder="Select date"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
-                        form?.errors?.dob && form?.touched?.dob
-                          ? "dark:border-red-500 border-red-500"
-                          : ""
-                      }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.dob && form?.touched?.dob
+                        ? "dark:border-red-500 border-red-500"
+                        : ""
+                        }`}
                       error={
                         form?.errors?.dob && form?.touched?.dob
                           ? form?.errors?.dob

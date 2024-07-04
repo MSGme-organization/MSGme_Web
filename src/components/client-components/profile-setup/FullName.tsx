@@ -1,40 +1,45 @@
 "use client";
 
-import { Field, Form, Formik } from "formik";
-import React from "react";
-import Input from "../common-components/Input";
-import * as Yup from "yup";
-import Loading from "../loader/Loading";
-import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "@/query/profile/editprofile";
-import toast from "react-hot-toast";
-const initialValues = {
-  first_name: "",
-  last_name: "",
-};
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateProfileData } from "@/redux/profile/profileSlice";
+import { errorToast } from "@/utils/toast";
+import { useMutation } from "@tanstack/react-query";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import Input from "../common-components/Input";
+import Loading from "../loader/Loading";
+
+
 const validationSchema = Yup.object({
   first_name: Yup.string().required("First Name is required"),
   last_name: Yup.string().required("Last Name is required"),
 });
+
 type Props = {
   handleIncrement: () => void;
 };
+
 const FullName = ({ handleIncrement }: Props) => {
+  const data = useAppSelector(state => state.profile);
+  const dispatch = useAppDispatch();
+
   const dataQuery = useMutation({
     mutationFn: editProfile,
-    onSuccess: (res) => {
+    onSuccess: (res: any) => {
       handleIncrement();
+      dispatch(updateProfileData(res.data.data));
     },
     onError: (error: any) => {
-      toast.error(error.response.statusText, {
-        duration: 0,
-        position: "bottom-center",
-      });
+      errorToast(error.response.data.message);
     },
   });
+
   const handleSubmit = (value: any) => {
     dataQuery.mutate({ step: 1, ...value });
   };
+
+
   return (
     <Loading isLoading={dataQuery.isPending}>
       <div className="mt-14">
@@ -46,7 +51,8 @@ const FullName = ({ handleIncrement }: Props) => {
         </div>
 
         <Formik
-          initialValues={initialValues}
+          enableReinitialize
+          initialValues={data}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -63,11 +69,10 @@ const FullName = ({ handleIncrement }: Props) => {
                       rest={rest}
                       type="text"
                       placeholder="First Name"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
-                        form?.errors?.first_name && form?.touched?.first_name
-                          ? "dark:border-red-500 border-red-500"
-                          : ""
-                      }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.first_name && form?.touched?.first_name
+                        ? "dark:border-red-500 border-red-500"
+                        : ""
+                        }`}
                       error={
                         form?.errors?.first_name && form?.touched?.first_name
                           ? form?.errors?.first_name
@@ -90,11 +95,10 @@ const FullName = ({ handleIncrement }: Props) => {
                       rest={rest}
                       type="text"
                       placeholder="Last Name"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
-                        form?.errors?.last_name && form?.touched?.last_name
-                          ? "dark:border-red-500 border-red-500"
-                          : ""
-                      }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.last_name && form?.touched?.last_name
+                        ? "dark:border-red-500 border-red-500"
+                        : ""
+                        }`}
                       error={
                         form?.errors?.last_name && form?.touched?.last_name
                           ? form?.errors?.last_name
