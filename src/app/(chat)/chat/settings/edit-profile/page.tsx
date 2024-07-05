@@ -11,7 +11,7 @@ import { CalendarIcon, EmailIcon, PencilIcon, UserIcon } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { CldImage } from 'next-cloudinary';
+import { CldImage } from "next-cloudinary";
 import React from "react";
 
 const fields = [
@@ -67,16 +67,16 @@ const EditProfile = () => {
   const [imageData, setImageData] = React.useState(null);
   const data = useAppSelector((state) => state.profile);
   const ref = React.useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const dataQuery = useMutation({
     mutationFn: editProfile,
     onSuccess: (res: any) => {
-      dispatch(updateProfileData(res.data.data))
-      successToast("profile updated.")
+      dispatch(updateProfileData(res.data.data));
+      successToast("profile updated.");
     },
     onError: (error: any) => {
-      errorToast(error.response.statusText)
+      errorToast(error.response.statusText);
     },
   });
 
@@ -92,7 +92,9 @@ const EditProfile = () => {
           dataQuery.mutate({ ...values, avatar: base64String });
         };
         fr.onerror = function (event: any) {
-          console.error("File could not be read! Code " + event.target.error.code);
+          console.error(
+            "File could not be read! Code " + event.target.error.code
+          );
         };
         fr.readAsDataURL(imageData as Blob);
       } else {
@@ -101,14 +103,14 @@ const EditProfile = () => {
     },
   });
   const handleProfile = () => {
-    ref.current?.click()
-  }
+    ref.current?.click();
+  };
   const handleFile = (event: any) => {
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
-    formik.setFieldValue("avatar", imageUrl)
-    setImageData(imageFile)
-  }
+    formik.setFieldValue("avatar", imageUrl);
+    setImageData(imageFile);
+  };
   return (
     <>
       <Loading isLoading={dataQuery.isPending}>
@@ -125,8 +127,17 @@ const EditProfile = () => {
               alt="profile image"
               className="rounded-full aspect-square object-contain"
             />
-            <input type="file" className="hidden" ref={ref} onChange={handleFile} />
-            <button type="button" className="absolute bottom-2 right-2 bg-primary rounded-full p-1 active:scale-[.97] border-[.5] border-white text-white h-[30px] w-[30px]" onClick={handleProfile}>
+            <input
+              type="file"
+              className="hidden"
+              ref={ref}
+              onChange={handleFile}
+            />
+            <button
+              type="button"
+              className="absolute bottom-2 right-2 bg-primary rounded-full p-1 active:scale-[.97] border-[.5] border-white text-white h-[30px] w-[30px]"
+              onClick={handleProfile}
+            >
               {PencilIcon()}
             </button>
           </div>
@@ -165,7 +176,7 @@ const EditProfile = () => {
               key={index}
               {...formik.getFieldProps(field.name)}
               {...field}
-              error={formik.errors[field.name as keyof typeof formik.errors] as string}
+              error={formik.errors[field.name] as string}
             />
           ))}
           <button
