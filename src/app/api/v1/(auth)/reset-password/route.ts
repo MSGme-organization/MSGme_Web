@@ -12,17 +12,19 @@ const validateReq = async (body: any) => {
   if (!body.email) {
     return response.dataInvalid("email is required.");
   }
-  const user = await emailFetch(body.email);
-  if (!user) {
-    return response.dataConflict("Invalid email.");
-  }
-  return user;
 };
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const user: any = await validateReq(body);
+    await validateReq(body);
+
+    const user: any = await emailFetch(body.email);
+
+    if (!user) {
+      return response.dataConflict("Invalid email.");
+    }
+
     const otpId = randomUUID();
     const otp = `${randomInt(9)}${randomInt(9)}${randomInt(9)}${randomInt(9)}`;
     const template = resetPassMailTemplate(body.email, otp);

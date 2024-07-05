@@ -1,10 +1,10 @@
 "use client";
 
 import Loading from "@/components/client-components/loader/Loading";
+import CustomOtpInput from "@/components/client-components/otp/CustomOtpInput";
 import { otpVerify, resendOtp } from "@/query/auth/otp";
 import { errorToast, successToast } from "@/utils/toast";
 import { useRouter } from "next/navigation";
-import OTPInput from "otp-input-react";
 import React from "react";
 
 const Otp = () => {
@@ -51,22 +51,7 @@ const Otp = () => {
             </p>
           </div>
           <div className="flex justify-center mt-8">
-            <OTPInput
-              value={OTP}
-              onChange={setOTP}
-              className="flex justify-between w-[80%] min-w-[225px] "
-              inputStyles={{
-                width: "20%",
-                maxWidth: "150px",
-                minWidth: "50px",
-                margin: 0,
-              }}
-              inputClassName="m-0 py-[30px] rounded bg-bgColor dark:bg-customGrey-black text-textColor dark:text-textColor-dark focus:ring-0 focus:border-primary text-[20px]"
-              autoFocus
-              OTPLength={4}
-              otpType="number"
-              disabled={false}
-            />
+            <CustomOtpInput length={4} onChange={setOTP} />
           </div>
           <div className="mb-5 mt-8">
             <button
