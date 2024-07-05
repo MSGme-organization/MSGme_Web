@@ -17,11 +17,11 @@ const ResetPassword = () => {
   const resetPassQuery = useMutation({
     mutationFn: resetPassword,
     onSuccess: () => {
-      router.push("/otp");
       successToast("mail sent successfully.");
+      router.push("/otp");
     },
     onError: (error: any) => {
-      errorToast(error.response.data.message)
+      errorToast(error.response.data.message);
     },
   });
 
@@ -56,12 +56,13 @@ const ResetPassword = () => {
                         <Input
                           field={field}
                           rest={rest}
-                          type="text"
+                          type="email"
                           placeholder="abc@example.com"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.email && form?.touched?.email
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.email && form?.touched?.email
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={MailSvg}
                           iconClass="h-[18px] w-[18px]"
                           error={
@@ -96,7 +97,8 @@ const ResetPassword = () => {
             </p>
           </div>
         </div>
-      </div></Loading>
+      </div>
+    </Loading>
   );
 };
 

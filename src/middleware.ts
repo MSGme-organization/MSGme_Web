@@ -2,15 +2,14 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { authorize } from "./api-modules/middlewares/authorize";
 
-const publicRoutes = [
-  "/",
-  "/login",
-  "/register",
-  "/set-password",
-  "/reset-password",
-];
+const publicRoutes = ["/", "/login", "/register", "/reset-password"];
 
-const protectedApiRoutes = ["/api/edit-profile", "/api/get-profile"];
+const protectedApiRoutes = [
+  "/api/edit-profile",
+  "/api/get-profile",
+  "/api/change-password",
+  "/api/logout",
+];
 
 export default async function middleware(req: NextRequest) {
   try {
@@ -26,30 +25,44 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.next();
       }
     } else {
-      const ispublicRoute = publicRoutes.includes(req.nextUrl.pathname);
-      if (ispublicRoute && cookies().get("token")?.value) {
-        return NextResponse.redirect(new URL("/chat", req.url));
-      } else if (!ispublicRoute && !cookies().get("token")?.value) {
-        return NextResponse.redirect(new URL("/login", req.url));
-      } else if (!ispublicRoute && cookies().get("token")?.value) {
-        const user = JSON.parse(cookies().get("currentUser")?.value as string);
-        if (
-          req.nextUrl.pathname.startsWith("/profile-details") &&
-          user.first_name &&
-          user.first_name &&
-          user.dob
-        ) {
-          return NextResponse.redirect(new URL("chat", req.url));
-        } else if (req.nextUrl.pathname.startsWith("/profile-details")) {
-          return NextResponse.next();
-        }
-        if (!user.first_name || !user.first_name || !user.dob) {
-          return NextResponse.redirect(new URL("profile-details", req.url));
+      if (
+        req.nextUrl.pathname.includes("/otp") &&
+        cookies().get("otp_verify")?.value
+      ) {
+        return NextResponse.next();
+      } else if (
+        req.nextUrl.pathname.includes("/set-password") &&
+        cookies().get("set-pass")?.value
+      ) {
+        return NextResponse.next();
+      } else {
+        const ispublicRoute = publicRoutes.includes(req.nextUrl.pathname);
+        if (ispublicRoute && cookies().get("token")?.value) {
+          return NextResponse.redirect(new URL("/chat", req.url));
+        } else if (!ispublicRoute && !cookies().get("token")?.value) {
+          return NextResponse.redirect(new URL("/login", req.url));
+        } else if (!ispublicRoute && cookies().get("token")?.value) {
+          const user = JSON.parse(
+            cookies().get("currentUser")?.value as string
+          );
+          if (
+            req.nextUrl.pathname.startsWith("/profile-details") &&
+            user.first_name &&
+            user.first_name &&
+            user.dob
+          ) {
+            return NextResponse.redirect(new URL("chat", req.url));
+          } else if (req.nextUrl.pathname.startsWith("/profile-details")) {
+            return NextResponse.next();
+          }
+          if (!user.first_name || !user.first_name || !user.dob) {
+            return NextResponse.redirect(new URL("profile-details", req.url));
+          } else {
+            return NextResponse.next();
+          }
         } else {
           return NextResponse.next();
         }
-      } else {
-        return NextResponse.next();
       }
     }
   } catch (err: any) {
@@ -70,5 +83,7 @@ export const config = {
     "/",
     "/api",
     "/api/:path",
+    "/otp",
+    "/set-password",
   ],
 };

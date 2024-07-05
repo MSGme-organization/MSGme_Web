@@ -28,12 +28,11 @@ const Login = () => {
   const loginQuery = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      router.push("/chat");
       successToast("Logged in successfully");
+      router.push("/chat");
     },
     onError: (error: any) => {
-      console.log(error.response)
-      errorToast(error.response.data.message)
+      errorToast(error.response.data.message);
     },
   });
 
@@ -68,12 +67,13 @@ const Login = () => {
                         <Input
                           field={field}
                           rest={rest}
-                          type="text"
+                          type="email"
                           placeholder="abc@example.com"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.email && form?.touched?.email
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.email && form?.touched?.email
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={MailSvg}
                           iconClass="h-[18px] w-[18px]"
                           error={
@@ -98,10 +98,11 @@ const Login = () => {
                           rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.password && form?.touched?.password
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.password && form?.touched?.password
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown((prev) => !prev)}
                           RightIcon={isShown ? EyeSvg : CloseEyeSvg}

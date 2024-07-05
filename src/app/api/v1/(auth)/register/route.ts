@@ -55,7 +55,7 @@ export const POST = async (request: NextRequest) => {
       { secure: true }
     );
 
-    const { password, ...userWithoutPassword } = user;
+    const { password, ...userWithoutPassword } = user as { email: string; username: string; id: string; password: string; };
     return response.success("signed up successfully.", userWithoutPassword)
   } catch (error: any) {
     return response.error(error.message)

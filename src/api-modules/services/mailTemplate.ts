@@ -1,4 +1,4 @@
-export const resetPassMailTemplate = (email: string, _url: string, otp: string) => {
+export const resetPassMailTemplate = (email: string,  otp: string) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
