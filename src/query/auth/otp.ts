@@ -11,7 +11,6 @@ export const otpVerify = async (userOtp: string) => {
   const token = await decodedToken(cookies().get("otp_verify")?.value);
   await redis.connect()
   const otp = await redis.get(token.otpId);
-  console.log(otp)
   if (otp) {
     if (otp == userOtp) {
       await redis.del(token.otpId);

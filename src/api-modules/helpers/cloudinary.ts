@@ -10,7 +10,6 @@ export const uploadCloudinary = async (data: any) => {
 };
 
 export const deleteCloudinary = async (public_id: any) => {
-  console.log(public_id)
   const res = cloudinary.v2.uploader.destroy(public_id, {
     resource_type: "image",
     type: "upload"

@@ -7,7 +7,6 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.email) {
-    console.log("ok")
     return response.dataInvalid("email is required.");
   } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
     return response.dataInvalid("email is not valid.");
