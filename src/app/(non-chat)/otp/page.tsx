@@ -23,9 +23,10 @@ const Otp = () => {
         setLoading(false);
         errorToast("Invalid OTP!");
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error)
       setLoading(false);
-      errorToast("Otp is Expired or not Found!");
+      errorToast(error.message);
     }
   };
 

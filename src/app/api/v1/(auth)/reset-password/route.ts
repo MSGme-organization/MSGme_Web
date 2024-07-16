@@ -32,11 +32,13 @@ export const POST = async (request: NextRequest) => {
     const otpId = randomUUID();
     const otp = `${randomInt(9)}${randomInt(9)}${randomInt(9)}${randomInt(9)}`;
     const template = resetPassMailTemplate(body.email, otp);
+    await redis.connect()
     await resetPasswordMail(body.email, template);
     if (await redis.get(otpId)) {
       await redis.del(otpId);
     }
     await redis.set(otpId, otp, "EX", 600);
+    console.log(await redis.get(otpId))
     cookies().set(
       "otp_verify",
       generateToken({ otpId, userId: user.id, emailId: user.email }),

@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 export const otpVerify = async (userOtp: string) => {
   const token = await decodedToken(cookies().get("otp_verify")?.value);
   const otp = await redis.get(token.otpId);
+  console.log(otp)
   if (otp) {
     if (otp == userOtp) {
       await redis.del(token.otpId);
@@ -19,10 +20,10 @@ export const otpVerify = async (userOtp: string) => {
       });
       return true;
     } else {
-      return false;
+      return Error("Otp invalid.");
     }
   } else {
-    throw Error("Otp not found.");
+    return Error("Otp not found.");
   }
 };
 

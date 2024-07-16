@@ -46,7 +46,7 @@ const CustomOtpInput: React.FC<OtpInputProps> = ({ length, onChange }) => {
           maxLength={1}
           onChange={(e) => handleChange(e.target.value, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
-          className="m-0 py-[30px] text-center rounded bg-bgColor dark:bg-customGrey-black text-textColor dark:text-textColor-dark focus:ring-0 focus:border-primary text-[20px] w-[20%] max-w-[150px] min-w-[50px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="m-0 py-[20px] text-center rounded bg-bgColor dark:bg-customGrey-black text-textColor dark:text-textColor-dark focus:ring-0 focus:border-primary text-[20px] w-[20%] max-w-[150px] min-w-[50px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
       ))}
     </div>
