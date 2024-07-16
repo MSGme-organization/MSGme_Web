@@ -33,7 +33,7 @@ export const resendOtp = async () => {
     const otp = `${randomInt(9)}${randomInt(9)}${randomInt(9)}${randomInt(9)}`;
     const template = resetPassMailTemplate(decoded.emailId, otp);
     await resetPasswordMail(decoded.emailId, template);
-    await redis.set(decoded.otpId, otp, "EX", 600);
+    await redis.set(decoded.otpId, otp, { "EX": 600 });
     return "Otp sent successfully";
   } catch (err) {
     throw err;

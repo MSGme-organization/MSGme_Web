@@ -37,7 +37,7 @@ export const POST = async (request: NextRequest) => {
     if (await redis.get(otpId)) {
       await redis.del(otpId);
     }
-    await redis.set(otpId, otp, "EX", 600);
+    await redis.set(otpId, otp, { "EX": 600 });
     console.log(await redis.get(otpId))
     cookies().set(
       "otp_verify",
