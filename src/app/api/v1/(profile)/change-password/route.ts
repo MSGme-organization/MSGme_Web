@@ -5,12 +5,14 @@ import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
-const validateReq = async (body: any, user: any) => {
+const validateReq = async (body: any) => {
   if (!body.currentPassword || !body.newPassword) {
     return response.dataInvalid(
       "currentPassword and newPassword are required."
     );
   }
+
+  return null
 };
 
 export const POST = async (request: NextRequest) => {
@@ -21,7 +23,11 @@ export const POST = async (request: NextRequest) => {
     });
 
     const body = await request.json();
-    await validateReq(body, user);
+    const validationError = await validateReq(body);
+    if (validationError) {
+      return validationError
+    }
+
     const hash = crypto.createHash("sha1");
     hash.update(body.currentPassword);
     body.currentPassword = hash.digest("hex");

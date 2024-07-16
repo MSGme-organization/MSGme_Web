@@ -6,6 +6,7 @@ import SettingsHeader from "@/components/client-components/settings/SettingsHead
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateProfileData } from "@/redux/profile/profileSlice";
+import { formatDate } from "@/utils/date";
 import { EditProfileValidationSchema } from "@/utils/formik-validation";
 import { CalendarIcon, EmailIcon, PencilIcon, UserIcon } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
@@ -80,37 +81,43 @@ const EditProfile = () => {
     },
   });
 
+  const handleSubmit = (values: any) => {
+    if (imageData) {
+      const fr = new FileReader();
+      fr.onload = function (event: any) {
+        const base64String = event.target.result.split(",")[1];
+        dataQuery.mutate({ ...values, avatar: base64String });
+      };
+      fr.onerror = function (event: any) {
+        console.error(
+          "File could not be read! Code " + event.target.error.code
+        );
+      };
+      fr.readAsDataURL(imageData as Blob);
+    } else {
+      dataQuery.mutate(values);
+    }
+  }
+
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data,
+    initialValues: { ...data, dob: formatDate(data.dob) },
     validationSchema: EditProfileValidationSchema,
-    onSubmit: (values: any) => {
-      if (imageData) {
-        const fr = new FileReader();
-        fr.onload = function (event: any) {
-          const base64String = event.target.result.split(",")[1];
-          dataQuery.mutate({ ...values, avatar: base64String });
-        };
-        fr.onerror = function (event: any) {
-          console.error(
-            "File could not be read! Code " + event.target.error.code
-          );
-        };
-        fr.readAsDataURL(imageData as Blob);
-      } else {
-        dataQuery.mutate(values);
-      }
-    },
+    onSubmit: handleSubmit,
   });
+
   const handleProfile = () => {
     ref.current?.click();
   };
+
   const handleFile = (event: any) => {
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
     formik.setFieldValue("avatar", imageUrl);
     setImageData(imageFile);
   };
+
+
   return (
     <>
       <Loading isLoading={dataQuery.isPending}>

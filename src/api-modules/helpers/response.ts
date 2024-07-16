@@ -5,4 +5,5 @@ export const response = {
     error: (message: string) => NextResponse.json({ message, data: null }, { status: 500 }),
     dataInvalid: (message: string) => NextResponse.json({ message, data: null }, { status: 403 }),
     dataConflict: (message: string) => NextResponse.json({ message, data: null }, { status: 409 }),
+    unAuthorized: (message: string) => NextResponse.json({ message, data: null }, { status: 401 }),
 }

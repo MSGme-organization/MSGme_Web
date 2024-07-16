@@ -9,33 +9,42 @@ const validateReq = async (body: any) => {
   if (!body.password) {
     return response.dataInvalid("Password is required.");
   }
+  return null
 };
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    await validateReq(body);
-    const cookie = decodedToken(cookies().get("set_pass")?.value);
-    const user = await prisma.user.findFirst({
-      where: { id: cookie?.userId },
-    });
-
-    if (!user) {
-      return response.dataConflict("User Not found.");
+    const validationError = await validateReq(body);
+    if (validationError) {
+      return validationError
     }
+    const cookie = decodedToken(cookies().get("set_pass")?.value);
 
-    const hash = crypto.createHash("sha1");
-    hash.update(body.password);
-    body.password = hash.digest("hex");
+    if (cookie) {
+      const user = await prisma.user.findFirst({
+        where: { id: cookie?.userId },
+      });
 
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { password: body.password },
-    });
 
-    cookies().delete("set-pass");
+      if (!user) {
+        return response.dataConflict("User Not found.");
+      }
 
-    return response.success("password changed successfully.", null);
+      const hash = crypto.createHash("sha1");
+      hash.update(body.password);
+      body.password = hash.digest("hex");
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { password: body.password },
+      });
+
+      cookies().delete("set-pass");
+
+      return response.success("password changed successfully.", null);
+    }
+    return response.unAuthorized("you are not allowed to do this process.");
   } catch (error: any) {
     return response.error(error.message);
   }

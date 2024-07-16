@@ -7,6 +7,7 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.email) {
+    console.log("ok")
     return response.dataInvalid("email is required.");
   } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
     return response.dataInvalid("email is not valid.");
@@ -20,12 +21,17 @@ const validateReq = async (body: any) => {
   ) {
     return response.dataInvalid("Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.");
   }
+
+  return null
 };
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    await validateReq(body);
+    const validationError = await validateReq(body);
+    if (validationError) {
+      return validationError
+    }
 
     const user = await prisma.user.findFirst({
       where: { email: body.email },

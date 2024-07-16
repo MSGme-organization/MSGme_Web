@@ -4,7 +4,7 @@ import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { userNameFetch } from "@/utils/user_fetch";
 import { cookies } from "next/headers";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const validateReq = async (body: any) => {
   const emailExist: any = await userNameFetch(body.email);
@@ -86,6 +86,9 @@ export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     const updatedUser = await validateReq(body);
+    if (updatedUser instanceof NextResponse) {
+      return updatedUser
+    }
     const decodedUser = decodedToken(cookies().get("token")?.value);
 
     const user = await prisma.user.update({

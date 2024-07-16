@@ -28,12 +28,17 @@ const validateReq = async (body: any) => {
   if ((await userNameFetch(body.username)) || (await emailFetch(body.email))) {
     return response.dataConflict("User already exists.")
   }
+
+  return null
 };
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    await validateReq(body);
+    const validationError = await validateReq(body);
+    if (validationError) {
+      return validationError
+    }
 
     const hash = crypto.createHash("sha1");
     hash.update(body.password);
