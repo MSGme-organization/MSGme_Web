@@ -1,9 +1,13 @@
 import {
+  activity,
   animals,
   emojiTypes,
   foods,
+  objects,
   peoples,
   smileys,
+  symbols,
+  travels,
 } from "@/utils/emoji-data";
 import React from "react";
 
@@ -11,7 +15,16 @@ interface Props {
   handleClick: (emoji: string) => void;
 }
 
-const emojiData = [smileys, peoples, animals, foods];
+const emojiData = [
+  smileys,
+  peoples,
+  animals,
+  foods,
+  activity,
+  travels,
+  objects,
+  symbols,
+];
 
 const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
   const [emoji, setEmoji] = React.useState<number>(0);
@@ -21,7 +34,7 @@ const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
       <div className="bg-white dark:bg-black h-[50px] flex items-center px-2 gap-2 w-full rounded-sm">
         {emojiTypes.map((bg: string, index: number) => (
           <button
-            onClick={() => setEmoji(index > 3 ? 0 : index)}
+            onClick={() => setEmoji(index)}
             className={`h-[30px] w-full rounded-lg outline dark:outline-white border-none outline-0 text-[20px] ${
               index === emoji
                 ? "bg-blue-100 dark:bg-gray-700"
