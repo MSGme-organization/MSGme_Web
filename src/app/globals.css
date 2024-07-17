@@ -16,6 +16,17 @@
   border-radius: 10px;
   background-color: #3333333d;
 }
+.remove-scrollbar::-webkit-scrollbar-track {
+  display: none;
+}
+
+.remove-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.remove-scrollbar::-webkit-scrollbar-thumb {
+  display: none ;
+}
 
 .loader-spinner {
   width: 50px;

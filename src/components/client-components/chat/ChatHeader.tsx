@@ -7,13 +7,13 @@ import {
   ShareIcon,
   ThreeDotsIcon,
 } from "@/utils/svgs";
-import { Dropdown, TextInput } from "flowbite-react";
+import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Input from "../common-components/Input";
 import { DownArrow } from "../HomeLayout/Svgs";
 import ShareModal from "../modals/ShareModal";
-import Input from "../common-components/Input";
 
 interface ChatHeaderProps {
   name: string | undefined;

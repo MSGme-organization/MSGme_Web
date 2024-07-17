@@ -30,7 +30,7 @@ const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
   const [emoji, setEmoji] = React.useState<number>(0);
 
   return (
-    <div className="w-[350px] h-[400px] bg-white dark:bg-black rounded shadow-sm">
+    <div className="w-[350px] h-[400px] bg-white dark:bg-black rounded shadow-sm select-none">
       <div className="bg-white dark:bg-black h-[50px] flex items-center px-2 gap-2 w-full rounded-sm">
         {emojiTypes.map((bg: string, index: number) => (
           <button
@@ -46,7 +46,7 @@ const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
           </button>
         ))}
       </div>
-      <div className="px-2 pb-2 relative h-[350px] overflow-auto">
+      <div className="px-2 pb-2 relative h-[350px] overflow-auto remove-scrollbar">
         {/* <div className="px-2 pb-2 relative h-[100%] overflow-auto"> */}
         {Object.keys(emojiData[emoji]).map((key, index) => (
           <>
