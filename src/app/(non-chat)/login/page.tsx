@@ -28,8 +28,8 @@ const Login = () => {
   const loginQuery = useMutation({
     mutationFn: login,
     onSuccess: () => {
+      router.replace("/chat");
       successToast("Logged in successfully");
-      router.push("/chat");
     },
     onError: (error: any) => {
       errorToast(error.response.data.message);

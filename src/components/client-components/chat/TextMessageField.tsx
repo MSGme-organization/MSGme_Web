@@ -39,11 +39,16 @@ const TextMessageField = ({
       }
     },
   });
+
   React.useEffect(() => {
     if (replyMsg) {
       inputRef.current?.focus();
     }
   }, [replyMsg]);
+
+  const handleEmojiClick = (emoji: any) => {
+    formik.setFieldValue("msg", formik.values.msg + emoji);
+  };
 
   return (
     <div className="w-full p-4  sticky bottom-0 left-0 flex shadow border-t border-gray-100 dark:border-gray-600 flex-col bg-white dark:bg-customGrey-black z-10">
@@ -73,7 +78,7 @@ const TextMessageField = ({
               className="w-full bg-transparent shadow-none p-0 border-none hover:bg-transparent position-relative"
               style={{ backgroundColor: "transparent" }}
             >
-              <EmojiPicker/>
+              <EmojiPicker handleClick={handleEmojiClick} />
               {/* <Picker
                 className="dark:bg-black dark:border-black"
                 style={{ width: "100%" }}

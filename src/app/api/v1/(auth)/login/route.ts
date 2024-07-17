@@ -18,10 +18,12 @@ const validateReq = async (body: any) => {
       body.password
     )
   ) {
-    return response.dataInvalid("Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.");
+    return response.dataInvalid(
+      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character."
+    );
   }
 
-  return null
+  return null;
 };
 
 export const POST = async (request: NextRequest) => {
@@ -29,7 +31,7 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const validationError = await validateReq(body);
     if (validationError) {
-      return validationError
+      return validationError;
     }
 
     const user = await prisma.user.findFirst({
@@ -37,7 +39,7 @@ export const POST = async (request: NextRequest) => {
     });
 
     if (!user) {
-      return response.dataInvalid("Invalid Credentials.")
+      return response.dataInvalid("Invalid Credentials.");
     }
 
     if (
@@ -57,11 +59,11 @@ export const POST = async (request: NextRequest) => {
       cookies().set("currentUser", JSON.stringify(userWithoutPassword), {
         secure: true,
       });
-      return response.success("logged in successfully.", userWithoutPassword)
+      return response.success("logged in successfully.", userWithoutPassword);
     } else {
-      return response.dataInvalid("Invalid credentials.")
+      return response.dataInvalid("Invalid credentials.");
     }
   } catch (error: any) {
-    return response.error(error.message)
+    return response.error(error.message);
   }
 };

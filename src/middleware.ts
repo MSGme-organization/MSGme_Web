@@ -13,7 +13,7 @@ const protectedApiRoutes = [
 
 export default async function middleware(req: NextRequest) {
   try {
-    if (req.nextUrl.password.startsWith("/api")) {
+    if (req.nextUrl.pathname.startsWith("/api")) {
       const isprotectedRoute = protectedApiRoutes.includes(
         req.nextUrl.pathname
       );
