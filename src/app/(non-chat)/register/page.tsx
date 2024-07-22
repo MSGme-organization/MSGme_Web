@@ -11,7 +11,7 @@ import { RegisterValidation } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg, UserIcon } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProvider, useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,6 +28,14 @@ const Register = () => {
   const [isShown2, setShown2] = useState(false);
   const router = useRouter();
 
+  const formik = useFormik({
+    initialValues: RegisterInitialValue,
+    validationSchema: RegisterValidation,
+    onSubmit: (value: any) => {
+      registerQuery.mutate(value);
+    },
+  });
+
   const registerQuery = useMutation({
     mutationFn: register,
     onSuccess: () => {
@@ -35,13 +43,10 @@ const Register = () => {
       successToast("Registered successfully");
     },
     onError: (error: any) => {
-      errorToast(error.response.data.message)
+      formik.setErrors(error.response.data.data);
+      errorToast(error.response.data.message);
     },
   });
-
-  const handleSubmit = (value: any) => {
-    registerQuery.mutate(value);
-  };
 
   return (
     <Loading isLoading={registerQuery.isPending}>
@@ -53,11 +58,7 @@ const Register = () => {
               Join us here, a better place for every conversation
             </p>
           </div>
-          <Formik
-            initialValues={RegisterInitialValue}
-            validationSchema={RegisterValidation}
-            onSubmit={handleSubmit}
-          >
+          <FormikProvider value={formik}>
             <Form>
               <div className="mt-6 max-w-[518px]">
                 <div className="w-[100%] mb-4">
@@ -75,10 +76,11 @@ const Register = () => {
                           rest={rest}
                           type="text"
                           placeholder="Username"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.userName && form?.touched?.userName
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.userName && form?.touched?.userName
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={UserIcon}
                           iconClass="h-[20px] w-[20px]"
                           error={
@@ -103,10 +105,11 @@ const Register = () => {
                           rest={rest}
                           type="text"
                           placeholder="email@example.com"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.email && form?.touched?.email
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.email && form?.touched?.email
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={MailSvg}
                           iconClass="h-[20px] w-[20px]"
                           error={
@@ -134,10 +137,11 @@ const Register = () => {
                           rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.password && form?.touched?.password
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.password && form?.touched?.password
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown((prev) => !prev)}
                           RightIcon={isShown ? EyeSvg : CloseEyeSvg}
@@ -167,18 +171,19 @@ const Register = () => {
                           rest={rest}
                           type={isShown2 ? "text" : "password"}
                           placeholder="Confirm Password"
-                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${form?.errors?.confirmPassword &&
+                          classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
+                            form?.errors?.confirmPassword &&
                             form?.touched?.confirmPassword
-                            ? "dark:border-red-500 border-red-500"
-                            : ""
-                            }`}
+                              ? "dark:border-red-500 border-red-500"
+                              : ""
+                          }`}
                           LeftIcon={PasswordSvg}
                           rightIconToggle={() => setShown2((prev) => !prev)}
                           RightIcon={isShown2 ? EyeSvg : CloseEyeSvg}
                           iconClass="h-[18px] w-[18px] right-5"
                           error={
                             form?.errors?.confirmPassword &&
-                              form?.touched?.confirmPassword
+                            form?.touched?.confirmPassword
                               ? form?.errors?.confirmPassword
                               : ""
                           }
@@ -215,7 +220,7 @@ const Register = () => {
                 </div>
               </div>
             </Form>
-          </Formik>
+          </FormikProvider>
           <div className="text-center">
             <p className="text-[14px] mt-3 font-medium">
               Already a Member?{" "}

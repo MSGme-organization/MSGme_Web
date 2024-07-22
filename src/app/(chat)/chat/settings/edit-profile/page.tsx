@@ -70,17 +70,6 @@ const EditProfile = () => {
   const ref = React.useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
 
-  const dataQuery = useMutation({
-    mutationFn: editProfile,
-    onSuccess: (res: any) => {
-      dispatch(updateProfileData(res.data.data));
-      successToast("profile updated.");
-    },
-    onError: (error: any) => {
-      errorToast(error.response.statusText);
-    },
-  });
-
   const handleSubmit = (values: any) => {
     if (imageData) {
       const fr = new FileReader();
@@ -97,13 +86,25 @@ const EditProfile = () => {
     } else {
       dataQuery.mutate(values);
     }
-  }
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { ...data, dob: formatDate(data.dob) },
     validationSchema: EditProfileValidationSchema,
     onSubmit: handleSubmit,
+  });
+
+  const dataQuery = useMutation({
+    mutationFn: editProfile,
+    onSuccess: (res: any) => {
+      dispatch(updateProfileData(res.data.data));
+      successToast("profile updated.");
+    },
+    onError: (error: any) => {
+      formik.setErrors(error.response.data.data);
+      errorToast(error.response.statusText);
+    },
   });
 
   const handleProfile = () => {
@@ -116,7 +117,6 @@ const EditProfile = () => {
     formik.setFieldValue("avatar", imageUrl);
     setImageData(imageFile);
   };
-
 
   return (
     <>
@@ -151,6 +151,7 @@ const EditProfile = () => {
           <div className="w-full flex gap-3">
             <div className="w-[50%]">
               <Input
+                {...formik.getFieldMeta("first_name")}
                 {...formik.getFieldProps("first_name")}
                 error={formik.errors.first_name as string}
                 placeholder="First Name"

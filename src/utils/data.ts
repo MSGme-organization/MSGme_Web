@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const users = [
   {
     id: 1,
@@ -148,7 +146,7 @@ export const users = [
 
     name: "Paul Walker",
     lastChat: "Can you send me the updated file?",
-    lastChatTime: moment().toString(),
+    lastChatTime: new Date().toString(),
     newUnreadChatCount: 1,
     avatarImage: "https://picsum.photos/200/300",
   },
@@ -157,7 +155,7 @@ export const users = [
 
     name: "Paul Walker",
     lastChat: "Can you send me the updated file?",
-    lastChatTime: moment().toString(),
+    lastChatTime: new Date().toString(),
     newUnreadChatCount: 1,
     avatarImage: "https://picsum.photos/200/300",
   },

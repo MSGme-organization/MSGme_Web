@@ -7,9 +7,11 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.password) {
-    return response.dataInvalid("Password is required.");
+    return response.dataInvalid("Password is required.", {
+      password: "Password is required.",
+    });
   }
-  return null
+  return null;
 };
 
 export const POST = async (request: NextRequest) => {
@@ -17,7 +19,7 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const validationError = await validateReq(body);
     if (validationError) {
-      return validationError
+      return validationError;
     }
     const cookie = decodedToken(cookies().get("set-pass")?.value);
 
@@ -25,7 +27,6 @@ export const POST = async (request: NextRequest) => {
       const user = await prisma.user.findFirst({
         where: { id: cookie?.userId },
       });
-
 
       if (!user) {
         return response.dataConflict("User Not found.");

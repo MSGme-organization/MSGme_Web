@@ -8,28 +8,42 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.username) {
-    return response.dataInvalid("username is required.");
+    return response.dataInvalid("username is required.", {
+      username: "username is required.",
+    });
   }
   if (!body.email) {
-    return response.dataInvalid("email is required.");
+    return response.dataInvalid("email is required.", {
+      email: "email is required.",
+    });
   } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-    return response.dataInvalid("email is not valid.");
+    return response.dataInvalid("email is not valid.", {
+      email: "email is not valid.",
+    });
   }
   if (!body.password) {
-    return response.dataInvalid("password is required.");
+    return response.dataInvalid("password is required.", {
+      password: "password is required.",
+    });
   } else if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/.test(
       body.password
     )
   ) {
-    return response.dataInvalid("Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.");
+    return response.dataInvalid(
+      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.",
+      {
+        password:
+          "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.",
+      }
+    );
   }
 
   if ((await userNameFetch(body.username)) || (await emailFetch(body.email))) {
-    return response.dataConflict("User already exists.")
+    return response.dataConflict("User already exists.");
   }
 
-  return null
+  return null;
 };
 
 export const POST = async (request: NextRequest) => {
@@ -37,7 +51,7 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const validationError = await validateReq(body);
     if (validationError) {
-      return validationError
+      return validationError;
     }
 
     const hash = crypto.createHash("sha1");
@@ -60,9 +74,14 @@ export const POST = async (request: NextRequest) => {
       { secure: true }
     );
 
-    const { password, ...userWithoutPassword } = user as { email: string; username: string; id: string; password: string; };
-    return response.success("signed up successfully.", userWithoutPassword)
+    const { password, ...userWithoutPassword } = user as {
+      email: string;
+      username: string;
+      id: string;
+      password: string;
+    };
+    return response.success("signed up successfully.", userWithoutPassword);
   } catch (error: any) {
-    return response.error(error.message)
+    return response.error(error.message);
   }
 };

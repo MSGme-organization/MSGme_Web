@@ -19,6 +19,7 @@ const Layout = ({
   const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
   const [isMounted, setIsMounted] = React.useState<Boolean>(false);
   const dispatch = useAppDispatch();
+
   React.useEffect(() => {
     dispatch(fetchProfile());
   }, []);

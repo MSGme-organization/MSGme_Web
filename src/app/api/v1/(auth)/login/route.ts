@@ -7,19 +7,29 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.email) {
-    return response.dataInvalid("email is required.");
+    return response.dataInvalid("email is required.", {
+      email: "email is required.",
+    });
   } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-    return response.dataInvalid("email is not valid.");
+    return response.dataInvalid("email is not valid.", {
+      email: "email is not valid.",
+    });
   }
   if (!body.password) {
-    return response.dataInvalid("password is required.");
+    return response.dataInvalid("password is required.", {
+      password: "password is required.",
+    });
   } else if (
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/.test(
       body.password
     )
   ) {
     return response.dataInvalid(
-      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character."
+      "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.",
+      {
+        password:
+          "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character.",
+      }
     );
   }
 
@@ -39,7 +49,9 @@ export const POST = async (request: NextRequest) => {
     });
 
     if (!user) {
-      return response.dataInvalid("Invalid Credentials.");
+      return response.dataInvalid("Invalid Credentials.", {
+        email: "Invalid Credentials.",
+      });
     }
 
     if (
@@ -61,7 +73,9 @@ export const POST = async (request: NextRequest) => {
       });
       return response.success("logged in successfully.", userWithoutPassword);
     } else {
-      return response.dataInvalid("Invalid credentials.");
+      return response.dataInvalid("Invalid credentials.", {
+        password: "Invalid credentials.",
+      });
     }
   } catch (error: any) {
     return response.error(error.message);

@@ -1,4 +1,7 @@
-import { deleteCloudinary, uploadCloudinary } from "@/api-modules/helpers/cloudinary";
+import {
+  deleteCloudinary,
+  uploadCloudinary,
+} from "@/api-modules/helpers/cloudinary";
 import { response } from "@/api-modules/helpers/response";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
@@ -10,14 +13,29 @@ const validateReq = async (body: any) => {
   const emailExist: any = await userNameFetch(body.email);
   const decodedUser: any = decodedToken(cookies().get("token")?.value);
   const nameExist: any = await userNameFetch(body.username);
-  const user: any = await prisma.user.findFirst({ where: { id: decodedUser.id } })
+  const user: any = await prisma.user.findFirst({
+    where: { id: decodedUser.id },
+  });
   if (body.step) {
     if (body.step === 1) {
       if (body.last_name && body.first_name) {
-        const userData = { last_name: body.last_name, first_name: body.first_name };
+        const userData = {
+          last_name: body.last_name,
+          first_name: body.first_name,
+        };
         return userData;
       } else {
-        return response.dataInvalid("data is required.");
+        const errors = {};
+        if (!body.last_name) {
+          errors["last_name"] = "last name is required.";
+        }
+        if (!body.first_name) {
+          errors["first_name"] = "first name is required.";
+        }
+
+        return response.dataInvalid("data is required.", {
+          ...errors,
+        });
       }
     } else if (body.step === 2) {
       if (body.dob) {
@@ -26,18 +44,22 @@ const validateReq = async (body: any) => {
         };
         return userData;
       } else {
-        return response.dataInvalid("date of birth is required.");
+        return response.dataInvalid("date of birth is required.", {
+          dob: "date of birth is required.",
+        });
       }
     } else if (body.step === 3) {
       if (body?.avatar) {
         if (user.avatar !== null) {
-          await deleteCloudinary(user.avatar)
+          await deleteCloudinary(user.avatar);
         }
         const { public_id } = await uploadCloudinary(body.avatar);
         const userData = { avatar: public_id };
         return userData;
       } else {
-        return response.dataInvalid("profile photo is required.");
+        return response.dataInvalid("profile photo is required.", {
+          avatar: "profile photo is required.",
+        });
       }
     } else {
       return response.dataInvalid("step is invalid.");
@@ -51,16 +73,21 @@ const validateReq = async (body: any) => {
       body.dob
     ) {
       if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-        return response.dataInvalid("email is not valid.");
+        return response.dataInvalid("email is not valid.", {
+          email: "email is not valid.",
+        });
       }
 
       if (nameExist && decodedUser.id !== nameExist.id) {
-        return response.dataConflict("username already taken.")
+        return response.dataConflict("username already taken.", {
+          username: "username already taken.",
+        });
       }
 
       if (emailExist && decodedUser.id !== emailExist.id) {
-        return response.dataConflict("email already taken.")
-
+        return response.dataConflict("email already taken.", {
+          email: "email already taken.",
+        });
       }
       let { step = null, ...userData } = {
         ...body,
@@ -69,7 +96,7 @@ const validateReq = async (body: any) => {
 
       if (body?.avatar) {
         if (user.avatar !== null) {
-          await deleteCloudinary(user.avatar)
+          await deleteCloudinary(user.avatar);
         }
         const { public_id } = await uploadCloudinary(body.avatar);
         userData = { ...userData, avatar: public_id };
@@ -77,7 +104,24 @@ const validateReq = async (body: any) => {
 
       return userData;
     } else {
-      return response.dataInvalid("Invalid credentials.")
+      const errors = {};
+      if (!body.last_name) {
+        errors["last_name"] = "last name is required.";
+      }
+      if (!body.first_name) {
+        errors["first_name"] = "first name is required.";
+      }
+      if (!body.username) {
+        errors["username"] = "username is required.";
+      }
+      if (!body.email) {
+        errors["email"] = "email is required.";
+      }
+      if (!body.dob) {
+        errors["dob"] = "date of birth is required.";
+      }
+
+      return response.dataInvalid("Invalid data.", errors);
     }
   }
 };
@@ -87,7 +131,7 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const updatedUser = await validateReq(body);
     if (updatedUser instanceof NextResponse) {
-      return updatedUser
+      return updatedUser;
     }
     const decodedUser = decodedToken(cookies().get("token")?.value);
 
@@ -97,8 +141,8 @@ export const POST = async (request: NextRequest) => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
-    return response.success("user data updated successfully.", user)
+    return response.success("user data updated successfully.", user);
   } catch (error: any) {
-    return response.error(error.message)
+    return response.error(error.message);
   }
 };

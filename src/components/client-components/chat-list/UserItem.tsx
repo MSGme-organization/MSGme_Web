@@ -1,6 +1,6 @@
 "use client";
 
-import moment from "moment";
+import { getDayDiff, getHrsDiff } from "@/utils/date";
 import Image from "next/image";
 import React from "react";
 
@@ -11,7 +11,7 @@ interface Data {
   lastChatTime: string;
   newUnreadChatCount: number;
   avatarImage: string;
-  handleNavigation: (path: string) => void;
+  handleNavigation: (path: string, state: any) => void;
   isActive?: boolean;
 }
 
@@ -25,11 +25,11 @@ const UserItem: React.FC<Data> = ({
   handleNavigation,
   isActive,
 }) => {
-  const hrsDiff = moment().diff(moment(lastChatTime).format(), "hours");
-  const dayDiff = moment().diff(moment(lastChatTime).format(), "days");
+  const hrsDiff = getHrsDiff(lastChatTime);
+  const dayDiff = getDayDiff(lastChatTime);
 
   const handle = () => {
-    handleNavigation(`/chat/${id}`);
+    handleNavigation(`/chat/${id}`, { id });
   };
   return (
     <div
@@ -66,7 +66,7 @@ const UserItem: React.FC<Data> = ({
             : dayDiff + " days ago"}
         </p>
         {newUnreadChatCount > 0 && (
-          <div className="bg-red-500 text-white text-[12px] rounded-full w-5 h-5 flex items-center justify-center">
+          <div className="bg-red-500 text-white text-[12px] leading-[20px] text-center rounded-full w-5 h-5 flex items-center justify-center">
             {newUnreadChatCount}
           </div>
         )}

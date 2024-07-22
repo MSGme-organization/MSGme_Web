@@ -8,7 +8,7 @@ import { SetPassword } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProvider, useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,6 +17,14 @@ const ResetPassword = () => {
   const [isShown, setShown] = useState(false);
   const [isShown2, setShown2] = useState(false);
 
+  const formik = useFormik({
+    initialValues: { password: "", confirmPassword: "" },
+    validationSchema: SetPassword,
+    onSubmit: (value: any) => {
+      passwordQuery.mutate(value);
+    },
+  });
+
   const passwordQuery = useMutation({
     mutationFn: setPassword,
     onSuccess: () => {
@@ -24,13 +32,11 @@ const ResetPassword = () => {
       successToast("password changed successfully.");
     },
     onError: (error: any) => {
+      formik.setErrors(error.response.data.data);
       errorToast(error.response.data.message);
     },
   });
 
-  const handleSubmit = (value: any) => {
-    passwordQuery.mutate(value);
-  };
   return (
     <Loading isLoading={passwordQuery.isPending}>
       <div className="flex justify-center w-[100%] h-[100%] mt-28  mb-20">
@@ -41,11 +47,7 @@ const ResetPassword = () => {
               Password and Confirm password must be same
             </p>
           </div>
-          <Formik
-            initialValues={{ password: "", confirmPassword: "" }}
-            validationSchema={SetPassword}
-            onSubmit={handleSubmit}
-          >
+          <FormikProvider value={formik}>
             <Form>
               <div className="mt-6 max-w-[518px]">
                 <div className="w-[100%] mb-6">
@@ -128,7 +130,7 @@ const ResetPassword = () => {
                 </div>
               </div>
             </Form>
-          </Formik>
+          </FormikProvider>
         </div>
       </div>
     </Loading>

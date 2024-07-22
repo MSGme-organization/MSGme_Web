@@ -87,7 +87,9 @@ const Input = React.forwardRef<
               {...rest}
               id={name}
               type={type}
-              className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none bg-white dark:bg-customGrey-blackBg focus:shadow-none focus:ring-0 focus:dark:border-[#38C585] focus:border-[#38C585]  ${classes}`}
+              className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none bg-white dark:bg-customGrey-blackBg focus:shadow-none focus:ring-0 focus:dark:border-[#38C585] focus:border-[#38C585] ${
+                error ? "border-red-500" : ""
+              } ${classes}`}
               required={required}
               placeholder={placeholder}
             />

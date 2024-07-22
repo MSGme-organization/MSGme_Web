@@ -7,12 +7,20 @@ import { resetPassword } from "@/query/auth/auth";
 import { EmailValidation } from "@/utils/formik-validation";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProvider, useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
   const router = useRouter();
+
+  const formik = useFormik({
+    initialValues: { email: "" },
+    validationSchema: EmailValidation,
+    onSubmit: (value: any) => {
+      resetPassQuery.mutate(value);
+    },
+  });
 
   const resetPassQuery = useMutation({
     mutationFn: resetPassword,
@@ -21,13 +29,10 @@ const ResetPassword = () => {
       router.push("/otp");
     },
     onError: (error: any) => {
+      formik.setErrors(error.response.data.data);
       errorToast(error.response.data.message);
     },
   });
-
-  const handleSubmit = (value: any) => {
-    resetPassQuery.mutate(value);
-  };
 
   return (
     <Loading isLoading={resetPassQuery.isPending}>
@@ -39,11 +44,7 @@ const ResetPassword = () => {
               We will send you link to reset your password
             </p>
           </div>
-          <Formik
-            initialValues={{ email: "" }}
-            validationSchema={EmailValidation}
-            onSubmit={handleSubmit}
-          >
+          <FormikProvider value={formik}>
             <Form>
               <div className="mt-6 max-w-[518px]">
                 <div className="w-[100%] mb-6">
@@ -85,7 +86,7 @@ const ResetPassword = () => {
                 </div>
               </div>
             </Form>
-          </Formik>
+          </FormikProvider>
           <div className="text-center">
             <p className="text-[14px] mt-3 font-medium">
               Remember your password?{" "}

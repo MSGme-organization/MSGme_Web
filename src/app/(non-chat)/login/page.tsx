@@ -11,7 +11,7 @@ import { LoginValidation } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, FormikProvider, useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -25,6 +25,14 @@ const Login = () => {
   const [isShown, setShown] = useState(false);
   const router = useRouter();
 
+  const formik = useFormik({
+    initialValues: loginInitialValue,
+    validationSchema: LoginValidation,
+    onSubmit: (value) => {
+      loginQuery.mutate(value);
+    },
+  });
+
   const loginQuery = useMutation({
     mutationFn: login,
     onSuccess: () => {
@@ -32,13 +40,10 @@ const Login = () => {
       successToast("Logged in successfully");
     },
     onError: (error: any) => {
+      formik.setErrors(error.response.data.data);
       errorToast(error.response.data.message);
     },
   });
-
-  const handleSubmit = (value: any) => {
-    loginQuery.mutate(value);
-  };
 
   return (
     <Loading isLoading={loginQuery.isPending}>
@@ -50,11 +55,7 @@ const Login = () => {
               Enter your email and password to sign in
             </p>
           </div>
-          <Formik
-            initialValues={loginInitialValue}
-            validationSchema={LoginValidation}
-            onSubmit={handleSubmit}
-          >
+          <FormikProvider value={formik}>
             <Form>
               <div className="mt-6 max-w-[518px]">
                 <div className="w-[100%]">
@@ -132,7 +133,7 @@ const Login = () => {
                 </button>
               </div>
             </Form>
-          </Formik>
+          </FormikProvider>
           <div className="text-center">
             <p className="text-[14px] mt-3 font-medium">
               Not registered yet?{" "}

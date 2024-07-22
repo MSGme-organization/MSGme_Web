@@ -10,9 +10,11 @@ import { NextRequest } from "next/server";
 
 const validateReq = async (body: any) => {
   if (!body.email) {
-    return response.dataInvalid("email is required.");
+    return response.dataInvalid("email is required.", {
+      email: "email is required.",
+    });
   }
-  return null
+  return null;
 };
 
 export const POST = async (request: NextRequest) => {
@@ -20,24 +22,26 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const validationError = await validateReq(body);
     if (validationError) {
-      return validationError
+      return validationError;
     }
 
     const user: any = await emailFetch(body.email);
 
     if (!user) {
-      return response.dataConflict("Invalid email.");
+      return response.dataConflict("Invalid email.", {
+        email: "Invalid email.",
+      });
     }
 
     const otpId = randomUUID();
     const otp = `${randomInt(9)}${randomInt(9)}${randomInt(9)}${randomInt(9)}`;
     const template = resetPassMailTemplate(body.email, otp);
-    await redis.connect()
+    await redis.connect();
     await resetPasswordMail(body.email, template);
     if (await redis.get(otpId)) {
       await redis.del(otpId);
     }
-    await redis.set(otpId, otp, { "EX": 600 });
+    await redis.set(otpId, otp, { EX: 600 });
     cookies().set(
       "otp_verify",
       generateToken({ otpId, userId: user.id, emailId: user.email }),
