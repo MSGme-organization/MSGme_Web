@@ -1,35 +1,47 @@
 import {
-  deleteCloudinary,
-  uploadCloudinary,
+  deleteCloudinaryImage,
+  uploadCloudinaryImage,
 } from "@/api-modules/helpers/cloudinary";
 import { response } from "@/api-modules/helpers/response";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
-import { userNameFetch } from "@/utils/user_fetch";
+import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const validateReq = async (body: any) => {
-  const emailExist: any = await userNameFetch(body.email);
+const validateReq = async (body: FormData) => {
+  const emailExist: any =
+    body.get("email") && (await emailFetch(body.get("email") as string));
   const decodedUser: any = decodedToken(cookies().get("token")?.value);
-  const nameExist: any = await userNameFetch(body.username);
+  const nameExist: any =
+    body.get("username") &&
+    (await userNameFetch(body.get("username")?.toString()));
   const user: any = await prisma.user.findFirst({
     where: { id: decodedUser.id },
   });
-  if (body.step) {
-    if (body.step === 1) {
-      if (body.last_name && body.first_name) {
+  const step = Number(body.get("step"));
+  const last_name = body.get("last_name")?.toString();
+  const first_name = body.get("first_name")?.toString();
+  const dob = body.get("dob")?.toString();
+  const avatar = body.get("avatar");
+  const username = body.get("username")?.toString();
+  const email = body.get("email")?.toString();
+  const bio = body.get("bio")?.toString();
+
+  if (step) {
+    if (step === 1) {
+      if (last_name && first_name) {
         const userData = {
-          last_name: body.last_name,
-          first_name: body.first_name,
+          last_name: last_name,
+          first_name: first_name,
         };
         return userData;
       } else {
         const errors = {};
-        if (!body.last_name) {
+        if (!last_name) {
           errors["last_name"] = "last name is required.";
         }
-        if (!body.first_name) {
+        if (!first_name) {
           errors["first_name"] = "first name is required.";
         }
 
@@ -37,10 +49,10 @@ const validateReq = async (body: any) => {
           ...errors,
         });
       }
-    } else if (body.step === 2) {
-      if (body.dob) {
+    } else if (step === 2) {
+      if (dob) {
         const userData = {
-          dob: new Date(body.dob).toISOString(),
+          dob: new Date(dob).toISOString(),
         };
         return userData;
       } else {
@@ -48,12 +60,12 @@ const validateReq = async (body: any) => {
           dob: "date of birth is required.",
         });
       }
-    } else if (body.step === 3) {
-      if (body?.avatar) {
+    } else if (step === 3) {
+      if (avatar) {
         if (user.avatar !== null) {
-          await deleteCloudinary(user.avatar);
+          await deleteCloudinaryImage(user.avatar);
         }
-        const { public_id } = await uploadCloudinary(body.avatar);
+        const { public_id } = await uploadCloudinaryImage(avatar as File);
         const userData = { avatar: public_id };
         return userData;
       } else {
@@ -65,71 +77,54 @@ const validateReq = async (body: any) => {
       return response.dataInvalid("step is invalid.");
     }
   } else {
-    if (
-      body.last_name &&
-      body.first_name &&
-      body.username &&
-      body.email &&
-      body.dob
-    ) {
-      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(body.email)) {
-        return response.dataInvalid("email is not valid.", {
-          email: "email is not valid.",
-        });
-      }
+    const userData = {};
+    last_name && (userData["last_name"] = last_name);
+    first_name && (userData["first_name"] = first_name);
+    dob && (userData["dob"] = dob);
+    bio && (userData["bio"] = bio);
 
+    if (avatar) {
+      if (user.avatar !== null) {
+        await deleteCloudinaryImage(user.avatar);
+      }
+      const { public_id } = await uploadCloudinaryImage(avatar as File);
+      userData["avatar"] = public_id;
+    }
+
+    if (username) {
       if (nameExist && decodedUser.id !== nameExist.id) {
         return response.dataConflict("username already taken.", {
           username: "username already taken.",
         });
+      } else {
+        userData["username"] = username;
       }
+    }
 
-      if (emailExist && decodedUser.id !== emailExist.id) {
+    if (email) {
+      if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        return response.dataInvalid("email is not valid.", {
+          email: "email is not valid.",
+        });
+      } else if (emailExist && decodedUser.id !== emailExist.id) {
         return response.dataConflict("email already taken.", {
           email: "email already taken.",
         });
+      } else {
+        userData["email"] = email;
       }
-      let { step = null, ...userData } = {
-        ...body,
-        dob: new Date(body.dob).toISOString(),
-      };
-
-      if (body?.avatar) {
-        if (user.avatar !== null) {
-          await deleteCloudinary(user.avatar);
-        }
-        const { public_id } = await uploadCloudinary(body.avatar);
-        userData = { ...userData, avatar: public_id };
-      }
-
-      return userData;
-    } else {
-      const errors = {};
-      if (!body.last_name) {
-        errors["last_name"] = "last name is required.";
-      }
-      if (!body.first_name) {
-        errors["first_name"] = "first name is required.";
-      }
-      if (!body.username) {
-        errors["username"] = "username is required.";
-      }
-      if (!body.email) {
-        errors["email"] = "email is required.";
-      }
-      if (!body.dob) {
-        errors["dob"] = "date of birth is required.";
-      }
-
-      return response.dataInvalid("Invalid data.", errors);
     }
+
+    return userData;
   }
 };
 
 export const POST = async (request: NextRequest) => {
   try {
-    const body = await request.json();
+    const body = await request.formData();
+
     const updatedUser = await validateReq(body);
+    console.log(updatedUser);
     if (updatedUser instanceof NextResponse) {
       return updatedUser;
     }
@@ -141,7 +136,7 @@ export const POST = async (request: NextRequest) => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
-    return response.success("user data updated successfully.", user);
+    return response.success("user data updated successfully.", {});
   } catch (error: any) {
     return response.error(error.message);
   }

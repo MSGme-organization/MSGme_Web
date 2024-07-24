@@ -10,7 +10,6 @@ import * as Yup from "yup";
 import Input from "../common-components/Input";
 import Loading from "../loader/Loading";
 
-
 const validationSchema = Yup.object({
   first_name: Yup.string().required("First Name is required"),
   last_name: Yup.string().required("Last Name is required"),
@@ -21,7 +20,7 @@ type Props = {
 };
 
 const FullName = ({ handleIncrement }: Props) => {
-  const data = useAppSelector(state => state.profile);
+  const data = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
   const dataQuery = useMutation({
@@ -36,9 +35,12 @@ const FullName = ({ handleIncrement }: Props) => {
   });
 
   const handleSubmit = (value: any) => {
-    dataQuery.mutate({ step: 1, ...value });
+    const formData = new FormData();
+    formData.append("first_name", value.first_name);
+    formData.append("last_name", value.last_name);
+    formData.append("step", "1");
+    dataQuery.mutate(formData);
   };
-
 
   return (
     <Loading isLoading={dataQuery.isPending}>
@@ -65,19 +67,20 @@ const FullName = ({ handleIncrement }: Props) => {
                 {({ field, form, ...rest }: any) => {
                   return (
                     <Input
-                      field={field}
-                      rest={rest}
                       type="text"
                       placeholder="First Name"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.first_name && form?.touched?.first_name
-                        ? "dark:border-red-500 border-red-500"
-                        : ""
-                        }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
+                        form?.errors?.first_name && form?.touched?.first_name
+                          ? "dark:border-red-500 border-red-500"
+                          : ""
+                      }`}
                       error={
                         form?.errors?.first_name && form?.touched?.first_name
                           ? form?.errors?.first_name
                           : ""
                       }
+                      {...field}
+                      {...rest}
                     />
                   );
                 }}
@@ -91,19 +94,20 @@ const FullName = ({ handleIncrement }: Props) => {
                 {({ field, form, ...rest }: any) => {
                   return (
                     <Input
-                      field={field}
-                      rest={rest}
                       type="text"
                       placeholder="Last Name"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.last_name && form?.touched?.last_name
-                        ? "dark:border-red-500 border-red-500"
-                        : ""
-                        }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
+                        form?.errors?.last_name && form?.touched?.last_name
+                          ? "dark:border-red-500 border-red-500"
+                          : ""
+                      }`}
                       error={
                         form?.errors?.last_name && form?.touched?.last_name
                           ? form?.errors?.last_name
                           : ""
                       }
+                      {...field}
+                      {...rest}
                     />
                   );
                 }}

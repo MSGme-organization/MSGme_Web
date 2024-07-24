@@ -135,7 +135,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
         >
           <Input
             type="text"
-            ref={searchRef}
+            // ref={searchRef}
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"

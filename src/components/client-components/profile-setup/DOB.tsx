@@ -19,7 +19,7 @@ type Props = {
 };
 
 const DOB = ({ handleDecrement, handleIncrement }: Props) => {
-  const data = useAppSelector(state => state.profile);
+  const data = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
   const dataQuery = useMutation({
@@ -34,7 +34,10 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
   });
 
   const handleSubmit = (value: any) => {
-    dataQuery.mutate({ step: 2, ...value });
+    const formData = new FormData();
+    formData.append("dob", value.dob);
+    formData.append("step", "2");
+    dataQuery.mutate(formData);
   };
 
   return (
@@ -58,19 +61,20 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
                 {({ form, field, ...rest }) => {
                   return (
                     <Input
-                      field={field}
-                      rest={rest}
                       type="date"
                       placeholder="Select date"
-                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${form?.errors?.dob && form?.touched?.dob
-                        ? "dark:border-red-500 border-red-500"
-                        : ""
-                        }`}
+                      classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${
+                        form?.errors?.dob && form?.touched?.dob
+                          ? "dark:border-red-500 border-red-500"
+                          : ""
+                      }`}
                       error={
                         form?.errors?.dob && form?.touched?.dob
                           ? form?.errors?.dob
                           : ""
                       }
+                      {...field}
+                      {...rest}
                     />
                   );
                 }}

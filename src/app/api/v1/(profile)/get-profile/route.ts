@@ -12,9 +12,12 @@ export const GET = async () => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
-    return response.success("fetched user data success.", user)
 
+    return response.success("fetched user data success.", {
+      ...user,
+      avatar: user?.avatar ? { url: user?.avatar } : null,
+    });
   } catch (error: any) {
-    return response.error(error.message)
+    return response.error(error.message);
   }
 };

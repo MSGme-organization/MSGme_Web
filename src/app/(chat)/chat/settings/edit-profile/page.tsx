@@ -65,27 +65,28 @@ const fields = [
 ];
 
 const EditProfile = () => {
-  const [imageData, setImageData] = React.useState(null);
   const data = useAppSelector((state) => state.profile);
   const ref = React.useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
 
-  const handleSubmit = (values: any) => {
-    if (imageData) {
-      const fr = new FileReader();
-      fr.onload = function (event: any) {
-        const base64String = event.target.result.split(",")[1];
-        dataQuery.mutate({ ...values, avatar: base64String });
-      };
-      fr.onerror = function (event: any) {
-        console.error(
-          "File could not be read! Code " + event.target.error.code
-        );
-      };
-      fr.readAsDataURL(imageData as Blob);
-    } else {
-      dataQuery.mutate(values);
-    }
+  const handleSubmit = (values: any, props: any) => {
+    const formData = new FormData();
+
+    Object.keys(values).forEach((key) => {
+      if (key === "avatar") {
+        if (values.avatar?.url !== data.avatar?.url) {
+          formData.append("avatar", values.avatar.file);
+        }
+      } else if (key === "dob") {
+        if (values.dob === formatDate(data.dob)) {
+          formData.delete("dob");
+        }
+      } else {
+        values[key] !== data[key] && formData.append(key, values[key]);
+      }
+    });
+
+    dataQuery.mutate(formData);
   };
 
   const formik = useFormik({
@@ -102,7 +103,7 @@ const EditProfile = () => {
       successToast("profile updated.");
     },
     onError: (error: any) => {
-      formik.setErrors(error.response.data.data);
+      error.response.data.data && formik.setErrors(error.response.data.data);
       errorToast(error.response.statusText);
     },
   });
@@ -114,8 +115,8 @@ const EditProfile = () => {
   const handleFile = (event: any) => {
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
-    formik.setFieldValue("avatar", imageUrl);
-    setImageData(imageFile);
+    formik.setFieldValue("avatar", { file: imageFile, url: imageUrl });
+    formik.setFieldTouched("avatar", true);
   };
 
   return (
@@ -130,7 +131,7 @@ const EditProfile = () => {
             <CldImage
               width={150}
               height={150}
-              src={formik.values.avatar || "MSGme/default_profile"}
+              src={formik.values.avatar?.url || "MSGme/default_profile"}
               alt="profile image"
               className="rounded-full aspect-square object-contain"
             />
@@ -139,6 +140,8 @@ const EditProfile = () => {
               className="hidden"
               ref={ref}
               onChange={handleFile}
+              multiple={false}
+              accept="image/*"
             />
             <button
               type="button"
@@ -166,6 +169,7 @@ const EditProfile = () => {
             </div>
             <div className="w-[50%]">
               <Input
+                {...formik.getFieldMeta("last_name")}
                 {...formik.getFieldProps("last_name")}
                 error={formik.errors.last_name as string}
                 placeholder="Last Name"
@@ -183,6 +187,7 @@ const EditProfile = () => {
             <Input
               key={index}
               {...formik.getFieldProps(field.name)}
+              {...formik.getFieldMeta(field.name)}
               {...field}
               error={formik.errors[field.name] as string}
             />
@@ -190,6 +195,7 @@ const EditProfile = () => {
           <button
             type="submit"
             className="w-full bg-primary text-white rounded-lg py-2 active:scale-[.99] font-bold"
+            disabled={Object.keys(formik.touched).length <= 0}
           >
             Save Changes
           </button>

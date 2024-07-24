@@ -24,7 +24,7 @@ const Otp = () => {
         errorToast("Invalid OTP!");
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       setLoading(false);
       errorToast(error.message);
     }
@@ -40,7 +40,6 @@ const Otp = () => {
     }
     setLoading(false);
   };
-
   return (
     <Loading isLoading={loading}>
       <div className="flex justify-center w-[100%] h-[100%] mt-28  mb-20">
@@ -52,7 +51,7 @@ const Otp = () => {
             </p>
           </div>
           <div className="flex justify-center mt-8">
-            <CustomOtpInput length={4} onChange={setOTP} />
+            <CustomOtpInput length={4} otp={OTP} onChange={setOTP} />
           </div>
           <div className="mb-5 mt-8">
             <button

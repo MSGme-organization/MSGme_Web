@@ -47,15 +47,10 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
   });
 
   const handleContinue = async () => {
-    const fr = new FileReader();
-    fr.onload = function (event: any) {
-      const base64String = event.target.result.split(",")[1];
-      dataQuery.mutate({ step: 3, avatar: base64String });
-    };
-    fr.onerror = function (event: any) {
-      console.error("File could not be read! Code " + event.target.error.code);
-    };
-    fr.readAsDataURL(imageFile as Blob);
+    const formdata = new FormData();
+    formdata.append("avatar", imageFile || "");
+    formdata.append("step", "3");
+    dataQuery.mutate(formdata);
   };
 
   return (

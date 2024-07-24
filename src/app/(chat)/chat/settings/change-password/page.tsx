@@ -64,6 +64,7 @@ const ChangePassword = () => {
         >
           {inputArr.map((input, index) => (
             <Input
+              {...formik.getFieldMeta(input.name)}
               {...formik.getFieldProps(input.name)}
               error={formik.errors[input.name as keyof typeof formik.errors]}
               key={index}

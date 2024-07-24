@@ -61,8 +61,6 @@ const ResetPassword = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -79,6 +77,8 @@ const ResetPassword = () => {
                               ? form?.errors?.password
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
@@ -95,8 +95,6 @@ const ResetPassword = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type={isShown2 ? "text" : "password"}
                           placeholder="Confirm Password"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -115,6 +113,8 @@ const ResetPassword = () => {
                               ? form?.errors?.confirmPassword
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}

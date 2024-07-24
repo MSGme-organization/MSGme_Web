@@ -71,6 +71,7 @@ export const POST = async (request: NextRequest) => {
       cookies().set("currentUser", JSON.stringify(userWithoutPassword), {
         secure: true,
       });
+      console.log(cookies().get("token"), "login");
       return response.success("logged in successfully.", userWithoutPassword);
     } else {
       return response.dataInvalid("Invalid credentials.", {

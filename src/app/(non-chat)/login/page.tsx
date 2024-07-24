@@ -66,8 +66,6 @@ const Login = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type="email"
                           placeholder="abc@example.com"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -82,6 +80,8 @@ const Login = () => {
                               ? form?.errors?.email
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
@@ -95,8 +95,6 @@ const Login = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -113,6 +111,8 @@ const Login = () => {
                               ? form?.errors?.password
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
