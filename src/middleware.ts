@@ -12,7 +12,6 @@ const protectedApiRoutes = [
 ];
 
 export default async function middleware(req: NextRequest) {
-  console.log("token", cookies().get("token"));
   try {
     if (req.nextUrl.pathname.startsWith("/api")) {
       const isprotectedRoute = protectedApiRoutes.includes(

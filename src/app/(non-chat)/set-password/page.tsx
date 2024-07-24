@@ -8,7 +8,7 @@ import { SetPassword } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
-import { Field, Form, Formik, FormikProvider, useFormik } from "formik";
+import { Field, Form, FormikProvider, useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

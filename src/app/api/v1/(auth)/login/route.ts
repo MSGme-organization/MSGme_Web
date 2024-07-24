@@ -65,12 +65,11 @@ export const POST = async (request: NextRequest) => {
           username: user.username,
           email: user.email,
         }),
-        { secure: true }
+        { secure: process.env.NODE_ENV === "production" }
       );
+
       const { password, ...userWithoutPassword } = user;
-      cookies().set("currentUser", JSON.stringify(userWithoutPassword), {
-        secure: true,
-      });
+      cookies().set("currentUser", JSON.stringify(userWithoutPassword));
       return response.success("logged in successfully.", userWithoutPassword);
     } else {
       return response.dataInvalid("Invalid credentials.", {
