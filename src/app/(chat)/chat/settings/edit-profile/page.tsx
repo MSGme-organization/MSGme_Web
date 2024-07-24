@@ -65,7 +65,15 @@ const fields = [
 ];
 
 const EditProfile = () => {
-  const data = useAppSelector((state) => state.profile);
+  const data = useAppSelector((state) => state.profile) as {
+    avatar: { url?: string };
+    dob?: string;
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+    email?: string;
+    bio?: string;
+  };
   const ref = React.useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
 
