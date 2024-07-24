@@ -15,15 +15,12 @@ interface InputProps {
   iconClass?: string | undefined;
   LeftIcon?: null | undefined | (() => React.ReactNode);
   RightIcon?: null | undefined | (() => React.ReactNode);
-  form?: any;
-  field?: any;
-  rest?: any;
   rightIconToggle?: VoidFunction;
   inputRef?: React.Ref<HTMLInputElement>;
 }
 
 const Input = React.forwardRef<
-  HTMLInputElement | HTMLTextAreaElement,
+  HTMLInputElement & HTMLTextAreaElement,
   InputProps
 >(
   (
@@ -40,9 +37,8 @@ const Input = React.forwardRef<
       iconClass,
       LeftIcon,
       RightIcon,
-      field,
-      rest,
       rightIconToggle,
+      ...props
     },
     ref
   ) => {
@@ -70,12 +66,11 @@ const Input = React.forwardRef<
               value={value || ""}
               onChange={onChange}
               name={name}
-              {...field}
-              {...rest}
               id={name}
               className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-primary bg-white dark:bg-customGrey-blackBg ${classes}`}
               required={required}
               placeholder={placeholder}
+              {...props}
             />
           ) : (
             <input
@@ -83,14 +78,13 @@ const Input = React.forwardRef<
               onChange={onChange}
               name={name}
               value={value}
-              {...field}
-              {...rest}
               id={name}
               type={type}
               className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none bg-white dark:bg-customGrey-blackBg focus:shadow-none focus:ring-0 focus:dark:border-[#38C585] focus:border-[#38C585] ${
                 error ? "border-red-500" : ""
               } ${classes}`}
               required={required}
+              {...props}
               placeholder={placeholder}
             />
           )}

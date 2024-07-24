@@ -96,3 +96,8 @@
 .search-bar-focus:focus {
   border: 1 px solid #38c585;
 }
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

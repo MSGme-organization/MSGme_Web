@@ -72,8 +72,6 @@ const Register = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type="text"
                           placeholder="Username"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -88,6 +86,8 @@ const Register = () => {
                               ? form?.errors?.userName
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
@@ -101,8 +101,6 @@ const Register = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type="text"
                           placeholder="email@example.com"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -117,6 +115,8 @@ const Register = () => {
                               ? form?.errors?.email
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
@@ -133,8 +133,6 @@ const Register = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type={isShown ? "text" : "password"}
                           placeholder="Password"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -151,6 +149,8 @@ const Register = () => {
                               ? form?.errors?.password
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}
@@ -167,8 +167,6 @@ const Register = () => {
                     {({ field, form, ...rest }: any) => {
                       return (
                         <Input
-                          field={field}
-                          rest={rest}
                           type={isShown2 ? "text" : "password"}
                           placeholder="Confirm Password"
                           classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] ps-[36px] ${
@@ -187,6 +185,8 @@ const Register = () => {
                               ? form?.errors?.confirmPassword
                               : ""
                           }
+                          {...field}
+                          {...rest}
                         />
                       );
                     }}

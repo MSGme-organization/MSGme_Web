@@ -17,7 +17,7 @@ const TextMessageField = ({
   setReplyMsg,
   replyMsg,
 }: TextMessageFieldProps) => {
-  const inputRef = React.useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const inputRef = React.useRef<HTMLInputElement & HTMLTextAreaElement>(null);
   const formik = useFormik({
     initialValues: {
       msg: "",
