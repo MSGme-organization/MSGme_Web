@@ -5,10 +5,11 @@ import { authorize } from "./api-modules/middlewares/authorize";
 const publicRoutes = ["/", "/login", "/register", "/reset-password"];
 
 const protectedApiRoutes = [
-  "/api/edit-profile",
-  "/api/get-profile",
-  "/api/change-password",
-  "/api/logout",
+  "/api/v1/edit-profile",
+  "/api/v1/get-profile",
+  "/api/v1/change-password",
+  "/api/v1/logout",
+  "/api/v1/get-friends",
 ];
 
 export default async function middleware(req: NextRequest) {
@@ -17,7 +18,7 @@ export default async function middleware(req: NextRequest) {
       const isprotectedRoute = protectedApiRoutes.includes(
         req.nextUrl.pathname
       );
-
+      console.log(isprotectedRoute);
       if (isprotectedRoute) {
         await authorize(req);
         return NextResponse.next();

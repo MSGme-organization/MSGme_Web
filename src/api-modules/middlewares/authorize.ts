@@ -11,13 +11,13 @@ export const authorize = async (req: NextRequest) => {
     } else {
       return NextResponse.json(
         { message: "token not found!" },
-        { status: 401, statusText: "token not found!" }
+        { status: 401}
       );
     }
   } catch (err: any) {
     return NextResponse.json(
       { message: err.message },
-      { status: 500, statusText: err.message }
+      { status: 500}
     );
   }
 };
