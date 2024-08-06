@@ -1,8 +1,7 @@
-import { response } from "@/api-modules/helpers/response";
+import { cookies } from "next/headers";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { response } from "@/api-modules/helpers/response";
 
 export const GET = async () => {
   try {
@@ -16,8 +15,9 @@ export const GET = async () => {
         to_friend_list: true,
       },
     });
-    console.log("friendsList", friendsList);
 
     return response.success("", { friendsList: friendsList });
-  } catch (error) {}
+  } catch (error: any) {
+    return response.error(error?.message);
+  }
 };

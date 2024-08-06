@@ -18,7 +18,7 @@ export default async function middleware(req: NextRequest) {
       const isprotectedRoute = protectedApiRoutes.includes(
         req.nextUrl.pathname
       );
-      console.log(isprotectedRoute);
+      
       if (isprotectedRoute) {
         await authorize(req);
         return NextResponse.next();
