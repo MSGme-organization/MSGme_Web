@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 import AddModal from "../modals/AddModal";
-import Image from "next/image";
 
 import { AvatarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
 import { useThemeMode } from "flowbite-react";

@@ -74,6 +74,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       return !prev;
     });
   };
+
   return (
     <>
       <div
