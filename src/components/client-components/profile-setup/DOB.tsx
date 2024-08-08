@@ -2,6 +2,8 @@
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateProfileData } from "@/redux/profile/profileSlice";
+import { formatDate } from "@/utils/date";
+import { CalendarIcon } from "@/utils/svgs";
 import { errorToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { Field, Form, Formik } from "formik";
@@ -22,6 +24,7 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
   const data = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
+  console.log(data);
   const dataQuery = useMutation({
     mutationFn: editProfile,
     onSuccess: (res: any) => {
@@ -34,6 +37,10 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
   });
 
   const handleSubmit = (value: any) => {
+    if (formatDate(data.dob) === value.dob) {
+      handleIncrement();
+      return;
+    }
     const formData = new FormData();
     formData.append("dob", value.dob);
     formData.append("step", "2");
@@ -48,7 +55,7 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
           <p className="font-regular text-[14px]">It will not show publicly</p>
         </div>
         <Formik
-          initialValues={{ dob: data.dob }}
+          initialValues={{ dob: data.dob ? formatDate(data.dob) : null }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -61,6 +68,8 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
                 {({ form, field, ...rest }) => {
                   return (
                     <Input
+                      RightIcon={CalendarIcon}
+                      iconClass="text-[20px] text-[#96A1AF] end-[10px]"
                       type="date"
                       placeholder="Select date"
                       classes={`bg-gray-100 dark:bg-customGrey-blackBg h-[100%] min-h-[50px] mt-1 ${

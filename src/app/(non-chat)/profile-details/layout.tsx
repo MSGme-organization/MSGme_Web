@@ -3,9 +3,11 @@
 import "react-step-progress-bar/styles.css";
 
 import { ProfileProvider } from "@/components/client-components/profile-setup/ProfileContext";
+import { useAppDispatch } from "@/redux/hooks";
+import { fetchProfile } from "@/redux/profile/profileSlice";
 import { CheckCircle } from "@/utils/svgs";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProgressBar, Step } from "react-step-progress-bar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,6 +18,11 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }>) {
   const [step, setStep] = useState(0);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchProfile());
+  }, []);
 
   return (
     <>

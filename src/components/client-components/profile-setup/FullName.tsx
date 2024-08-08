@@ -35,6 +35,10 @@ const FullName = ({ handleIncrement }: Props) => {
   });
 
   const handleSubmit = (value: any) => {
+    if(data.first_name === value.first_name && data.last_name === value.last_name) {
+      handleIncrement();
+      return;
+    }
     const formData = new FormData();
     formData.append("first_name", value.first_name);
     formData.append("last_name", value.last_name);

@@ -47,10 +47,14 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
   });
 
   const handleContinue = async () => {
-    const formdata = new FormData();
-    formdata.append("avatar", imageFile || "");
-    formdata.append("step", "3");
-    dataQuery.mutate(formdata);
+    if (imageFile) {
+      const formdata = new FormData();
+      formdata.append("avatar", imageFile || "");
+      formdata.append("step", "3");
+      dataQuery.mutate(formdata);
+    } else {
+      router.push("/chat");
+    }
   };
 
   return (

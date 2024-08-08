@@ -19,6 +19,7 @@ const validateReq = async (body: FormData) => {
   const user: any = await prisma.user.findFirst({
     where: { id: decodedUser.id },
   });
+
   const step = Number(body.get("step"));
   const last_name = body.get("last_name")?.toString();
   const first_name = body.get("first_name")?.toString();
@@ -69,9 +70,7 @@ const validateReq = async (body: FormData) => {
         const userData = { avatar: public_id };
         return userData;
       } else {
-        return response.dataInvalid("profile photo is required.", {
-          avatar: "profile photo is required.",
-        });
+        return response.success("Profile Set.", {});
       }
     } else {
       return response.dataInvalid("step is invalid.");
@@ -122,9 +121,7 @@ const validateReq = async (body: FormData) => {
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.formData();
-
     const updatedUser = await validateReq(body);
-    console.log(updatedUser);
     if (updatedUser instanceof NextResponse) {
       return updatedUser;
     }
@@ -136,7 +133,7 @@ export const POST = async (request: NextRequest) => {
     });
 
     cookies().set("currentUser", JSON.stringify(user));
-    return response.success("user data updated successfully.", {});
+    return response.success("user data updated successfully.", user);
   } catch (error: any) {
     return response.error(error.message);
   }
