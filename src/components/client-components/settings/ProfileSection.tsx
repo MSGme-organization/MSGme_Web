@@ -3,16 +3,26 @@ import { EditIcon } from "@/utils/svgs";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 
+interface ProfileData {
+  username: string;
+  avatar: string | { url: string };
+}
+
 const ProfileSection = () => {
   const router = useRouter();
-  const data = useAppSelector((state) => state.profile);
+  const data: ProfileData = useAppSelector((state) => state.profile);
+  const avatarSrc =
+    typeof data.avatar === "string"
+      ? data.avatar
+      : data.avatar?.url || "MSGme/default_profile";
+
   return (
     <section className="w-full flex justify-between items-center p-4 h-[100px] text-black dark:text-white bg-white dark:bg-customGrey-black border-b border-gray-200 dark:border-gray-800">
       <div className="flex items-center gap-2 w-[95%]">
         <CldImage
           width={60}
           height={60}
-          src={data.avatar?.url || "MSGme/default_profile"}
+          src={avatarSrc || "MSGme/default_profile"}
           alt="profile image"
           className="rounded-full aspect-square object-contain"
         />

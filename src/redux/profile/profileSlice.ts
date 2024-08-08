@@ -17,12 +17,12 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     addProfileData(state: any, action: any) {
-      state = action.payload
-      return state
+      state = action.payload;
+      return state;
     },
     updateProfile(state: any, action: any) {
-      state = { ...state, ...action.payload }
-      return state
+      state = { ...state, ...action.payload };
+      return state;
     },
   },
 });
@@ -41,6 +41,5 @@ export const updateProfileData = (data: any) => {
     dispatch(updateProfile(data));
   };
 };
-
 
 export default profileSlice.reducer;
