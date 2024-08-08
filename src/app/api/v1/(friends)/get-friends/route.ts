@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
+import { response } from "@/api-modules/helpers/response";
 import { decodedToken } from "@/api-modules/helpers/token";
 import prisma from "@/lib/prisma/prisma";
-import { response } from "@/api-modules/helpers/response";
+import { cookies } from "next/headers";
 
 export const GET = async () => {
   try {
@@ -16,7 +16,7 @@ export const GET = async () => {
       },
     });
 
-    return response.success("", { friendsList: friendsList });
+    return response.success("", { friendsList });
   } catch (error: any) {
     return response.error(error?.message);
   }

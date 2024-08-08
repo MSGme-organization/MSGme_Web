@@ -51,6 +51,7 @@ export const POST = async (request: NextRequest) => {
     if (!user) {
       return response.dataInvalid("Invalid Credentials.", {
         email: "Invalid Credentials.",
+        password: "Invalid Credentials.",
       });
     }
 
@@ -73,6 +74,7 @@ export const POST = async (request: NextRequest) => {
       return response.success("logged in successfully.", userWithoutPassword);
     } else {
       return response.dataInvalid("Invalid credentials.", {
+        email: "Invalid Credentials.",
         password: "Invalid credentials.",
       });
     }
