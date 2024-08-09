@@ -9,12 +9,7 @@ const Layout = ({
   children,
 }: {
   children: React.ReactNode;
-  indChat: React.ReactNode;
-  params: {
-    id: string;
-  };
 }) => {
-  const params = useParams();
   const [isMounted, setIsMounted] = React.useState<Boolean>(false);
   const dispatch = useAppDispatch();
 
