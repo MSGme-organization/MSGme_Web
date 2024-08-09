@@ -1,6 +1,5 @@
 "use client";
 
-import { Message } from "@/app/(chat)/chat/@indChat/[id]/page";
 import { users } from "@/utils/data";
 import { Modal } from "flowbite-react";
 import Image from "next/image";
@@ -11,6 +10,16 @@ import { CloseIcon } from "@/utils/svgs";
 interface ForwardModalProps {
   forwardMsg: Message | null;
   setForwardMsg: React.Dispatch<React.SetStateAction<Message | null>>;
+}
+
+interface Message {
+  username: string;
+  issentbyme: Boolean;
+  message?: string;
+  avatar?: string;
+  reaction?: string;
+  repliedMsg?: any;
+  id: number;
 }
 
 const ForwardModal: React.FC<ForwardModalProps> = ({
