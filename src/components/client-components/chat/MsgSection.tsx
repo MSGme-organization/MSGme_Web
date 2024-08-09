@@ -1,11 +1,19 @@
-"use client";
-
-import ChatHeader from "@/components/client-components/chat/ChatHeader";
-import Message from "@/components/client-components/chat/Message";
-import TextMessageField from "@/components/client-components/chat/TextMessageField";
-import ForwardModal from "@/components/client-components/modals/ForwardModal";
 import { messages, users } from "@/utils/data";
+import dynamic from "next/dynamic";
 import React, { useCallback } from "react";
+import ForwardModal from "../modals/ForwardModal";
+import Spinner from "../placeholder/Spinner";
+import ChatHeader from "./ChatHeader";
+import TextMessageField from "./TextMessageField";
+
+const MsgList = dynamic(() => import("./MsgList"), {
+  ssr: false,
+  loading: Spinner,
+});
+
+interface Props {
+  activeChat: number;
+}
 
 export interface Message {
   username: string;
@@ -17,7 +25,7 @@ export interface Message {
   id: number;
 }
 
-const Chats = ({ params }: { params: { id: string } }) => {
+const MsgSection: React.FC<Props> = ({ activeChat }) => {
   const [replyMsg, setReplyMsg] = React.useState<Message | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<Message | null>(null);
   const [searchString, setSearchString] = React.useState<string | null>(null);
@@ -31,8 +39,8 @@ const Chats = ({ params }: { params: { id: string } }) => {
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const searchDivs = React.useRef<HTMLDivElement[]>([]);
   const user = React.useMemo(
-    () => users.find((user) => user.id === parseInt(params.id)),
-    [users]
+    () => users.find((user) => user.id === activeChat),
+    [users, activeChat]
   );
 
   const handleMsgRef = React.useCallback(
@@ -169,32 +177,18 @@ const Chats = ({ params }: { params: { id: string } }) => {
             className="bg-[#E9ECEF] dark:bg-customGrey-black text-black dark:text-white pb-6"
             id="msg-list"
           >
-            {totalMessages.map((message, index) => (
-              <Message
-                searchString={searchString}
-                index={index}
-                gotoMSG={gotoMSG}
-                handleMSGRef={handleMsgRef}
-                handleReply={handleReply}
-                highlightText={highlightText}
-                handleForward={handleForward}
-                isContextActive={isContextActive}
-                searchActiveIndex={searchActiveIndex}
-                setContextActive={setContextActive}
-                message={{
-                  ...message,
-                  reaction: message.reaction || "",
-                  avatar: message.avatar || "",
-                  totalMsg: totalMessages.length,
-                }}
-                key={index}
-                isUserSame={
-                  index === 0
-                    ? false
-                    : totalMessages[index - 1].username === message.username
-                }
-              />
-            ))}
+            <MsgList
+              messages={totalMessages}
+              searchString={searchString}
+              gotoMSG={gotoMSG}
+              handleMSGRef={handleMsgRef}
+              handleReply={handleReply}
+              highlightText={highlightText}
+              handleForward={handleForward}
+              isContextActive={isContextActive}
+              searchActiveIndex={searchActiveIndex}
+              setContextActive={setContextActive}
+            />
           </div>
         </div>
 
@@ -209,6 +203,4 @@ const Chats = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default React.memo(Chats, (prevProps, nextProps) => {
-  return prevProps.params.id === nextProps.params.id;
-});
+export default MsgSection;

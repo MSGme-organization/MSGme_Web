@@ -1,11 +1,7 @@
-"use client";
-
-import Input from "@/components/client-components/common-components/Input";
-import Loading from "@/components/client-components/loader/Loading";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateProfileData } from "@/redux/profile/profileSlice";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { formatDate } from "@/utils/date";
 import { EditProfileValidationSchema } from "@/utils/formik-validation";
 import { CalendarIcon, EmailIcon, PencilIcon, UserIcon } from "@/utils/svgs";
@@ -14,6 +10,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { CldImage } from "next-cloudinary";
 import React from "react";
+import Input from "../common-components/Input";
+import Loading from "../loader/Loading";
+import SettingsHeader from "../settings/SettingsHeader";
 
 const fields = [
   {
@@ -64,7 +63,11 @@ const fields = [
   },
 ];
 
-const EditProfile = () => {
+interface Props {
+  handleActiveSection: (section: 0 | 1 | 2 | 3 | 4) => void;
+}
+
+const EditProfileSection: React.FC<Props> = ({ handleActiveSection }) => {
   const data = useAppSelector((state) => state.profile) as {
     avatar: { url?: string };
     dob?: string;
@@ -127,10 +130,16 @@ const EditProfile = () => {
     formik.setFieldTouched("avatar", true);
   };
 
+  const handleGoBack = () => handleActiveSection(2);
+
   return (
     <>
       <Loading isLoading={dataQuery.isPending}>
-        <SettingsHeader headerText={"Edit Profile"} showLogout={false} />
+        <SettingsHeader
+          handleGoBack={handleGoBack}
+          headerText={"Edit Profile"}
+          showLogout={false}
+        />
         <form
           onSubmit={formik.handleSubmit}
           className="w-full flex flex-col gap-3 items-center p-4"
@@ -139,7 +148,7 @@ const EditProfile = () => {
             <CldImage
               width={150}
               height={150}
-              src={formik.values.avatar?.url || "MSGme/default_profile"}
+              src={formik.values.avatar?.url || DEFAULT_PROFILE_IMG}
               alt="profile image"
               className="rounded-full aspect-square object-contain"
             />
@@ -213,4 +222,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditProfileSection;

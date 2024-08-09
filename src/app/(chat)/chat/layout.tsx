@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppStore } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { fetchProfile } from "@/redux/profile/profileSlice";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -43,14 +43,15 @@ const Layout = ({
 
   return (
     <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">
-      {screenWidth && screenWidth > 768 ? children : params.id ? "" : children}
-      <div
+      {/* {screenWidth && screenWidth > 768 ? children : params.id ? "" : children} */}
+      {/* <div
         className={`flex-grow ${
           params.id ? "" : "hidden"
         }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
       >
         {indChat}
-      </div>
+      </div> */}
+      {children}
     </div>
   );
 };

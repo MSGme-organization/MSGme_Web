@@ -11,7 +11,7 @@ interface Data {
   lastChatTime: string;
   newUnreadChatCount: number;
   avatarImage: string;
-  handleNavigation: (path: string, state: any) => void;
+  handleActiveChat: (chatId: number) => void;
   isActive?: boolean;
 }
 
@@ -22,15 +22,16 @@ const UserItem: React.FC<Data> = ({
   lastChatTime,
   newUnreadChatCount,
   avatarImage,
-  handleNavigation,
+  handleActiveChat,
   isActive,
 }) => {
   const hrsDiff = getHrsDiff(lastChatTime);
   const dayDiff = getDayDiff(lastChatTime);
 
   const handle = () => {
-    handleNavigation(`/chat/${id}`, { id });
+    handleActiveChat(id);
   };
+
   return (
     <div
       className={`w-full flex border-r-4 items-center justify-between p-4 hover:bg-gray-100 hover:dark:bg-gray-700 select-none cursor-pointer hide-scrollbar   text-black dark:text-white ${

@@ -1,8 +1,3 @@
-"use client";
-
-import Input from "@/components/client-components/common-components/Input";
-import Loading from "@/components/client-components/loader/Loading";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
 import { changePassword } from "@/query/profile/changePass";
 import {
   ChangePasswordInitialValues,
@@ -12,6 +7,9 @@ import { LockIcon } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import Input from "../common-components/Input";
+import Loading from "../loader/Loading";
+import SettingsHeader from "../settings/SettingsHeader";
 
 const inputArr = [
   {
@@ -36,7 +34,12 @@ const inputArr = [
     LeftIcon: LockIcon,
   },
 ];
-const ChangePassword = () => {
+
+interface Props {
+  handleActiveSection: (section: 0 | 1 | 2 | 3 | 4) => void;
+}
+
+const ChangePasswordSection: React.FC<Props> = ({ handleActiveSection }) => {
   const passwordQuery = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
@@ -54,10 +57,16 @@ const ChangePassword = () => {
     },
   });
 
+  const handleGoBack = () => handleActiveSection(2);
+
   return (
     <>
       <Loading isLoading={passwordQuery.isPending}>
-        <SettingsHeader headerText={"Change Password"} showLogout={false} />
+        <SettingsHeader
+          handleGoBack={handleGoBack}
+          headerText={"Change Password"}
+          showLogout={false}
+        />
         <form
           className="p-4 flex flex-col gap-2"
           onSubmit={formik.handleSubmit}
@@ -90,4 +99,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordSection;

@@ -1,3 +1,5 @@
+export const DEFAULT_PROFILE_IMG = "MSGme/default_profile";
+
 export const users = [
   {
     id: 1,
@@ -424,5 +426,99 @@ export const messages = [
       avatar: "https://picsum.photos/200/300",
       username: "Me",
     },
+  },
+];
+
+export const invitations = [
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "pending",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "accepted",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend DeveloperFrontend DeveloperFrontend DeveloperFrontend Developer",
+    status: "Pending",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "rejected",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "pending",
+    isSentByMe: true,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "accepted",
+    isSentByMe: true,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "accepted",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "Pending",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "rejected",
+    isSentByMe: false,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "pending",
+    isSentByMe: true,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "accepted",
+    isSentByMe: true,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "Pending",
+    isSentByMe: true,
+  },
+  {
+    avatar: null,
+    username: "John Doe",
+    bio: "Frontend Developer",
+    status: "rejected",
+    isSentByMe: true,
   },
 ];

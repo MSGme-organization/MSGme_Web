@@ -132,3 +132,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background-position: 0% 50%, 50% 50%, 100% 100%;
   }
 }
+@keyframes shimmer {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}

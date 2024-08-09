@@ -7,13 +7,19 @@ import AddModal from "../modals/AddModal";
 import { AvatarIcon, MoonIcon, PlusIcon, SunIcon } from "@/utils/svgs";
 import { useThemeMode } from "flowbite-react";
 
-const ChatListNavBar = ({
-  handleNavigation,
-}: {
+interface Props {
   handleNavigation: (path: string) => void;
+  handleActiveSection: (section: 0 | 1 | 2) => void;
+  handleActiveChat: (chatID: number | null) => void;
+}
+
+const ChatListNavBar: React.FC<Props> = ({
+  handleActiveSection,
+  handleActiveChat,
 }) => {
   const [showModal, setShowModal] = React.useState(false);
   const theme = useThemeMode();
+
   const Icons = [
     {
       path: theme.computedMode === "light" ? SunIcon : MoonIcon,
@@ -25,20 +31,25 @@ const ChatListNavBar = ({
       path: PlusIcon,
       alt: "plus",
       classes: "bg-primary text-white",
-      fn: () => setShowModal(true),
+      fn: () => handleActiveSection(1),
     },
     {
       path: AvatarIcon,
       alt: "avtar",
       classes: "bg-primary text-white",
-      fn: () => handleNavigation("/chat/settings"),
+      fn: () => handleActiveSection(2),
     },
   ];
+
+  const handleLogoClick = () => {
+    handleActiveChat(null);
+    handleActiveSection(0);
+  };
 
   return (
     <>
       <div className="w-full flex justify-between items-center p-4 h-[70px]">
-        <div onClick={() => handleNavigation("/chat")}>
+        <div onClick={handleLogoClick}>
           <Image src="/Logo.png" alt="logo" width={95} height={95} />
         </div>
         <div className="flex gap-2">

@@ -1,9 +1,7 @@
-"use client";
-
 import Lottie from "lottie-react";
-import animationData from "../../../../../public/animations/chatPage.json";
+import animationData from "../../../../public/animations/chatPage.json";
 
-const IndChat = () => {
+const DefaultSection = () => {
   return (
     <div className="h-[100dvh] w-full flex justify-center items-center dark:bg-customGrey-black text-black dark:text-white">
       <div className="w-[80%] max-w-[350px]">
@@ -18,4 +16,4 @@ const IndChat = () => {
   );
 };
 
-export default IndChat;
+export default DefaultSection;

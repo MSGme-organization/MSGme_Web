@@ -2,6 +2,7 @@
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateProfileData } from "@/redux/profile/profileSlice";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { PencilIcon, ProfileIcon, UploadIcon } from "@/utils/svgs";
 import { errorToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
@@ -80,7 +81,7 @@ const AddProfilePhoto = ({ handleDecrement }: Props) => {
               <CldImage
                 width={150}
                 height={150}
-                src={image || "MSGme/default_profile"}
+                src={image || DEFAULT_PROFILE_IMG}
                 alt="profile image"
                 className="rounded-full aspect-square object-contain"
               />

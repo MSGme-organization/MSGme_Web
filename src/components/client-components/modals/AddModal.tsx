@@ -1,6 +1,7 @@
 "use client";
 
 import { searchUsers } from "@/query/search/searchUsers";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { CloseIcon } from "@/utils/svgs";
 import { useMutation } from "@tanstack/react-query";
 import { Modal } from "flowbite-react";
@@ -82,7 +83,7 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
             >
               <div className="flex gap-5 items-center">
                 <CldImage
-                  src={user.avatar}
+                  src={user.avatar || DEFAULT_PROFILE_IMG}
                   alt={`${user.username}'s avatar`}
                   width={40}
                   height={40}
