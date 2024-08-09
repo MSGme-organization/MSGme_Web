@@ -7,7 +7,6 @@ import React from "react";
 
 const Layout = ({
   children,
-  indChat,
 }: {
   children: React.ReactNode;
   indChat: React.ReactNode;
@@ -16,25 +15,12 @@ const Layout = ({
   };
 }) => {
   const params = useParams();
-  const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
   const [isMounted, setIsMounted] = React.useState<Boolean>(false);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    dispatch(fetchProfile());
-  }, []);
-
-  React.useEffect(() => {
     setIsMounted(true);
-    const updateScreenWidth = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    updateScreenWidth();
-    window.addEventListener("resize", updateScreenWidth);
-
-    return () => {
-      window.removeEventListener("resize", updateScreenWidth);
-    };
+    dispatch(fetchProfile());
   }, []);
 
   if (!isMounted) {
@@ -43,14 +29,6 @@ const Layout = ({
 
   return (
     <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">
-      {/* {screenWidth && screenWidth > 768 ? children : params.id ? "" : children} */}
-      {/* <div
-        className={`flex-grow ${
-          params.id ? "" : "hidden"
-        }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
-      >
-        {indChat}
-      </div> */}
       {children}
     </div>
   );

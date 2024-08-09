@@ -39,6 +39,7 @@ const Chat = () => {
     0
   );
   const [activeChat, setActiveChat] = React.useState<number | null>(null);
+  const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
   const router = useRouter();
 
   const handleNavigation = React.useCallback(
@@ -57,6 +58,18 @@ const Chat = () => {
 
   const handleActiveChat = React.useCallback((chatID: number | null) => {
     setActiveChat(chatID);
+  }, []);
+
+  React.useEffect(() => {
+    const updateScreenWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    updateScreenWidth();
+    window.addEventListener("resize", updateScreenWidth);
+
+    return () => {
+      window.removeEventListener("resize", updateScreenWidth);
+    };
   }, []);
 
   const showSection = React.useCallback(() => {
@@ -95,17 +108,35 @@ const Chat = () => {
   return (
     <>
       <div className="w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
-        {showSection()}
-      </div>
-      <div
-        className={`flex-grow ${
-          activeChat ? "" : "hidden"
-        }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
-      >
-        {activeChat ? (
-          <MsgSection activeChat={activeChat} />
+        {screenWidth && screenWidth > 768 ? (
+          <>
+            {showSection()}
+            <div
+              className={`flex-grow ${
+                activeChat ? "" : "hidden"
+              }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
+            >
+              {activeChat ? (
+                <MsgSection activeChat={activeChat} />
+              ) : (
+                <DefaultSection />
+              )}
+            </div>
+          </>
+        ) : activeChat ? (
+          <div
+            className={`flex-grow ${
+              activeChat ? "" : "hidden"
+            }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
+          >
+            {activeChat ? (
+              <MsgSection activeChat={activeChat} />
+            ) : (
+              <DefaultSection />
+            )}
+          </div>
         ) : (
-          <DefaultSection />
+          showSection()
         )}
       </div>
     </>
