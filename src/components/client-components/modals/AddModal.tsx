@@ -30,7 +30,7 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
       setFilterenArr(res.data?.data?.users);
     },
     onError: (error: any) => {
-      console.log(error);
+      console.error(error);
     },
   });
 

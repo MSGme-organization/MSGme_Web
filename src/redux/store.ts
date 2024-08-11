@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
+import invitationsSlice from "./invitations/invitationsSlice";
 import profileReducer from "./profile/profileSlice";
+import requestUserSlice from "./requestUsers/requestUserSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       profile: profileReducer,
+      invitations: invitationsSlice,
+      reqUsers: requestUserSlice,
     },
   });
 };

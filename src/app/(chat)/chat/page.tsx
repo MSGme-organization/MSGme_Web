@@ -1,7 +1,5 @@
 "use client";
 
-import DefaultSection from "@/components/client-components/chat/DefaultSection";
-import MsgSection from "@/components/client-components/chat/MsgSection";
 import Spinner from "@/components/client-components/placeholder/Spinner";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -9,6 +7,14 @@ import React from "react";
 
 const ChatSection = dynamic(
   () => import("@/components/client-components/chat-list/ChatSection"),
+  { ssr: false, loading: Spinner }
+);
+const DefaultSection = dynamic(
+  () => import("@/components/client-components/chat/DefaultSection"),
+  { ssr: false, loading: Spinner }
+);
+const MsgSection = dynamic(
+  () => import("@/components/client-components/chat/MsgSection"),
   { ssr: false, loading: Spinner }
 );
 
@@ -105,41 +111,35 @@ const Chat = () => {
     }
   }, [activeSection]);
 
-  return (
+  return screenWidth && screenWidth > 768 ? (
     <>
       <div className="w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
-        {screenWidth && screenWidth > 768 ? (
-          <>
-            {showSection()}
-            <div
-              className={`flex-grow ${
-                activeChat ? "" : "hidden"
-              }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
-            >
-              {activeChat ? (
-                <MsgSection activeChat={activeChat} />
-              ) : (
-                <DefaultSection />
-              )}
-            </div>
-          </>
-        ) : activeChat ? (
-          <div
-            className={`flex-grow ${
-              activeChat ? "" : "hidden"
-            }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
-          >
-            {activeChat ? (
-              <MsgSection activeChat={activeChat} />
-            ) : (
-              <DefaultSection />
-            )}
-          </div>
+        {showSection()}
+      </div>
+      <div
+        className={`flex-grow ${
+          activeChat ? "" : "hidden"
+        }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
+      >
+        {activeChat ? (
+          <MsgSection activeChat={activeChat} />
         ) : (
-          showSection()
+          <DefaultSection />
         )}
       </div>
     </>
+  ) : activeChat ? (
+    <div
+      className={`flex-grow ${
+        activeChat ? "" : "hidden"
+      }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
+    >
+      {activeChat ? <MsgSection activeChat={activeChat} /> : <DefaultSection />}
+    </div>
+  ) : (
+    <div className="w-full h-full overflow-y-scroll md:w-[20%] min-w-[320px] bg-white dark:bg-customGrey-black text-black dark:text-white">
+      {showSection()}
+    </div>
   );
 };
 

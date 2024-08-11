@@ -24,7 +24,7 @@ const Otp = () => {
         errorToast("Invalid OTP!");
       }
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
       errorToast(error.message);
     }

@@ -10,6 +10,7 @@ const protectedApiRoutes = [
   "/api/v1/change-password",
   "/api/v1/logout",
   "/api/v1/get-friends",
+  "/api/v1/search-users",
 ];
 
 export default async function middleware(req: NextRequest) {
@@ -18,7 +19,7 @@ export default async function middleware(req: NextRequest) {
       const isprotectedRoute = protectedApiRoutes.includes(
         req.nextUrl.pathname
       );
-      
+
       if (isprotectedRoute) {
         await authorize(req);
         return NextResponse.next();

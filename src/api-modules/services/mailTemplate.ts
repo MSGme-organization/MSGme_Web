@@ -1,4 +1,4 @@
-export const resetPassMailTemplate = (email: string,  otp: string) => {
+export const resetPassMailTemplate = (email: string, otp: string) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -81,7 +81,7 @@ export const resetPassMailTemplate = (email: string,  otp: string) => {
       <p class="otp">${otp}</p>
       <p>If you did not request a new password, please let us know immediately by replying to this email.</p>
       <p class="footer">Yours, <br>MSGme team</p>
-      <img src="https://res.cloudinary.com/dszbuhdfz/image/upload/v1705848217/MSGme/Logo_black_ovghy5.png" alt="Company Logo" class="image">
+      <img src="https://res.cloudinary.com/dszbuhdfz/image/upload/v1723308077/MSGme/Logo_ztvttz.png" alt="Company Logo" class="image">
     </div>
   </body>
   </html>

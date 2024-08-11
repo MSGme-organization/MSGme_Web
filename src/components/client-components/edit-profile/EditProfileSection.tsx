@@ -106,7 +106,7 @@ const EditProfileSection: React.FC<Props> = ({ handleActiveSection }) => {
     validationSchema: EditProfileValidationSchema,
     onSubmit: handleSubmit,
   });
-
+  console.log(formik.values);
   const dataQuery = useMutation({
     mutationFn: editProfile,
     onSuccess: (res: any) => {

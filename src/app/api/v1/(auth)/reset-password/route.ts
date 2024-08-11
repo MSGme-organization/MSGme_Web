@@ -32,7 +32,6 @@ export const POST = async (request: NextRequest) => {
         email: "Invalid email.",
       });
     }
-
     const otpId = randomUUID();
     const otp = `${randomInt(9)}${randomInt(9)}${randomInt(9)}${randomInt(9)}`;
     const template = resetPassMailTemplate(body.email, otp);

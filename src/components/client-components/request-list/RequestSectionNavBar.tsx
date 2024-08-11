@@ -3,13 +3,13 @@ import React from "react";
 
 interface Props {
   handleNavigation: (path: string) => void;
-  swichSection: (section: 0 | 1) => void;
+  switchSection: (section: 0 | 1) => void;
   activeSection: 0 | 1;
   handleActiveSection: (section: 0 | 1) => void;
 }
 
 const RequestSectionNavBar: React.FC<Props> = ({
-  swichSection,
+  switchSection,
   activeSection,
   handleActiveSection,
 }) => {
@@ -18,12 +18,12 @@ const RequestSectionNavBar: React.FC<Props> = ({
       {
         id: 0,
         name: "Send Request",
-        onClick: () => swichSection(0),
+        onClick: () => switchSection(0),
       },
       {
         id: 1,
         name: "Invitations",
-        onClick: () => swichSection(1),
+        onClick: () => switchSection(1),
       },
     ],
     []

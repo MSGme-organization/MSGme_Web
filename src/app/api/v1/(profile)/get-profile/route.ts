@@ -9,6 +9,16 @@ export const GET = async () => {
 
     const user = await prisma.user.findFirst({
       where: { id: decodedUser.id },
+      select: {
+        id: true,
+        avatar: true,
+        username: true,
+        email: true,
+        first_name: true,
+        last_name: true,
+        dob: true,
+        bio: true,
+      },
     });
 
     cookies().set("currentUser", JSON.stringify(user));
