@@ -24,7 +24,6 @@ const DOB = ({ handleDecrement, handleIncrement }: Props) => {
   const data = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
-  console.log(data);
   const dataQuery = useMutation({
     mutationFn: editProfile,
     onSuccess: (res: any) => {

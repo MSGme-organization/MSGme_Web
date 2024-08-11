@@ -53,7 +53,7 @@ model Friend_request {
   id          String   @id @default(uuid())
   sender_id   String
   receiver_id String
-  status      FriendRequestStatus @default(pending) // Use the enum and set a default value
+  status      FriendRequestStatus @default(pending)
   sender      User     @relation("Sender", fields: [sender_id], references: [id], onDelete: Cascade)
   receiver    User     @relation("Receiver", fields: [receiver_id], references: [id], onDelete: Cascade)
   created_at  DateTime @default(now())
@@ -81,7 +81,7 @@ model Friend_List {
 
 model Room {
   id         String   @id @default(uuid())
-  member     Int
+  members     Int
   created_at DateTime @default(now())
 
   Friend_List Friend_List[]
