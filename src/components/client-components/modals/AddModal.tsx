@@ -11,7 +11,7 @@ import Input from "../common-components/Input";
 interface User {
   id: string;
   username: string;
-  avatar: string;
+  avatar: string | null;
 }
 
 interface AddModalProps {
@@ -27,6 +27,7 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
     mutationFn: searchUsers,
     onSuccess: (res: any) => {
       setFilterenArr(res.data?.data?.users);
+
     },
     onError: (error: any) => {
       console.log(error);
@@ -75,21 +76,21 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
               onChange={handleSearch}
             />
           </div>
-          {filteredArr.map((user, index) => (
+          {filteredArr && filteredArr.length && filteredArr.map((user, index) => (
             <div
               className="w-full py-4 flex justify-between items-center"
-              key={index}
+              key={user?.id}
             >
               <div className="flex gap-5 items-center">
                 <CldImage
-                  src={user.avatar}
-                  alt={`${user.username}'s avatar`}
+                  src={user?.avatar || ""}
+                  alt={`${user?.username}'s avatar`}
                   width={40}
                   height={40}
                   loading="lazy"
                   className="rounded-full bg-green-300  aspect-square"
                 />
-                <p className="font-semibold">{user.username}</p>
+                <p className="font-semibold">{user?.username}</p>
               </div>
               <button className="bg-primary px-4 text-white font-bold rounded-full text-[15px]">
                 +
