@@ -15,16 +15,15 @@ const Chat = () => {
   const [searchString, setSearchString] = React.useState("");
   const router = useRouter();
   const params = useParams();
-
-  const searchQuery = useMutation({
-    mutationFn: searchUsers,
-    onSuccess: (res: any) => {
-      console.log(res);
-    },
-    onError: (error: any) => {
-      console.log(error);
-    },
-  });
+  // const searchQuery = useMutation({
+  //   mutationFn: searchUsers,
+  //   onSuccess: (res: any) => {
+  //     console.log(res);
+  //   },
+  //   onError: (error: any) => {
+  //     console.log(error);
+  //   },
+  // });
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -33,7 +32,7 @@ const Chat = () => {
       user.name.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredList(filtered);
-    searchQuery.mutate(value);
+    // searchQuery.mutate(value);
   };
 
   const handleNavigation = React.useCallback(

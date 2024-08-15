@@ -4,9 +4,9 @@ import { searchUsers } from "@/query/search/searchUsers";
 import { CloseIcon } from "@/utils/svgs";
 import { useMutation } from "@tanstack/react-query";
 import { Modal } from "flowbite-react";
-import { CldImage } from "next-cloudinary";
 import React from "react";
 import Input from "../common-components/Input";
+import UserList from "./UserList";
 
 interface User {
   id: string;
@@ -19,29 +19,56 @@ interface AddModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
+const searchTypeString = {
+  0: "all",
+  1: "sent",
+  2: "requests"
+}
+
 const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
   const [search, setSearch] = React.useState<string>("");
-  const [filteredArr, setFilterenArr] = React.useState<User[]>([]);
-
+  const [filteredArr, setFilteredArr] = React.useState<User[]>([]);
+  const [modalType, setModalType] = React.useState<number>(0);
   const searchQuery = useMutation({
     mutationFn: searchUsers,
     onSuccess: (res: any) => {
-      setFilterenArr(res.data?.data?.users);
-
+      setFilteredArr(res.data?.data?.users);
     },
     onError: (error: any) => {
       console.log(error);
     },
   });
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    searchQuery.mutate(e.target.value);
+  const TypeHeader = [{
+    title: "All",
+    fn: () => handleModalTypeClick(0),
+  },
+  {
+    title: "Sent",
+    fn: () => handleModalTypeClick(1)
+  }, {
+    title: "Requests",
+    fn: () => handleModalTypeClick(2)
+  }
+  ]
+
+  const handleSearch = () => {
+    searchQuery.mutate({ search: search, searchType: searchTypeString[modalType] });
   };
 
+  const handleModalTypeClick = (type: number) => {
+    setModalType(type)
+  }
   React.useEffect(() => {
-    searchQuery.mutate(search);
-  }, []);
+    const timeoutId = setTimeout(() => {
+      handleSearch()
+    }, 200);
+    return () => clearTimeout(timeoutId);
+  }, [search])
+
+  React.useEffect(() => {
+    handleSearch()
+  }, [modalType])
 
   return (
     <Modal
@@ -53,13 +80,21 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
       <Modal.Body className="dark:bg-customGrey-black bg-gray-50 text-black dark:text-white ok">
         <div className="p-2">
           <div className="w-full flex justify-between items-center">
-            <h1 className="text-black dark:text-white text-lg font-semibold">
-              Find someone for chat
+            <h1 className="text-primary text-lg font-bold">
+              Find friends for chat
             </h1>
             <button onClick={() => setShowModal(false)}> {CloseIcon()}</button>
           </div>
+          <div className="flex justify-around items-center mt-1 mb-8">
+            {
+              TypeHeader.map((item, index) =>
+                <h1 key={index} className={`flex-grow flex-1 text-center text-black  dark:text-textColor-dark rounded text-lg cursor-pointer py-2 ${index === modalType ? "shadow-sm bg-gray-200 dark:bg-customGrey-dark font-extrabold" : "font-semibold"}`} onClick={item.fn}>{item.title}</h1>
+              )
+            }
+          </div>
           <div className="mt-4">
             <Input
+              autocomplete="off"
               iconClass="right-[15px]"
               RightIcon={() =>
                 searchQuery.isPending && (
@@ -73,30 +108,11 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
               placeholder="Search"
               type="text"
               required={false}
-              onChange={handleSearch}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)
+              }
             />
           </div>
-          {filteredArr && filteredArr.length && filteredArr.map((user, index) => (
-            <div
-              className="w-full py-4 flex justify-between items-center"
-              key={user?.id}
-            >
-              <div className="flex gap-5 items-center">
-                <CldImage
-                  src={user?.avatar || ""}
-                  alt={`${user?.username}'s avatar`}
-                  width={40}
-                  height={40}
-                  loading="lazy"
-                  className="rounded-full bg-green-300  aspect-square"
-                />
-                <p className="font-semibold">{user?.username}</p>
-              </div>
-              <button className="bg-primary px-4 text-white font-bold rounded-full text-[15px]">
-                +
-              </button>
-            </div>
-          ))}
+          <UserList filteredArr={filteredArr} />
         </div>
       </Modal.Body>
     </Modal>
