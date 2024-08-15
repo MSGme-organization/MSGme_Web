@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/redux/hooks";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { EditIcon } from "@/utils/svgs";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ const ProfileSection = () => {
   const avatarSrc =
     typeof data.avatar === "string"
       ? data.avatar
-      : data.avatar?.url || "MSGme/default_profile";
+      : data.avatar?.url || DEFAULT_PROFILE_IMG;
 
   return (
     <section className="w-full flex justify-between items-center p-4 h-[100px] text-black dark:text-white bg-white dark:bg-customGrey-black border-b border-gray-200 dark:border-gray-800">
@@ -22,7 +23,7 @@ const ProfileSection = () => {
         <CldImage
           width={60}
           height={60}
-          src={avatarSrc || "MSGme/default_profile"}
+          src={avatarSrc || DEFAULT_PROFILE_IMG}
           alt="profile image"
           className="rounded-full aspect-square object-contain"
         />

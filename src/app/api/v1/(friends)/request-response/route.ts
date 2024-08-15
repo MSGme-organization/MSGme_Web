@@ -17,19 +17,20 @@ export const POST = async (request: NextRequest) => {
       const newRoomPayload = {
         members: 2,
       };
-      const newRoomData = await prisma.room.create({
-        data: newRoomPayload,
-      });
 
-      const FriendListPayload = {
-        user_id: frdRequestData.sender_id,
-        friend_id: frdRequestData.receiver_id,
-        isBlocked: false,
-        room_id: newRoomData.id,
-      };
-      const frdListData = await prisma.friend_List.create({
-        data: FriendListPayload,
-      });
+      // const newRoomData = await prisma.room.create({
+      //   data: newRoomPayload,
+      // });
+
+      // const FriendListPayload = {
+      //   user_id: frdRequestData.sender_id,
+      //   friend_id: frdRequestData.receiver_id,
+      //   isBlocked: false,
+      //   room_id: newRoomData.id,
+      // };
+      // const frdListData = await prisma.friend_List.create({
+      //   data: FriendListPayload,
+      // });
     }
     return response.success(
       body.request_response === "1"

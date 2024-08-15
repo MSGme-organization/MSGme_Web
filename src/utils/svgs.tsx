@@ -1097,3 +1097,73 @@ export const ReplyMSG = () => (
     </g>
   </svg>
 );
+
+export const CheckedIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    className="w-4 h-4"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <path
+        d="M4 12.6111L8.92308 17.5L20 6.5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </g>
+  </svg>
+);
+
+export const DiagonallyArrowIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    className="w-full"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <path
+        d="M7 17L17 7M17 7H8M17 7V16"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </g>
+  </svg>
+);
+
+export const WhiteCloseIcon = () => (
+  <svg
+    className="w-4 h-4 text-white"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M6 18 17.94 6M18 18 6.06 6"
+    />
+  </svg>
+);
