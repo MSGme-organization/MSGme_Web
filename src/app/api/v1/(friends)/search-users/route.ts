@@ -72,7 +72,6 @@ export const GET = async (request: NextRequest) => {
         },
       });
 
-      console.log("requests", users);
     } else {
       users = await prisma.user.findMany({
         where: {

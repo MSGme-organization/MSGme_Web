@@ -2,7 +2,6 @@
 import { CldImage } from "next-cloudinary";
 
 const UserList = ({ filteredArr }) => {
-    console.log("UserList", filteredArr)
     return (
         filteredArr && filteredArr.length !== 0 ? filteredArr.map((user: any) => (
             <div
