@@ -3,7 +3,7 @@
 import ChatListNavBar from "@/components/client-components/chat-list/ChatListNavBar";
 import UserItem from "@/components/client-components/chat-list/UserItem";
 import Input from "@/components/client-components/common-components/Input";
-import { searchUsers } from "@/query/search/searchUsers";
+import { searchUsers } from "@/query/add-user/friendsManage";
 import { users } from "@/utils/data";
 import { SearchIcon } from "@/utils/svgs";
 import { useMutation } from "@tanstack/react-query";

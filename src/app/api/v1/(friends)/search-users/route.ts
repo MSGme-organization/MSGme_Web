@@ -23,6 +23,20 @@ export const GET = async (request: NextRequest) => {
 
     let users: UsersInterface[] = [];
 
+    const friends = await prisma.friend_List.findMany({
+      where: {
+        OR: [{ user_id: decodedUser.id }, { friend_id: decodedUser.id }],
+      },
+      select: {
+        user_id: true,
+        friend_id: true,
+      },
+    });
+
+    const friendIds = friends.map((f) =>
+      f.user_id === decodedUser.id ? f.friend_id : f.user_id
+    );
+
     if (searchType === "sent") {
       users = await prisma.user.findMany({
         where: {
@@ -34,6 +48,7 @@ export const GET = async (request: NextRequest) => {
               },
             },
             { id: { not: decodedUser.id } },
+            { id: { notIn: friendIds } },
           ],
         },
         select: {
@@ -58,6 +73,7 @@ export const GET = async (request: NextRequest) => {
               },
             },
             { id: { not: decodedUser.id } },
+            { id: { notIn: friendIds } },
           ],
         },
         select: {
@@ -75,9 +91,13 @@ export const GET = async (request: NextRequest) => {
     } else {
       users = await prisma.user.findMany({
         where: {
-          username: { contains: search, mode: "insensitive" },
-          id: { not: decodedUser.id },
+          AND: [
+            { username: { contains: search, mode: "insensitive" } },
+            { id: { not: decodedUser.id } },
+            { id: { notIn: friendIds } },
+          ],
         },
+        take: search.trim() === "" ? 10 : 20,
         select: {
           username: true,
           bio: true,
@@ -115,6 +135,7 @@ export const GET = async (request: NextRequest) => {
         userStatus,
       };
     });
+
     return response.success("users search success", { users: updatedUsers });
   } catch (error: any) {
     return response.error(error?.message);

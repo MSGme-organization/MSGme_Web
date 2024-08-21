@@ -9,9 +9,13 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const decodedUser = decodedToken(cookies().get("token")?.value);
 
-    const frdRequestData = await prisma.friend_request.update({
-      data: { status: body.request_response === "0" ? "rejected" : "accepted" },
-      where: { id: body.request_id },
+    const frdRequestData = await prisma.friend_request.delete({
+      where: {
+        sender_id_receiver_id: {
+          sender_id: body.receiver_id,
+          receiver_id: decodedUser.id,
+        },
+      },
     });
     if (body.request_response === "1") {
       const newRoomPayload = {
@@ -27,7 +31,7 @@ export const POST = async (request: NextRequest) => {
         isBlocked: false,
         room_id: newRoomData.id,
       };
-      const frdListData = await prisma.friend_List.create({
+      await prisma.friend_List.create({
         data: FriendListPayload,
       });
     }
@@ -38,6 +42,7 @@ export const POST = async (request: NextRequest) => {
       ""
     );
   } catch (error: any) {
+    console.log(error);
     return response.error(error?.message);
   }
 };
