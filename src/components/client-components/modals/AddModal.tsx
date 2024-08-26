@@ -1,6 +1,6 @@
 "use client";
 
-import { searchUsers } from "@/query/search/searchUsers";
+import { searchUsers } from "@/query/add-user/friendsManage";
 import { CloseIcon } from "@/utils/svgs";
 import { useMutation } from "@tanstack/react-query";
 import { Modal } from "flowbite-react";
@@ -52,13 +52,14 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
   }
   ]
 
-  const handleSearch = () => {
+  const handleSearch = React.useCallback(() => {
     searchQuery.mutate({ search: search, searchType: searchTypeString[modalType] });
-  };
+  }, [modalType, search]);
 
   const handleModalTypeClick = (type: number) => {
     setModalType(type)
   }
+
   React.useEffect(() => {
     const timeoutId = setTimeout(() => {
       handleSearch()
@@ -112,7 +113,9 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
               }
             />
           </div>
-          <UserList filteredArr={filteredArr} />
+          {filteredArr && filteredArr.length !== 0 ? filteredArr.map((user: any) => (
+            <UserList user={user} handleSearch={handleSearch} />
+          )) : (<div className="w-full py-4 flex justify-center items-center">No User Found</div>)}
         </div>
       </Modal.Body>
     </Modal>
