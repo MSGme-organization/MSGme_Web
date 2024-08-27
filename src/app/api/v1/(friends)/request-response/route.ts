@@ -44,7 +44,6 @@ export const POST = async (request: NextRequest) => {
       ""
     );
   } catch (error: any) {
-    console.log(error);
     return response.error(error?.message);
   }
 };
