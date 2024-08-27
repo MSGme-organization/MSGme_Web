@@ -25,7 +25,7 @@ const ChatListNavBar = ({
       path: PlusIcon,
       alt: "plus",
       classes: "bg-primary text-white",
-      fn: () => handleNavigation("/chat/requests"),
+      fn: () => setShowModal(true),
     },
     {
       path: AvatarIcon,

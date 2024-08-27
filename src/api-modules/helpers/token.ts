@@ -1,13 +1,22 @@
-import jwt from "jsonwebtoken";
+import { jwtVerify, SignJWT, decodeJwt } from "jose";
 
-export const generateToken = (data: any) => {
-  return jwt.sign(data, process.env.JWT_SECRET);
+export const generateToken = async (data: any) => {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+  return new SignJWT(data).setProtectedHeader({ alg: "HS256" }).sign(secret);
 };
 
-export const verifyToken = (data: any) => {
-  return jwt.verify(data, process.env.JWT_SECRET);
+export const verifyToken = async (token: string) => {
+  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch (err) {
+    throw new Error("Invalid token");
+  }
 };
 
-export const decodedToken = (data: any) => {
-  return jwt.decode(data, process.env.JWT_SECRET);
+export const decodedToken = (token: string) => {
+  return decodeJwt(token);
 };

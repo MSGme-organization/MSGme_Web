@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import profileReducer from "./profile/profileSlice";
-import requestReducer from "./requests/requestSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       profile: profileReducer,
-      request: requestReducer,
     },
   });
 };

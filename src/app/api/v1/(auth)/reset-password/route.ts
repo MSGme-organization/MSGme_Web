@@ -44,7 +44,7 @@ export const POST = async (request: NextRequest) => {
     await redis.set(otpId, otp, { EX: 600 });
     cookies().set(
       "otp_verify",
-      generateToken({ otpId, userId: user.id, emailId: user.email }),
+      await generateToken({ otpId, userId: user.id, emailId: user.email }),
       { expires: new Date(Date.now() + 600000) }
     );
     return response.success("Mail sent successfully.", null);
