@@ -6,6 +6,7 @@ import SettingsHeader from "@/components/client-components/settings/SettingsHead
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateProfileData } from "@/redux/profile/profileSlice";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { formatDate } from "@/utils/date";
 import { EditProfileValidationSchema } from "@/utils/formik-validation";
 import { CalendarIcon, EmailIcon, PencilIcon, UserIcon } from "@/utils/svgs";
@@ -139,7 +140,7 @@ const EditProfile = () => {
             <CldImage
               width={150}
               height={150}
-              src={formik.values.avatar?.url || "MSGme/default_profile"}
+              src={formik.values.avatar?.url || DEFAULT_PROFILE_IMG}
               alt="profile image"
               className="rounded-full aspect-square object-contain"
             />
