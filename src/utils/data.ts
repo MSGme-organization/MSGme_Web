@@ -1,3 +1,5 @@
+export const DEFAULT_PROFILE_IMG = "MSGme/default_profile";
+
 export const users = [
   {
     id: 1,
@@ -424,5 +426,127 @@ export const messages = [
       avatar: "https://picsum.photos/200/300",
       username: "Me",
     },
+  },
+];
+
+export const invitations = [
+  {
+    id: "req1",
+    sender: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: "Developer and tech enthusiast",
+      username: "user123",
+      id: "user1",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: "Graphic designer and artist",
+      username: "artist42",
+      id: "user2",
+    },
+    status: "pending",
+    isSentBySelf: true,
+  },
+  {
+    id: "req2",
+    sender: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: "Digital marketer",
+      username: "marketer007",
+      id: "user3",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: "Photographer and traveler",
+      username: "photoLover",
+      id: "user4",
+    },
+    status: "accepted",
+    isSentBySelf: false,
+  },
+  {
+    id: "req3",
+    sender: {
+      avatar: null,
+      bio: "Student and part-time coder",
+      username: "codingStudent",
+      id: "user5",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: null,
+      username: "teacherPro",
+      id: "user6",
+    },
+    status: "rejected",
+    isSentBySelf: true,
+  },
+  {
+    id: "req3",
+    sender: {
+      avatar: null,
+      bio: "Student and part-time coder",
+      username: "codingStudent",
+      id: "user5",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: null,
+      username: "teacherPro",
+      id: "user6",
+    },
+    status: "rejected",
+    isSentBySelf: true,
+  },
+  {
+    id: "req3",
+    sender: {
+      avatar: null,
+      bio: "Student and part-time coder",
+      username: "codingStudent",
+      id: "user5",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: null,
+      username: "teacherPro",
+      id: "user6",
+    },
+    status: "rejected",
+    isSentBySelf: true,
+  },
+  {
+    id: "req3",
+    sender: {
+      avatar: null,
+      bio: "Student and part-time coder",
+      username: "codingStudent",
+      id: "user5",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: null,
+      username: "teacherPro",
+      id: "user6",
+    },
+    status: "rejected",
+    isSentBySelf: true,
+  },
+  {
+    id: "req3",
+    sender: {
+      avatar: null,
+      bio: "Student and part-time coder",
+      username: "codingStudent",
+      id: "user5",
+    },
+    receiver: {
+      avatar: DEFAULT_PROFILE_IMG,
+      bio: null,
+      username: "teacherPro",
+      id: "user6",
+    },
+    status: "pending",
+    isSentBySelf: false,
   },
 ];

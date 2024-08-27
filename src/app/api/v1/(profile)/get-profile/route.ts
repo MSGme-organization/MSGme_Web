@@ -5,7 +5,9 @@ import { cookies } from "next/headers";
 
 export const GET = async () => {
   try {
-    const decodedUser = decodedToken(cookies().get("token")?.value);
+    const decodedUser: any = decodedToken(
+      cookies().get("token")?.value as string
+    );
 
     const user = await prisma.user.findFirst({
       where: { id: decodedUser.id },
