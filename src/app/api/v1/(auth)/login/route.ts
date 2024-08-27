@@ -61,7 +61,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       cookies().set(
         "token",
-        generateToken({
+        await generateToken({
           id: user.id,
           username: user.username,
           email: user.email,

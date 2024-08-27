@@ -7,7 +7,9 @@ import { NextRequest } from "next/server";
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const decodedUser = decodedToken(cookies().get("token")?.value);
+    const decodedUser: any = decodedToken(
+      cookies().get("token")?.value as string
+    );
 
     if (body.requestStatus === "sent") {
       const payloadData = {

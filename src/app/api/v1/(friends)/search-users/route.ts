@@ -19,7 +19,9 @@ export const GET = async (request: NextRequest) => {
     const search: string = request.nextUrl.searchParams.get("search") || "";
     const searchType: string =
       request.nextUrl.searchParams.get("searchType") || "";
-    const decodedUser = decodedToken(cookies().get("token")?.value);
+    const decodedUser: any = decodedToken(
+      cookies().get("token")?.value as string
+    );
 
     let users: UsersInterface[] = [];
 
