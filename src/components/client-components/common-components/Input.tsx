@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { HTMLInputTypeAttribute } from "react";
 
 interface InputProps {
   label?: string;
@@ -17,6 +17,7 @@ interface InputProps {
   RightIcon?: null | undefined | (() => React.ReactNode);
   rightIconToggle?: VoidFunction;
   inputRef?: React.Ref<HTMLInputElement>;
+  autocomplete?: string | undefined;
 }
 
 const Input = React.forwardRef<
@@ -38,6 +39,7 @@ const Input = React.forwardRef<
       LeftIcon,
       RightIcon,
       rightIconToggle,
+      autocomplete,
       ...props
     },
     ref
@@ -71,6 +73,7 @@ const Input = React.forwardRef<
               required={required}
               placeholder={placeholder}
               {...props}
+              autoComplete={autocomplete || ""}
             />
           ) : (
             <input
@@ -80,12 +83,12 @@ const Input = React.forwardRef<
               value={value}
               id={name}
               type={type}
-              className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none bg-white dark:bg-customGrey-blackBg focus:shadow-none focus:ring-0 focus:dark:border-[#38C585] focus:border-[#38C585] ${
-                error ? "border-red-500" : ""
-              } ${classes}`}
+              className={`w-full border-gray-300 shadow dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none bg-white dark:bg-customGrey-blackBg focus:shadow-none focus:ring-0 focus:dark:border-[#38C585] focus:border-[#38C585] ${error ? "border-red-500" : ""
+                } ${classes}`}
               required={required}
               {...props}
               placeholder={placeholder}
+              autoComplete={autocomplete || ""}
             />
           )}
           {RightIcon && (

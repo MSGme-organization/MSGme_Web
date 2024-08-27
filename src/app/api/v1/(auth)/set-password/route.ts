@@ -21,7 +21,9 @@ export const POST = async (request: NextRequest) => {
     if (validationError) {
       return validationError;
     }
-    const cookie = decodedToken(cookies().get("set-pass")?.value);
+    const cookie: any = decodedToken(
+      cookies().get("set-pass")?.value as string
+    );
 
     if (cookie) {
       const user = await prisma.user.findFirst({

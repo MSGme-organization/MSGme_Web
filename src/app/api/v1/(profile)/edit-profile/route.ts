@@ -12,7 +12,9 @@ import { NextRequest, NextResponse } from "next/server";
 const validateReq = async (body: FormData) => {
   const emailExist: any =
     body.get("email") && (await emailFetch(body.get("email") as string));
-  const decodedUser: any = decodedToken(cookies().get("token")?.value);
+  const decodedUser: any = decodedToken(
+    cookies().get("token")?.value as string
+  );
   const nameExist: any =
     body.get("username") &&
     (await userNameFetch(body.get("username")?.toString()));
@@ -125,7 +127,9 @@ export const POST = async (request: NextRequest) => {
     if (updatedUser instanceof NextResponse) {
       return updatedUser;
     }
-    const decodedUser = decodedToken(cookies().get("token")?.value);
+    const decodedUser: any = decodedToken(
+      cookies().get("token")?.value as string
+    );
 
     const user = await prisma.user.update({
       where: { id: decodedUser.id },

@@ -12,12 +12,12 @@ const validateReq = async (body: any) => {
     );
   }
 
-  return null
+  return null;
 };
 
 export const POST = async (request: NextRequest) => {
   try {
-    const decoded = decodedToken(cookies().get("token")?.value);
+    const decoded: any = decodedToken(cookies().get("token")?.value as string);
     const user = await prisma.user.findFirst({
       where: { id: decoded.id },
     });
@@ -25,7 +25,7 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json();
     const validationError = await validateReq(body);
     if (validationError) {
-      return validationError
+      return validationError;
     }
 
     const hash = crypto.createHash("sha1");
