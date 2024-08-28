@@ -4,6 +4,7 @@ import ChatHeader from "@/components/client-components/chat/ChatHeader";
 import Message from "@/components/client-components/chat/Message";
 import TextMessageField from "@/components/client-components/chat/TextMessageField";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
+import { useAppSelector } from "@/redux/hooks";
 import { messages, users } from "@/utils/data";
 import React, { useCallback } from "react";
 
@@ -34,6 +35,9 @@ const Chats = ({ params }: { params: { id: string } }) => {
     () => users.find((user) => user.id === parseInt(params.id)),
     [users]
   );
+  const [chatFriend, setChatFriend] = React.useState<any>(null)
+  const friendsList = useAppSelector((state) => state.friendsList)
+
 
   const handleMsgRef = React.useCallback(
     (index: number, ref: HTMLDivElement) => {
@@ -144,20 +148,24 @@ const Chats = ({ params }: { params: { id: string } }) => {
     }
   }, [searchDivsLength]);
 
+  React.useEffect(() => {
+    const friend = friendsList.data.find((friend: any) => friend.room_id === params.id)
+    setChatFriend(friend)
+  }, [friendsList])
+
   return (
     <>
       <div
         id="chat"
         ref={ref}
-        className={`w-full ${
-          isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
-        } relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
+        className={`w-full ${isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
+          } relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
       >
         <ChatHeader
-          name={user?.name}
+          name={chatFriend?.friend_name}
           handleSearch={handleSearch}
           searchString={searchString}
-          avatar={user?.avatarImage}
+          avatar={chatFriend?.friend_avatar}
           searchActiveIndex={searchActiveIndex}
           downActiveIndex={downActiveIndex}
           upActiveIndex={upActiveIndex}

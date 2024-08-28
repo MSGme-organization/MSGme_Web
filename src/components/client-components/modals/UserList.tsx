@@ -1,5 +1,8 @@
 "use client";
 import { friendRequest, friendRequestResponse } from "@/query/add-user/friendsManage";
+import { fetchFriendsListData } from "@/redux/friends-list/friendsSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { CheckSvg, CrossSvg, SandWatch } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
@@ -43,6 +46,7 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
     const [userStatus, setUserStatus] = React.useState<string | null>(
         null
     );
+    const dispatch = useAppDispatch()
 
     const frdRequestQuery = useMutation({
         mutationFn: friendRequest,
@@ -60,6 +64,7 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
         mutationFn: friendRequestResponse,
         onSuccess: (res: AxiosResponse) => {
             successToast(res.data?.message);
+            dispatch(fetchFriendsListData())
             handleSearch()
         },
         onError: (error: AxiosError) => {
@@ -91,7 +96,7 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
         >
             <div className="flex gap-5 items-center">
                 <CldImage
-                    src={user?.avatar || ""}
+                    src={user?.avatar || DEFAULT_PROFILE_IMG}
                     alt={`${user?.username}'s avatar`}
                     width={40}
                     height={40}
@@ -101,16 +106,22 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
                 <p className="font-semibold">{user?.username}</p>
             </div>
 
-            {userStatus ? (
-                userStatusButton[userStatus](handleUserStatus)
-            ) : (
-                <button
-                    onClick={() => handleUserStatus("sent")}
-                    className="bg-primary px-4 text-white font-bold rounded-full text-[15px]"
-                >
-                    +
-                </button>
-            )}
+            {requestResponseQuery.isPending || frdRequestQuery.isPending ?
+                (
+                    <div>
+                        <div className="api-loader w-[20px]"></div>
+                    </div>
+                ) : userStatus ?
+                    (
+                        userStatusButton[userStatus](handleUserStatus)
+                    ) : (
+                        <button
+                            onClick={() => handleUserStatus("sent")}
+                            className="bg-primary px-4 text-white font-bold rounded-full text-[15px]"
+                        >
+                            +
+                        </button>
+                    )}
         </div>
     );
 };

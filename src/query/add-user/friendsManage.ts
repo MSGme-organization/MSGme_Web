@@ -1,4 +1,4 @@
-import axios, { AxiosDefaults, AxiosPromise, AxiosResponse } from "axios";
+import axios from "axios";
 
 interface paramsInterface {
   search: string;
