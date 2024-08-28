@@ -67,7 +67,6 @@ export default async function middleware(req: NextRequest) {
       }
     }
   } catch (err: any) {
-    console.log(err);
     return NextResponse.json({ message: err.message });
   }
 }

@@ -1,5 +1,5 @@
 import { getProfile } from "@/query/profile/getProfile";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 
 const initialState = {
@@ -16,11 +16,11 @@ const profileSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    addProfileData(state: any, action: any) {
+    addProfileData(state: any, action: PayloadAction) {
       state = action.payload;
       return state;
     },
-    updateProfile(state: any, action: any) {
+    updateProfile(state: any, action: PayloadAction<object>) {
       state = { ...state, ...action.payload };
       return state;
     },

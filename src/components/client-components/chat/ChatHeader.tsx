@@ -8,12 +8,13 @@ import {
   ThreeDotsIcon,
 } from "@/utils/svgs";
 import { Dropdown } from "flowbite-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import Input from "../common-components/Input";
 import { DownArrow } from "../HomeLayout/Svgs";
 import ShareModal from "../modals/ShareModal";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
+import { CldImage } from "next-cloudinary";
 
 interface ChatHeaderProps {
   name: string | undefined;
@@ -48,12 +49,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     },
     {
       label: "Mute",
-      fn: () => {},
+      fn: () => { },
       icon: MuteIcon,
     },
     {
       label: "Report",
-      fn: () => {},
+      fn: () => { },
       icon: FlagIcon,
     },
   ];
@@ -78,9 +79,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   return (
     <>
       <div
-        className={`w-full sticky ${
-          searchOpen ? "mb-[66px]" : "mb-0"
-        } top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
+        className={`w-full sticky ${searchOpen ? "mb-[66px]" : "mb-0"
+          } top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
       >
         <div className="w-full px-4 flex items-center justify-between z-[21]  dark:bg-customGrey-blackBg bg-white">
           <div className="flex items-center gap-3">
@@ -88,11 +88,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
               <BackIcon />
             </button>
             <div className="flex items-center cursor-pointer">
-              <Image
+              <CldImage
+                src={avatar || DEFAULT_PROFILE_IMG}
+                alt={`${name}'s avatar`}
                 width={40}
                 height={40}
-                src={avatar || ""}
-                alt="avtar"
+                loading="lazy"
                 className="w-12 h-12 rounded-full"
               />
               <div className="ml-4">
@@ -130,9 +131,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         </div>
         <div
-          className={`absolute w-full top-[100%] gap-2 left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${
-            searchOpen ? "translate-y-[0%]" : ""
-          }`}
+          className={`absolute w-full top-[100%] gap-2 left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${searchOpen ? "translate-y-[0%]" : ""
+            }`}
         >
           <Input
             type="text"
