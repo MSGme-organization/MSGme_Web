@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { EditIcon } from "@/utils/svgs";
 import { CldImage } from "next-cloudinary";

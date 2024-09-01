@@ -1,8 +1,8 @@
 "use client";
 
 import { editProfile } from "@/query/profile/editprofile";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { updateProfileData } from "@/redux/profile/profileSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { updateProfileData } from "@/lib/redux/profile/profileSlice";
 import { errorToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query";
 import { Field, Form, Formik } from "formik";

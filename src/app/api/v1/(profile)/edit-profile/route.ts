@@ -1,9 +1,9 @@
 import {
   deleteCloudinaryImage,
   uploadCloudinaryImage,
-} from "@/api-modules/helpers/cloudinary";
-import { response } from "@/api-modules/helpers/response";
-import { decodedToken } from "@/api-modules/helpers/token";
+} from "@/lib/cloudinary/cloudinary";
+import { response } from "@/utils/helpers/response";
+import { decodedToken } from "@/utils/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 import { cookies } from "next/headers";

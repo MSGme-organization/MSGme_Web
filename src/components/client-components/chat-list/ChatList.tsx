@@ -3,8 +3,8 @@
 import ChatListNavBar from "@/components/client-components/chat-list/ChatListNavBar";
 import UserItem from "@/components/client-components/chat-list/UserItem";
 import Input from "@/components/client-components/common-components/Input";
-import { fetchFriendsListData } from "@/redux/friends-list/friendsSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchFriendsListData } from "@/lib/redux/friends-list/friendsSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { SearchIcon } from "@/utils/svgs";
 import { isValidArray } from "@/utils/validate";
 import { useParams, useRouter } from "next/navigation";
@@ -15,7 +15,6 @@ const ChatList = () => {
     const friendsList = useAppSelector((state) => state.friendsList)
     const router = useRouter();
     const params = useParams();
-
 
     const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (isValidArray(friendsList.data)) {

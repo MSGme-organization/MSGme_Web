@@ -1,7 +1,7 @@
 "use client";
 import { friendRequest, friendRequestResponse } from "@/query/add-user/friendsManage";
-import { fetchFriendsListData } from "@/redux/friends-list/friendsSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { fetchFriendsListData } from "@/lib/redux/friends-list/friendsSlice";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { CheckSvg, CrossSvg, SandWatch } from "@/utils/svgs";
 import { errorToast, successToast } from "@/utils/toast";

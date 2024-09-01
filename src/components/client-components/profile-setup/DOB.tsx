@@ -1,7 +1,7 @@
 "use client";
 import { editProfile } from "@/query/profile/editprofile";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { updateProfileData } from "@/redux/profile/profileSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { updateProfileData } from "@/lib/redux/profile/profileSlice";
 import { formatDate } from "@/utils/date";
 import { CalendarIcon } from "@/utils/svgs";
 import { errorToast } from "@/utils/toast";

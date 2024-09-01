@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import StoreProvider from "./StoreProvider";
+import StoreProvider from "../components/client-components/StoreProvider";
 
 const NunitoSans = Nunito_Sans({
   weight: "300",

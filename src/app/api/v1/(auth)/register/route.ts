@@ -1,5 +1,5 @@
-import { response } from "@/api-modules/helpers/response";
-import { generateToken } from "@/api-modules/helpers/token";
+import { response } from "@/utils/helpers/response";
+import { generateToken } from "@/utils/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { emailFetch, userNameFetch } from "@/utils/user_fetch";
 import crypto from "crypto";

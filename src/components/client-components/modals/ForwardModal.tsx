@@ -7,7 +7,7 @@ import Image from "next/image";
 import React from "react";
 import Input from "../common-components/Input";
 import { CloseIcon } from "@/utils/svgs";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { CldImage } from "next-cloudinary";
 
 interface ForwardModalProps {

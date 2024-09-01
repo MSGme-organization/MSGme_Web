@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { authorize } from "./api-modules/middlewares/authorize";
+import { authorize } from "./utils/middlewares/authorize";
 
 const publicRoutes = ["/", "/login", "/register", "/reset-password"];
 
