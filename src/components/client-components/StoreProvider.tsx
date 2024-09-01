@@ -1,8 +1,8 @@
 "use client";
 import { getProfile } from "@/query/profile/getProfile";
-import { useAppDispatch } from "@/redux/hooks";
-import { fetchProfile } from "@/redux/profile/profileSlice";
-import { AppDispatch, AppStore, makeStore } from "@/redux/store";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { fetchProfile } from "@/lib/redux/profile/profileSlice";
+import { AppDispatch, AppStore, makeStore } from "@/lib/redux/store";
 import { useRef } from "react";
 import { Provider, useDispatch } from "react-redux";
 

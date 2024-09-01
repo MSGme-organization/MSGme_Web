@@ -4,7 +4,7 @@ import ChatHeader from "@/components/client-components/chat/ChatHeader";
 import Message from "@/components/client-components/chat/Message";
 import TextMessageField from "@/components/client-components/chat/TextMessageField";
 import ForwardModal from "@/components/client-components/modals/ForwardModal";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { messages, users } from "@/utils/data";
 import React, { useCallback } from "react";
 

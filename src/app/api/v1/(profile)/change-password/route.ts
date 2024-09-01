@@ -1,5 +1,5 @@
-import { response } from "@/api-modules/helpers/response";
-import { decodedToken } from "@/api-modules/helpers/token";
+import { response } from "@/utils/helpers/response";
+import { decodedToken } from "@/utils/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import crypto from "crypto";
 import { cookies } from "next/headers";

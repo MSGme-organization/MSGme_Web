@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppDispatch, useAppStore } from "@/redux/hooks";
-import { fetchProfile } from "@/redux/profile/profileSlice";
+import { useAppDispatch, useAppStore } from "@/lib/redux/hooks";
+import { fetchProfile } from "@/lib/redux/profile/profileSlice";
 import { useParams } from "next/navigation";
 import React from "react";
 

@@ -1,8 +1,8 @@
-import { response } from "@/api-modules/helpers/response";
-import { generateToken } from "@/api-modules/helpers/token";
-import { resetPasswordMail } from "@/api-modules/services/mail";
-import { resetPassMailTemplate } from "@/api-modules/services/mailTemplate";
-import redis from "@/app/redis";
+import { response } from "@/utils/helpers/response";
+import { generateToken } from "@/utils/helpers/token";
+import { resetPasswordMail } from "@/utils/mail-services/mail";
+import { resetPassMailTemplate } from "@/utils/mail-services/mailTemplate";
+import redis from "@/lib/redis/redis";
 import { emailFetch } from "@/utils/user_fetch";
 import { randomInt, randomUUID } from "crypto";
 import { cookies } from "next/headers";

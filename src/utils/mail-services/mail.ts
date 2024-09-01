@@ -1,4 +1,4 @@
-import nodeMailer from "../config/nodeMailer";
+import nodeMailer from "../../lib/node-mailer/config/nodeMailer";
 
 export const resetPasswordMail = async (email: string, message: string) => {
   const transport = await nodeMailer.initializeNodeMailer();

@@ -1,9 +1,9 @@
 "use server";
 
-import { decodedToken, generateToken } from "@/api-modules/helpers/token";
-import { resetPasswordMail } from "@/api-modules/services/mail";
-import resetPassMailTemplate from "@/api-modules/services/mailTemplate";
-import redis from "@/app/redis";
+import { decodedToken, generateToken } from "@/utils/helpers/token";
+import { resetPasswordMail } from "@/utils/mail-services/mail";
+import resetPassMailTemplate from "@/utils/mail-services/mailTemplate";
+import redis from "@/lib/redis/redis";
 import { randomInt } from "crypto";
 import { cookies } from "next/headers";
 

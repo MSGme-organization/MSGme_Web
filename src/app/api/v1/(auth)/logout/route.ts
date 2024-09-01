@@ -1,4 +1,4 @@
-import { response } from "@/api-modules/helpers/response";
+import { response } from "@/utils/helpers/response";
 import { cookies } from "next/headers";
 
 export const POST = async () => {
