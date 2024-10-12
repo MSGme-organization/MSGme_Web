@@ -17,7 +17,6 @@ const Layout = ({
 }) => {
   const params = useParams();
   const [screenWidth, setScreenWidth] = React.useState<number | null>(null);
-  const [isMounted, setIsMounted] = React.useState<Boolean>(false);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -25,7 +24,6 @@ const Layout = ({
   }, []);
 
   React.useEffect(() => {
-    setIsMounted(true);
     const updateScreenWidth = () => {
       setScreenWidth(window.innerWidth);
     };
@@ -36,10 +34,6 @@ const Layout = ({
       window.removeEventListener("resize", updateScreenWidth);
     };
   }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">

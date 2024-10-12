@@ -3,11 +3,10 @@
 import React from "react";
 
 const Loading = ({ isLoading, children }) => {
-  const [isMounted, setIsMounted] = React.useState(false);
 
   const disableScroll = () => {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    let scrollLeft = window.scrollX || document.documentElement.scrollLeft;
     window.onscroll = function () {
       window.scrollTo(scrollLeft, scrollTop);
     };
@@ -17,9 +16,6 @@ const Loading = ({ isLoading, children }) => {
     window.onscroll = function () {};
   };
 
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   React.useEffect(() => {
     if (isLoading) {
@@ -29,10 +25,7 @@ const Loading = ({ isLoading, children }) => {
     }
   }, [isLoading]);
 
-  if (!isMounted) {
-    return null;
-  }
-
+ 
   return (
     <>
       {children}
