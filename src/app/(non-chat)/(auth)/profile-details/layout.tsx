@@ -26,8 +26,7 @@ export default function ProfileLayout({
 
   return (
     <>
-      <div className="flex justify-center w-[100%] h-[100%] mt-28 mb-20">
-        <div className="bg-bgColor dark:bg-customGrey-black text-textColor dark:text-textColor-dark max-w-[593px] w-[100%] p-8 rounded-[20px]">
+
           <div className="px-4 mt-3">
             <ProgressBar
               percent={(step * 100) / 2}
@@ -103,8 +102,7 @@ export default function ProfileLayout({
           <ProfileProvider step={step} setStep={setStep}>
             <div className={inter.className}>{children}</div>
           </ProfileProvider>
-        </div>
-      </div>
+       
     </>
   );
 }

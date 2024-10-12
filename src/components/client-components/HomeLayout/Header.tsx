@@ -1,45 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DownArrow, NavbarBurger, NavbarCross } from "./Svgs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-type HeaderBarProps = {
-  features?: boolean;
-  navbar?: boolean;
-  button?: "contact" | "start";
-};
 
-const HeaderBar: React.FC<HeaderBarProps> = ({
-  features = true,
-  navbar = true,
-  button = "start",
-}) => {
+const HeaderBar = () => {
   const [nav, setNav] = React.useState(true);
-  const [isMounted, setIsMounted] = useState(false);
-  const router=useRouter()
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  return navbar ? (
+  const pathname = usePathname();
+  return (
     <div className=" px-5 xl:px-14 bg-bgColor dark:bg-customGrey-black shadow-sm  min-h-[90px] absolute w-full top-0 left-0">
       <section className="h-[100%] max-w-[1808px] w-full flex flex-row items-center justify-between p-4 my-0 mx-auto min-h-[90px]">
-        <div className="h-[100%] cursor-pointer" onClick={()=>router.push('/')}>
+        <Link href="/" className="h-[100%] cursor-pointer" >
           <img
             src="./Logo.png"
             className="w-[100%] h-[100%] max-w-[132px] max-h-[132px]"
             alt="logo"
           />
-        </div>
-        {features ? (
+        </Link>
+        {pathname === "/" ? (
           <div className="lg:flex hidden items-center justify-center gap-10">
             <a
               href="#feature"
@@ -79,8 +60,8 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
           </div>
         ) : null}
 
-        <div className={features ? "lg:flex hidden" : "lg:flex"}>
-          {button === "start" ? (
+        <div className={pathname === "/" ? "lg:flex hidden" : "lg:flex"}>
+          {pathname === "/" ? (
             <Link href="/login">
               <button className=" text-nowrap rounded-[8px] bg-primary text-textColor-dark py-4 px-6 font-bold text-[16px] flex gap-[3px] justify-center items-center">
                 <Image
@@ -104,7 +85,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
             </button>
           )}
         </div>
-        {features ? (
+        {pathname === "/" ? (
           <div
             className="lg:hidden block text-textColor dark:text-textColor-dark"
             onClick={() => setNav((prev) => !prev)}
@@ -113,7 +94,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
           </div>
         ) : null}
       </section>
-      {features ? (
+      {pathname === "/" ? (
         <div
           className={
             nav
@@ -160,7 +141,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
         </div>
       ) : null}
     </div>
-  ) : null;
+  )
 };
 
 export default HeaderBar;
