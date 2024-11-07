@@ -114,7 +114,7 @@ const AddModal: React.FC<AddModalProps> = ({ showModal, setShowModal }) => {
             />
           </div>
           {filteredArr && filteredArr.length !== 0 ? filteredArr.map((user: any) => (
-            <UserList user={user} handleSearch={handleSearch} />
+            <UserList key={user.id} user={user} handleSearch={handleSearch} />
           )) : (<div className="w-full py-4 flex justify-center items-center">No User Found</div>)}
         </div>
       </Modal.Body>

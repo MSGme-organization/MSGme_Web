@@ -9,7 +9,7 @@ const initialState = {
   username: "",
   dob: "",
   bio: "",
-  avatar: "",
+  avatar: { url: "" },
 };
 
 const profileSlice = createSlice({

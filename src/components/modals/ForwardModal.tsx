@@ -1,18 +1,17 @@
 "use client";
 
-import { Message } from "@/app/(chat)/chat/@indChat/[id]/page";
 import { DEFAULT_PROFILE_IMG, users } from "@/utils/data";
 import { Modal } from "flowbite-react";
-import Image from "next/image";
 import React from "react";
 import Input from "../common-components/Input";
 import { CloseIcon } from "@/utils/svgs";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { CldImage } from "next-cloudinary";
+import { MessageType } from "../chat/Message";
 
 interface ForwardModalProps {
-  forwardMsg: Message | null;
-  setForwardMsg: React.Dispatch<React.SetStateAction<Message | null>>;
+  forwardMsg: MessageType | null;
+  setForwardMsg: React.Dispatch<React.SetStateAction<MessageType | null>>;
 }
 
 const ForwardModal: React.FC<ForwardModalProps> = ({

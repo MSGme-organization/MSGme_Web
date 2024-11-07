@@ -23,6 +23,7 @@ model User {
   password   String
   dob        DateTime?
   bio        String?
+  public_key Json?
   created_at DateTime  @default(now())
   avatar     String?
   updated_at DateTime  @default(now()) @updatedAt

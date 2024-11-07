@@ -2,15 +2,15 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import UserItem from "@/components/client-components/chat-list/UserItem";
-import Input from "@/components/client-components/common-components/Input";
+import UserItem from "@/components/chat-list/UserItem";
+import Input from "@/components/common-components/Input";
 import { fetchFriendsListData } from "@/lib/redux/friends-list/friendsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { SearchIcon } from "@/utils/svgs";
 import { isValidArray } from "@/utils/validate";
 import { useParams, useRouter } from "next/navigation";
 const ChatListNavBar = dynamic(
-  () => import("@/components/client-components/chat-list/ChatListNavBar"),
+  () => import("@/components/chat-list/ChatListNavBar"),
   { ssr: false }
 );
 

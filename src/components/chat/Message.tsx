@@ -1,6 +1,7 @@
+"use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Reaction from "./Reaction";
+import { CldImage } from "next-cloudinary";
 import toast from "react-hot-toast";
 import {
   BlockIcon,
@@ -13,35 +14,32 @@ import {
 } from "@/utils/svgs";
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
+import { DEFAULT_PROFILE_IMG } from "@/utils/data";
+import { isValidObject } from "@/utils/validate";
 
+export type MessageType = {
+  username: string;
+  fullName: string;
+  message: string ;
+  avatar?: string;
+  reaction?: string;
+  repliedMsg?: MessageType | null;
+  _id: string;
+  iv: string;
+};
 interface MessageProps {
-  message: {
-    id: number;
-    username: string;
-    message: string;
-    issentbyme: boolean;
-    avatar: string;
-    reaction: string | null | undefined;
-    repliedMsg?: {
-      message: string;
-      avatar: string;
-      username: string;
-      id: number;
-      issentbyme: boolean;
-    };
-    totalMsg: number;
-  };
+  message: MessageType;
   index: number;
-  isUserSame: boolean;
   handleReply: Function;
   handleForward: Function;
   gotoMSG: Function;
   handleMSGRef: Function;
-  isContextActive: number | null;
+  isContextActive: string | null;
   setContextActive: Function;
   searchString?: string | null | undefined;
   searchActiveIndex: number | null;
   highlightText: (text, index) => any;
+  decodedUsername: string;
 }
 
 interface ContextCord {
@@ -51,7 +49,6 @@ interface ContextCord {
 
 const Message: React.FC<MessageProps> = ({
   message,
-  isUserSame,
   handleReply,
   handleForward,
   handleMSGRef,
@@ -59,9 +56,8 @@ const Message: React.FC<MessageProps> = ({
   gotoMSG,
   isContextActive,
   setContextActive,
-  searchString,
   highlightText,
-  searchActiveIndex,
+  decodedUsername,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
@@ -84,7 +80,7 @@ const Message: React.FC<MessageProps> = ({
       icon: CopyIcon,
       fn: async () => {
         try {
-          await navigator.clipboard.writeText(message.message);
+          await navigator.clipboard.writeText(message.message as string);
           toast("Copied to clipboard", {
             duration: 0,
             position: "bottom-center",
@@ -133,7 +129,7 @@ const Message: React.FC<MessageProps> = ({
       setLast(true);
     }
     setContextCord({ top: e.clientY, left: e.clientX });
-    setContextActive(message.id);
+    setContextActive(message._id);
   };
   useEffect(() => {
     if (contextCord === null) {
@@ -143,72 +139,74 @@ const Message: React.FC<MessageProps> = ({
   }, [contextCord]);
   return (
     <div
-      className={`flex flex-col w-full pb-1 px-4  ${
-        message.issentbyme ? "items-end" : "items-start"
+      className={`flex flex-col w-full pb-1 px-4 mt-6 ${
+        message.username === decodedUsername ? "items-end" : "items-start"
       } `}
     >
-      <div className="flex py-2 items-center gap-2">
-        {!isUserSame && !message.issentbyme && (
+      {/* <div className="flex py-2 items-center gap-2">
+        {!isUserSame && !(message.username === decodedUsername) && (
           <>
-            <Image
-              src={message.avatar}
+            <CldImage
+              src={message?.avatar || DEFAULT_PROFILE_IMG}
+              alt={`user's avatar`}
               width={30}
               height={30}
-              alt="user"
+              loading="lazy"
               className="rounded-full aspect-square"
             />
             <div className="flex">
-              <p className="text-sm font-semibold">{message.username}</p>
+              <p className="text-sm font-semibold">{message.fullName}</p>
             </div>
           </>
         )}
-      </div>
+      </div> */}
       <div
         className={`flex relative  w-full items-center  ${
-          message.issentbyme ? "justify-end" : "justify-start"
+          message.username === decodedUsername ? "justify-end" : "justify-start"
         }`}
       >
-        {message.issentbyme && (
+        {message.username === decodedUsername && (
           <Reaction setEmojiReaction={setEmojiReaction} position="left" />
         )}
         <div
           id={`msg-${index}`}
           ref={(el) => handleMSGRef(index, el)}
           className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative transition-all duration-100 ${
-            message.issentbyme
+            message.username === decodedUsername
               ? "bg-primary text-white "
               : "bg-white text-black dark:border border-gray-700 dark:bg-customGrey-blackBg dark:text-white"
           } rounded-md`}
         >
-          {message.repliedMsg && (
+          {isValidObject(message.repliedMsg) && (
             <div className="w-full pb-0 p-3">
               <button
                 className={`${
-                  message.issentbyme
+                  message.username === decodedUsername
                     ? "bg-[#ffffff31] dark:bg-[#3741514b]"
                     : "bg-gray-200 dark:bg-gray-700"
                 } text-black w-full dark:text-white mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
                 onClick={() => {
-                  gotoMSG(message.repliedMsg?.id);
+                  gotoMSG(message.repliedMsg?._id);
                 }}
               >
                 <div className="flex items-center my-2 gap-2">
                   {ReplyMSG()}
-                  {!message.repliedMsg.issentbyme && (
-                    <Image
-                      src={message.repliedMsg.avatar}
+                  {/* {!(message.repliedMsg.username === decodedUsername) && (
+                    <CldImage
+                      src={message?.repliedMsg?.avatar || DEFAULT_PROFILE_IMG}
+                      alt={`user's avatar`}
                       width={20}
                       height={20}
-                      alt="user"
+                      loading="lazy"
                       className="rounded-full aspect-square"
                     />
-                  )}
+                  )} */}
                   <p className="text-[12px] font-semibold">
-                    {message.repliedMsg.username}
+                    {message?.repliedMsg?.username}
                   </p>
                 </div>
                 <p className="text-[15px] font-semibold text-start">
-                  {message.repliedMsg.message}
+                  {message?.repliedMsg?.message}
                 </p>
               </button>
             </div>
@@ -229,24 +227,30 @@ const Message: React.FC<MessageProps> = ({
               <span
                 onClick={() => setEmojiReaction(null)}
                 className={`absolute hover:scale-125 rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] aspect-square border dark:border-gray-800 border-gray-100 ${
-                  message.issentbyme ? "top-[90%] right-0" : "top-[90%] left-0"
+                  message.username === decodedUsername
+                    ? "top-[90%] right-0"
+                    : "top-[90%] left-0"
                 } cursor-pointer`}
               >
                 {emojiReaction}
               </span>
             )}
           </p>
-          {contextCord && isContextActive === message.id ? (
+          {contextCord && isContextActive === message._id ? (
             <Context
               setContextCord={setContextCord}
               contextRef={ref}
               items={dpItems}
-              position={message.issentbyme ? "top-left" : "right-bottom"}
+              position={
+                message.username === decodedUsername
+                  ? "top-left"
+                  : "right-bottom"
+              }
               last={isLast}
             />
           ) : null}
         </div>
-        {!message.issentbyme && (
+        {!(message.username === decodedUsername) && (
           <Reaction setEmojiReaction={setEmojiReaction} position="right" />
         )}
       </div>

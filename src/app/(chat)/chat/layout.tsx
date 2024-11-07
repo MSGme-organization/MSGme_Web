@@ -1,5 +1,6 @@
 "use client";
 
+import { SocketProvider } from "@/components/context/SocketContext";
 import { useAppDispatch, useAppStore } from "@/lib/redux/hooks";
 import { fetchProfile } from "@/lib/redux/profile/profileSlice";
 import { useParams } from "next/navigation";
@@ -36,16 +37,22 @@ const Layout = ({
   }, []);
 
   return (
-    <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">
-      {screenWidth && screenWidth > 768 ? children : params.id ? "" : children}
-      <div
-        className={`flex-grow ${
-          params.id ? "" : "hidden"
-        }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
-      >
-        {indChat}
+    <SocketProvider>
+      <div className="h-[100dvh] w-full  bg-bgColor-light dark:bg-bgColor-dark flex relative">
+        {screenWidth && screenWidth > 768
+          ? children
+          : params.id
+          ? ""
+          : children}
+        <div
+          className={`flex-grow ${
+            params.id ? "" : "hidden"
+          }  h-full  bg-[#E9ECEF] dark:bg-customGrey-black md:block`}
+        >
+          {indChat}
+        </div>
       </div>
-    </div>
+    </SocketProvider>
   );
 };
 

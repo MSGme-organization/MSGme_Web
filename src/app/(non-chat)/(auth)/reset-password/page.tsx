@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/components/client-components/common-components/Input";
-import { MailSvg } from "@/components/client-components/HomeLayout/Svgs";
-import Loading from "@/components/client-components/loader/Loading";
+import Input from "@/components/common-components/Input";
+import { MailSvg } from "@/components/HomeLayout/Svgs";
+import Loading from "@/components/loader/Loading";
 import { resetPassword } from "@/query/auth/auth";
 import { EmailValidation } from "@/utils/formik-validation";
 import { errorToast, successToast } from "@/utils/toast";

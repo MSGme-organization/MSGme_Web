@@ -1,10 +1,10 @@
 "use client";
 
-import Loading from "@/components/client-components/loader/Loading";
-import ShareModal from "@/components/client-components/modals/ShareModal";
-import ProfileSection from "@/components/client-components/settings/ProfileSection";
-import SettingItem from "@/components/client-components/settings/SettingItem";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
+import Loading from "@/components/loader/Loading";
+import ShareModal from "@/components/modals/ShareModal";
+import ProfileSection from "@/components/settings/ProfileSection";
+import SettingItem from "@/components/settings/SettingItem";
+import SettingsHeader from "@/components/settings/SettingsHeader";
 import { logout } from "@/query/auth/auth";
 import {
   ChangePassIcon,

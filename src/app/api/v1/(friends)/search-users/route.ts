@@ -99,7 +99,7 @@ export const GET = async (request: NextRequest) => {
             { id: { notIn: friendIds } },
           ],
         },
-        take: search.trim() === "" ? 10 : 20,
+        take: search.trim() === "" ? 0 : 20,
         select: {
           username: true,
           bio: true,

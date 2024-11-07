@@ -2,7 +2,7 @@
 
 import "react-step-progress-bar/styles.css";
 
-import { ProfileProvider } from "@/components/client-components/profile-setup/ProfileContext";
+import { ProfileProvider } from "@/components/context/ProfileContext";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { fetchProfile } from "@/lib/redux/profile/profileSlice";
 import { CheckCircle } from "@/utils/svgs";

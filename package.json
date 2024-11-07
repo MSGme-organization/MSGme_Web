@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "lint": "next lint"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "react-step-progress-bar": "^1.0.3",
     "redis": "^4.6.15",
     "sharp": "^0.33.5",
+    "socket.io-client": "^4.8.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {

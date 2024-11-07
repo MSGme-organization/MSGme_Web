@@ -1,3 +1,5 @@
+"use client"
+
 import { CloseIcon, ReactionIcon } from "@/utils/svgs";
 import { Dropdown } from "flowbite-react";
 import { useFormik } from "formik";
@@ -7,13 +9,13 @@ import Input from "../common-components/Input";
 import EmojiPicker from "../emoji/EmojiPicker";
 
 type TextMessageFieldProps = {
-  setMessages: Function;
+  handleMessageSend: Function;
   replyMsg?: any;
   setReplyMsg: Function;
 };
 
 const TextMessageField = ({
-  setMessages,
+  handleMessageSend,
   setReplyMsg,
   replyMsg,
 }: TextMessageFieldProps) => {
@@ -24,17 +26,7 @@ const TextMessageField = ({
     },
     onSubmit: (values, { resetForm }) => {
       if (replyMsg !== null || values.msg) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: prev[prev.length - 1].id + 1,
-            username: "Me",
-            issentbyme: true,
-            message: values.msg,
-            repliedMsg: replyMsg,
-          },
-        ]);
-        setReplyMsg(null);
+        handleMessageSend(values,)
         resetForm();
       }
     },
@@ -79,15 +71,6 @@ const TextMessageField = ({
               style={{ backgroundColor: "transparent" }}
             >
               <EmojiPicker handleClick={handleEmojiClick} />
-              {/* <Picker
-                className="dark:bg-black dark:border-black"
-                style={{ width: "100%" }}
-                reactionsDefaultOpen={false}
-                searchDisabled={true}
-                onEmojiClick={(emoji) =>
-                  formik.setFieldValue("msg", formik.values.msg + emoji.emoji)
-                }
-              /> */}
             </Dropdown.Item>
           </Dropdown>
           <div className="flex-grow">
