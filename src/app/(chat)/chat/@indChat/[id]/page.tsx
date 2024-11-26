@@ -1,12 +1,10 @@
 import React from "react";
 import Chats from "./_client";
-import { fetchMessage } from "@/query/message/fetchMessage";
 import { decodedToken } from "@/utils/helpers/token";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma/prisma";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const response = await fetchMessage(params.id);
   const decodedUser: any = decodedToken(
     cookies().get("token")?.value as string
   );
@@ -18,9 +16,8 @@ const page = async ({ params }: { params: { id: string } }) => {
     return (
       <Chats
         recipientPublicKey={recipientPublicKey}
-        messageList={response?.data}
         roomId={params.id}
-        decodedUsername={decodedUser?.username || ""}
+        decodedUser={decodedUser}
       />
     );
   } else {

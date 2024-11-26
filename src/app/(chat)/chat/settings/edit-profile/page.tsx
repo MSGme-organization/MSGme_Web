@@ -87,7 +87,7 @@ const EditProfile = () => {
           formData.append("avatar", values.avatar.file);
         }
       } else if (key === "dob") {
-        if (values.dob === formatDate(data.dob)) {
+        if (values.dob === formatDate(data.dob as string)) {
           formData.delete("dob");
         }
       } else {
@@ -100,7 +100,7 @@ const EditProfile = () => {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { ...data, dob: formatDate(data.dob) },
+    initialValues: { ...data, dob: formatDate(data?.dob as string) },
     validationSchema: EditProfileValidationSchema,
     onSubmit: handleSubmit,
   });

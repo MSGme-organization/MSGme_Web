@@ -139,7 +139,6 @@ const ChatHeader = ({
         >
           <Input
             type="text"
-            // ref={searchRef}
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"

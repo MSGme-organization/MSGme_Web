@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -28,23 +22,18 @@ model User {
   avatar     String?
   updated_at DateTime  @default(now()) @updatedAt
 
-  // friend request 
   friend_request_sent     Friend_request[] @relation("Sender")
   friend_request_received Friend_request[] @relation("Receiver")
 
-  // friend list 
   user_friend    Friend_List[] @relation("User")
   to_friend_list Friend_List[] @relation("UserFriend")
 
-  // reports
   reported_user Reports[] @relation("ReportedUser")
   reporter      Reports[] @relation("Reporter")
 
-  // group_list
   group Group_List[]
 }
 
-// Define the enum
 enum FriendRequestStatus {
   pending
   accepted

@@ -1,7 +1,10 @@
 "use client";
 
 import ChatHeader from "@/components/chat/ChatHeader";
-import Message, { MessageType } from "@/components/chat/Message";
+import Message, {
+  DecodedUserType,
+  MessageType,
+} from "@/components/chat/Message";
 import TextMessageField from "@/components/chat/TextMessageField";
 import ForwardModal from "@/components/modals/ForwardModal";
 import { useAppSelector } from "@/lib/redux/hooks";
@@ -13,20 +16,16 @@ import {
   encryptMessage,
 } from "@/utils/messageE2EE";
 import { useSocket } from "@/components/context/SocketContext";
+import { getDayDiff, getDayLabel } from "@/utils/date";
+import { fetchMessage } from "@/query/message/messageAction";
 
 type ChatsProps = {
   roomId: string;
-  messageList: MessageType[];
-  decodedUsername: string;
+  decodedUser: DecodedUserType;
   recipientPublicKey: JsonWebKey;
 };
 
-const Chats = ({
-  roomId,
-  messageList,
-  decodedUsername,
-  recipientPublicKey,
-}: ChatsProps) => {
+const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   const friendsList = useAppSelector((state) => state.friendsList);
   const profile = useAppSelector((state) => state.profile);
   const [replyMsg, setReplyMsg] = React.useState<MessageType | null>(null);
@@ -64,6 +63,7 @@ const Chats = ({
           message: encryptedData,
           iv: iv,
           repliedMsgId: replyMsg?._id,
+          userId: decodedUser.id,
         };
         socket.emit("message-send", {
           messageObject: messageObject,
@@ -94,7 +94,7 @@ const Chats = ({
           data.repliedMsg.message as string,
           data?.repliedMsg?.iv as string
         );
-        data.repliedMsg.message=decryptedReplyMessage
+        data.repliedMsg.message = decryptedReplyMessage;
       }
 
       setMessages((prev) => [...prev, { ...data, message: decryptedMessage }]);
@@ -107,18 +107,16 @@ const Chats = ({
     },
     []
   );
-
-  const gotoMSG = React.useCallback((index: number) => {
-    if (msgRef.current[index]) {
-      msgRef.current[index - 3 > 3 ? index - 3 : index - 1].scrollIntoView();
-    }
+  const gotoMSG = React.useCallback((id: string) => {
+    const targetDiv = msgRef.current.find((value) => {
+      return value.id === id;
+    });
+    focusToMsg(targetDiv);
   }, []);
 
-  const handleReply = React.useCallback((msg: any) => {
-    if (Object.keys(msg).includes("repliedMsg")) {
-      delete msg["repliedMsg"];
-    }
-    setReplyMsg(msg);
+  const handleReply = React.useCallback((msg: MessageType) => {
+    const { repliedMsg, ...restObj } = msg;
+    setReplyMsg(restObj);
   }, []);
 
   const handleForward = React.useCallback((msg: any) => {
@@ -129,29 +127,24 @@ const Chats = ({
     setSearchString(e.target.value);
   };
 
-  const focusToMsg = (index) => {
-    const eleIndex = searchDivs.current[index]?.id.replace("msg-", "");
-    if (parseInt(eleIndex) > 3) {
-      const scrollEle = document.getElementById(
-        `msg-${parseInt(eleIndex) === 0 ? eleIndex : parseInt(eleIndex) - 2}`
-      );
-      scrollEle?.scrollIntoView();
-    } else {
-      document.getElementById("chat")?.scroll({ top: 0 });
+  const focusToMsg = (focusElement: HTMLDivElement | undefined) => {
+    if (focusElement) {
+      focusElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      focusElement?.classList.add("search-focus-message");
+      setTimeout(() => {
+        focusElement?.classList.remove("search-focus-message");
+      }, 1000);
     }
-    searchDivs.current[index]?.classList.add("search-focus-message");
-    setTimeout(() => {
-      searchDivs.current[index]?.classList.remove("search-focus-message");
-    }, 1000);
   };
 
   const downActiveIndex = useCallback(() => {
     if (searchDivsLength !== 0 && searchDivsLength > searchActiveIndex) {
       setSearchActiveIndex((prev) => {
         if (prev === null || prev === searchDivs.current.length - 1) {
+          focusToMsg(searchDivs.current[searchDivs.current.length - 1]);
           return searchDivs.current.length - 1;
         }
-        focusToMsg(prev + 1);
+        focusToMsg(searchDivs.current[prev + 1]);
         return prev + 1;
       });
     }
@@ -161,15 +154,15 @@ const Chats = ({
     if (searchDivsLength !== 0) {
       setSearchActiveIndex((prev) => {
         if (prev === null || prev === 0) {
+          focusToMsg(searchDivs.current[0]);
+
           return 0;
         }
-        focusToMsg(prev - 1);
+        focusToMsg(searchDivs.current[prev - 1]);
         return prev - 1;
       });
     }
   }, [searchDivsLength]);
-
-  let count = 0;
 
   const highlightText = (text, index) => {
     if (
@@ -181,7 +174,6 @@ const Chats = ({
         setSearchDivsLength(searchDivs.current.length);
       }
       let regexp = new RegExp(searchString || "", "gi");
-      count += text.match(regexp).length;
       return text.replace(regexp, "<mark>$&</mark>");
     } else {
       if (searchDivs.current.includes(msgRef?.current[index])) {
@@ -219,6 +211,7 @@ const Chats = ({
 
   React.useEffect(() => {
     const decryptMessageList = async () => {
+      const response = await fetchMessage(roomId);
       const userPrivateKey: JsonWebKey = JSON.parse(
         localStorage.getItem("private_key") as string
       );
@@ -227,7 +220,7 @@ const Chats = ({
         recipientPublicKey
       );
       const decryptedMessageArray = await decryptMessageArray(
-        messageList,
+        response?.data || [],
         sharedSecret
       );
       setMessages(decryptedMessageArray);
@@ -252,10 +245,7 @@ const Chats = ({
     <>
       <div
         id="chat"
-        ref={ref}
-        className={`w-full ${
-          isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
-        } relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
+        className={`w-full relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
       >
         <ChatHeader
           name={chatFriend?.friend_name}
@@ -268,28 +258,52 @@ const Chats = ({
           count={searchDivsLength}
         />
 
-        <div className="flex-grow bg-customGrey-light  dark:bg-customGrey-black">
+        <div
+          className={`  ${
+            isContextActive === null ? "overflow-y-scroll" : "overflow-y-hidden"
+          } flex-grow bg-customGrey-light  dark:bg-customGrey-black`}
+          ref={ref}
+        >
           <div
             className="bg-customGrey-light dark:bg-customGrey-black text-black dark:text-white pb-6"
             id="msg-list"
           >
-            {totalMessages.map((message: MessageType, index: number) => (
-              <Message
-                searchString={searchString}
-                index={index}
-                gotoMSG={gotoMSG}
-                handleMSGRef={handleMsgRef}
-                handleReply={handleReply}
-                highlightText={highlightText}
-                handleForward={handleForward}
-                isContextActive={isContextActive}
-                searchActiveIndex={searchActiveIndex}
-                setContextActive={setContextActive}
-                decodedUsername={decodedUsername}
-                message={message}
-                key={message._id}
-              />
-            ))}
+            {totalMessages.map((message: MessageType, index: number) => {
+              const prevMessageDate =
+                index !== 0 ? totalMessages[index - 1].createdAt : null;
+
+              const showDateLabel =
+                index === 0 ||
+                (prevMessageDate &&
+                  getDayDiff(prevMessageDate, message.createdAt) !== 0);
+
+              return (
+                <React.Fragment key={message._id}>
+                  {showDateLabel && (
+                    <div className="flex items-center justify-center my-2">
+                      <span className="bg-[#c6c4c4] dark:bg-customGrey-blackBg dark:text-[#ccc] max-w-20 w-full text-center rounded-sm font-medium text-xs py-[2px]">
+                        {getDayLabel(message.createdAt)}
+                      </span>
+                    </div>
+                  )}
+
+                  <Message
+                    searchString={searchString}
+                    index={index}
+                    gotoMSG={gotoMSG}
+                    handleMSGRef={handleMsgRef}
+                    handleReply={handleReply}
+                    highlightText={highlightText}
+                    handleForward={handleForward}
+                    isContextActive={isContextActive}
+                    searchActiveIndex={searchActiveIndex}
+                    setContextActive={setContextActive}
+                    decodedUser={decodedUser}
+                    message={message}
+                  />
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 

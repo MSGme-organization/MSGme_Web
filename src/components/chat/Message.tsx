@@ -15,19 +15,33 @@ import {
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
-import { isValidObject } from "@/utils/validate";
+import { isValidArray, isValidObject } from "@/utils/validate";
+import { getFormatTime } from "@/utils/date";
+import ReactionsCard from "../emoji/ReactionsCard";
+import { Popover } from "flowbite-react";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { useSocket } from "../context/SocketContext";
+
+export type DecodedUserType = {
+  id: string;
+  username: string;
+  email: string;
+};
 
 export type MessageType = {
   username: string;
+  userId: string;
   fullName: string;
-  message: string ;
+  message: string;
   avatar?: string;
-  reaction?: string;
+  reactions?: Reaction[];
   repliedMsg?: MessageType | null;
   _id: string;
   iv: string;
+  roomId: string;
+  createdAt: string;
 };
-interface MessageProps {
+type MessageProps = {
   message: MessageType;
   index: number;
   handleReply: Function;
@@ -39,13 +53,21 @@ interface MessageProps {
   searchString?: string | null | undefined;
   searchActiveIndex: number | null;
   highlightText: (text, index) => any;
-  decodedUsername: string;
-}
+  decodedUser: DecodedUserType;
+};
 
-interface ContextCord {
+export type Reaction = {
+  emoji: string;
+  userId: string;
+  username: string;
+  avatar?: string;
+  timestamp: Date | string;
+  _id?: string;
+};
+type ContextCord = {
   top: number;
   left: number;
-}
+};
 
 const Message: React.FC<MessageProps> = ({
   message,
@@ -57,18 +79,20 @@ const Message: React.FC<MessageProps> = ({
   isContextActive,
   setContextActive,
   highlightText,
-  decodedUsername,
+  decodedUser,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
     null
   );
+  const socket = useSocket();
   const ref = useDetectClickOutside({
     onTriggered: () => setContextCord(null),
   });
   const [isLast, setLast] = useState(false);
-  const [emojiReaction, setEmojiReaction] = useState<null | string>(
-    message.reaction || null
+  const [emojiReaction, setEmojiReaction] = useState<Reaction[]>(
+    message.reactions || []
   );
+  const profile = useAppSelector((state) => state.profile);
   const dpItems = [
     {
       label: "Reply",
@@ -131,20 +155,92 @@ const Message: React.FC<MessageProps> = ({
     setContextCord({ top: e.clientY, left: e.clientX });
     setContextActive(message._id);
   };
+
+  const handleAddReaction = async (emoji: string) => {
+    try {
+      socket?.emit("message-reaction-add", {
+        reactionObj: {
+          emoji,
+          userId: decodedUser.id,
+          username: decodedUser.username,
+          avatar: profile.avatar?.url || "",
+          timestamp: new Date(),
+        },
+        messageId: message._id,
+        roomId: message.roomId,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeReaction = async () => {
+    try {
+      if (isValidArray(emojiReaction)) {
+        const userReaction = emojiReaction.find(
+          (emojiObj) => emojiObj.userId === decodedUser.id
+        );
+
+        if (userReaction) {
+          socket?.emit("message-reaction-remove", {
+            reactionObj: userReaction,
+            messageId: message._id,
+            roomId: message.roomId,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error removing reaction:", error);
+    }
+  };
+
   useEffect(() => {
     if (contextCord === null) {
       setContextActive(null);
       setLast(false);
     }
   }, [contextCord]);
+
+  useEffect(() => {
+    socket
+      ?.off(`reaction-add-${message._id}`)
+      .on(`reaction-add-${message._id}`, (data) => {
+        setEmojiReaction(data);
+      });
+    socket
+      ?.off(`reaction-add-ack-${message._id}`)
+      .on(`reaction-add-ack-${message._id}`, (data) => {
+        setEmojiReaction(data);
+      });
+    socket
+      ?.off(`reaction-remove-${message._id}`)
+      .on(`reaction-remove-${message._id}`, (data) => {
+        if (data) {
+          setEmojiReaction(data);
+        }
+      });
+    socket
+      ?.off(`reaction-remove-ack-${message._id}`)
+      .on(`reaction-remove-ack-${message._id}`, (data) => {
+        if (data) {
+          setEmojiReaction(data);
+        }
+      });
+    return () => {
+      socket?.off(`reaction-add-${message._id}`);
+      socket?.off(`reaction-add-ack-${message._id}`);
+      socket?.off(`reaction-remove-${message._id}`);
+      socket?.off(`reaction-remove-ack-${message._id}`);
+    };
+  }, []);
   return (
     <div
       className={`flex flex-col w-full pb-1 px-4 mt-6 ${
-        message.username === decodedUsername ? "items-end" : "items-start"
+        message.username === decodedUser.username ? "items-end" : "items-start"
       } `}
     >
       {/* <div className="flex py-2 items-center gap-2">
-        {!isUserSame && !(message.username === decodedUsername) && (
+        {!isUserSame && !(message.username === decodedUser.username) && (
           <>
             <CldImage
               src={message?.avatar || DEFAULT_PROFILE_IMG}
@@ -162,17 +258,19 @@ const Message: React.FC<MessageProps> = ({
       </div> */}
       <div
         className={`flex relative  w-full items-center  ${
-          message.username === decodedUsername ? "justify-end" : "justify-start"
+          message.username === decodedUser.username
+            ? "justify-end"
+            : "justify-start"
         }`}
       >
-        {message.username === decodedUsername && (
-          <Reaction setEmojiReaction={setEmojiReaction} position="left" />
+        {message.username === decodedUser.username && (
+          <Reaction handleReaction={handleAddReaction} position="left" />
         )}
         <div
-          id={`msg-${index}`}
+          id={message._id}
           ref={(el) => handleMSGRef(index, el)}
-          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative transition-all duration-100 ${
-            message.username === decodedUsername
+          className={`w-fit max-w-[80%] shadow md:max-w-[70%] relative transition-all duration-100 min-w-32 ${
+            message.username === decodedUser.username
               ? "bg-primary text-white "
               : "bg-white text-black dark:border border-gray-700 dark:bg-customGrey-blackBg dark:text-white"
           } rounded-md`}
@@ -181,7 +279,7 @@ const Message: React.FC<MessageProps> = ({
             <div className="w-full pb-0 p-3">
               <button
                 className={`${
-                  message.username === decodedUsername
+                  message.username === decodedUser.username
                     ? "bg-[#ffffff31] dark:bg-[#3741514b]"
                     : "bg-gray-200 dark:bg-gray-700"
                 } text-black w-full dark:text-white mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
@@ -191,7 +289,7 @@ const Message: React.FC<MessageProps> = ({
               >
                 <div className="flex items-center my-2 gap-2">
                   {ReplyMSG()}
-                  {/* {!(message.repliedMsg.username === decodedUsername) && (
+                  {/* {!(message.repliedMsg.username === decodedUser.username) && (
                     <CldImage
                       src={message?.repliedMsg?.avatar || DEFAULT_PROFILE_IMG}
                       alt={`user's avatar`}
@@ -211,38 +309,59 @@ const Message: React.FC<MessageProps> = ({
               </button>
             </div>
           )}
-          <p
+          <div
             onContextMenu={handleContextMenu}
             onDoubleClick={handleContextMenu}
             className="text-[16px] font-[550] active:scale-[.99] p-3 relative"
           >
-            <span
-              className="select-none md:select-auto"
+            <p
+              className="select-none md:select-auto break-words w-full"
               dangerouslySetInnerHTML={{
                 __html: highlightText(message.message, index),
               }}
-            ></span>
+            ></p>
 
-            {emojiReaction === null ? null : (
-              <span
-                onClick={() => setEmojiReaction(null)}
-                className={`absolute hover:scale-125 rounded-full bg-gray-50 dark:bg-gray-800 p-1 text-[12px] aspect-square border dark:border-gray-800 border-gray-100 ${
-                  message.username === decodedUsername
-                    ? "top-[90%] right-0"
-                    : "top-[90%] left-0"
-                } cursor-pointer`}
+            {isValidArray(emojiReaction) ? (
+              <Popover
+                placement={
+                  message.username === decodedUser.username ? "left" : "right"
+                }
+                content={
+                  <ReactionsCard
+                    emojiReaction={emojiReaction}
+                    removeReaction={removeReaction}
+                  />
+                }
+                arrow={false}
               >
-                {emojiReaction}
-              </span>
-            )}
-          </p>
+                <div
+                  className={`absolute p-1 text-[12px] aspect-square  ${
+                    message.username === decodedUser.username
+                      ? "top-[90%] left-0"
+                      : "top-[90%] right-0"
+                  } cursor-pointer`}
+                >
+                  {emojiReaction?.map((emoji, index) => {
+                    return (
+                      <span
+                        className="rounded-full bg-gray-50 dark:bg-gray-800 border dark:border-gray-800 border-gray-100"
+                        key={index}
+                      >
+                        {emoji.emoji}
+                      </span>
+                    );
+                  })}
+                </div>
+              </Popover>
+            ) : null}
+          </div>
           {contextCord && isContextActive === message._id ? (
             <Context
               setContextCord={setContextCord}
               contextRef={ref}
               items={dpItems}
               position={
-                message.username === decodedUsername
+                message.username === decodedUser.username
                   ? "top-left"
                   : "right-bottom"
               }
@@ -250,9 +369,12 @@ const Message: React.FC<MessageProps> = ({
             />
           ) : null}
         </div>
-        {!(message.username === decodedUsername) && (
-          <Reaction setEmojiReaction={setEmojiReaction} position="right" />
+        {!(message.username === decodedUser.username) && (
+          <Reaction handleReaction={handleAddReaction} position="right" />
         )}
+      </div>
+      <div className="text-[#736d6d] font-semibold text-xs bg-transparent mt-2 px-2">
+        {getFormatTime(message.createdAt)}
       </div>
     </div>
   );

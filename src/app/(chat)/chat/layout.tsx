@@ -1,7 +1,7 @@
 "use client";
 
 import { SocketProvider } from "@/components/context/SocketContext";
-import { useAppDispatch, useAppStore } from "@/lib/redux/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { fetchProfile } from "@/lib/redux/profile/profileSlice";
 import { useParams } from "next/navigation";
 import React from "react";
