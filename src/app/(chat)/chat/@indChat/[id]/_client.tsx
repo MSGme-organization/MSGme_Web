@@ -18,6 +18,7 @@ import {
 import { useSocket } from "@/components/context/SocketContext";
 import { getDayDiff, getDayLabel } from "@/utils/date";
 import { fetchMessage } from "@/query/message/messageAction";
+import { updateRoomLastMessage } from "./_action";
 
 type ChatsProps = {
   roomId: string;
@@ -26,7 +27,7 @@ type ChatsProps = {
 };
 
 const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
-  const friendsList = useAppSelector((state) => state.friendsList);
+  const chatList = useAppSelector((state) => state.chatList);
   const profile = useAppSelector((state) => state.profile);
   const [replyMsg, setReplyMsg] = React.useState<MessageType | null>(null);
   const [forwardMsg, setForwardMsg] = React.useState<MessageType | null>(null);
@@ -57,7 +58,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
           message.msg
         );
         const messageObject = {
-          fullName: `${profile.first_name} ${profile.last_name}`,
+          fullName: `${profile.firstName} ${profile.lastName}`,
           username: profile.username,
           avatar: profile.avatar?.url || "",
           message: encryptedData,
@@ -96,7 +97,11 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
         );
         data.repliedMsg.message = decryptedReplyMessage;
       }
-
+      await updateRoomLastMessage(roomId, {
+        message: decryptedMessage,
+        createdAt: data.createdAt,
+      });
+      socket?.emit("reorder-list-request", roomId);
       setMessages((prev) => [...prev, { ...data, message: decryptedMessage }]);
     }
   };
@@ -203,11 +208,9 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   }, [searchDivsLength]);
 
   React.useEffect(() => {
-    const friend = friendsList.data.find(
-      (friend: any) => friend.room_id === roomId
-    );
+    const friend = chatList.data.find((chat: any) => chat.roomId === roomId);
     setChatFriend(friend);
-  }, [friendsList]);
+  }, [roomId]);
 
   React.useEffect(() => {
     const decryptMessageList = async () => {
@@ -248,10 +251,10 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
         className={`w-full relative bg-white dark:bg-customGrey-black text-black dark:text-white h-[100dvh] flex flex-col`}
       >
         <ChatHeader
-          name={chatFriend?.friend_name}
+          name={chatFriend?.chatName}
           handleSearch={handleSearch}
           searchString={searchString}
-          avatar={chatFriend?.friend_avatar}
+          avatar={chatFriend?.chatAvatar}
           searchActiveIndex={searchActiveIndex}
           downActiveIndex={downActiveIndex}
           upActiveIndex={upActiveIndex}

@@ -11,15 +11,15 @@ export const POST = async (request: NextRequest) => {
       cookies().get("token")?.value as string
     );
 
-    const frdRequestData = await prisma.friend_request.delete({
+    const frdRequestData = await prisma.friendRequest.delete({
       where: {
-        sender_id_receiver_id: {
-          sender_id: body.receiver_id,
-          receiver_id: decodedUser.id,
+        senderId_receiverId: {
+          senderId: body.receiverId,
+          receiverId: decodedUser.id,
         },
       },
     });
-    if (body.request_response === "1") {
+    if (body.requestResponse === "1") {
       const newRoomPayload = {
         members: 2,
       };
@@ -28,17 +28,17 @@ export const POST = async (request: NextRequest) => {
       });
 
       const FriendListPayload = {
-        user_id: frdRequestData.sender_id,
-        friend_id: frdRequestData.receiver_id,
+        userId: frdRequestData.senderId,
+        friendId: frdRequestData.receiverId,
         isBlocked: false,
-        room_id: newRoomData.id,
+        roomId: newRoomData.id,
       };
-      await prisma.friend_List.create({
+      await prisma.friendList.create({
         data: FriendListPayload,
       });
     }
     return response.success(
-      body.request_response === "1"
+      body.requestResponse === "1"
         ? "Friend Request Accepted"
         : "Friend Request Rejected",
       ""

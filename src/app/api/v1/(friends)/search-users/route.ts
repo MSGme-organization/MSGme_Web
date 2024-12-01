@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
 interface UsersInterface {
-  friend_request_sent?: any;
-  friend_request_received?: any;
+  friendRequestSent?: any;
+  friendRequestReceived?: any;
   id: string;
   username: string;
   bio: string | null;
@@ -25,18 +25,18 @@ export const GET = async (request: NextRequest) => {
 
     let users: UsersInterface[] = [];
 
-    const friends = await prisma.friend_List.findMany({
+    const friends = await prisma.friendList.findMany({
       where: {
-        OR: [{ user_id: decodedUser.id }, { friend_id: decodedUser.id }],
+        OR: [{ userId: decodedUser.id }, { friendId: decodedUser.id }],
       },
       select: {
-        user_id: true,
-        friend_id: true,
+        userId: true,
+        friendId: true,
       },
     });
 
     const friendIds = friends.map((f) =>
-      f.user_id === decodedUser.id ? f.friend_id : f.user_id
+      f.userId === decodedUser.id ? f.friendId : f.userId
     );
 
     if (searchType === "sent") {
@@ -45,8 +45,8 @@ export const GET = async (request: NextRequest) => {
           AND: [
             { username: { contains: search, mode: "insensitive" } },
             {
-              friend_request_received: {
-                some: { sender_id: decodedUser?.id, status: "pending" },
+              friendRequestReceived: {
+                some: { senderId: decodedUser?.id, status: "pending" },
               },
             },
             { id: { not: decodedUser.id } },
@@ -58,8 +58,8 @@ export const GET = async (request: NextRequest) => {
           bio: true,
           id: true,
           avatar: true,
-          friend_request_received: {
-            where: { sender_id: decodedUser?.id, status: "pending" },
+          friendRequestReceived: {
+            where: { senderId: decodedUser?.id, status: "pending" },
             select: { id: true },
           },
         },
@@ -70,8 +70,8 @@ export const GET = async (request: NextRequest) => {
           AND: [
             { username: { contains: search, mode: "insensitive" } },
             {
-              friend_request_sent: {
-                some: { receiver_id: decodedUser?.id, status: "pending" },
+              friendRequestSent: {
+                some: { receiverId: decodedUser?.id, status: "pending" },
               },
             },
             { id: { not: decodedUser.id } },
@@ -84,8 +84,8 @@ export const GET = async (request: NextRequest) => {
           id: true,
           avatar: true,
 
-          friend_request_sent: {
-            where: { receiver_id: decodedUser?.id, status: "pending" },
+          friendRequestSent: {
+            where: { receiverId: decodedUser?.id, status: "pending" },
             select: { id: true },
           },
         },
@@ -105,12 +105,12 @@ export const GET = async (request: NextRequest) => {
           bio: true,
           id: true,
           avatar: true,
-          friend_request_sent: {
-            where: { receiver_id: decodedUser?.id, status: "pending" },
+          friendRequestSent: {
+            where: { receiverId: decodedUser?.id, status: "pending" },
             select: { id: true },
           },
-          friend_request_received: {
-            where: { sender_id: decodedUser?.id, status: "pending" },
+          friendRequestReceived: {
+            where: { senderId: decodedUser?.id, status: "pending" },
             select: { id: true },
           },
         },
@@ -120,11 +120,11 @@ export const GET = async (request: NextRequest) => {
     const updatedUsers = users.map((user) => {
       let userStatus: "request" | "sent" | null = null;
 
-      if (user.friend_request_sent && user.friend_request_sent.length > 0) {
+      if (user.friendRequestSent && user.friendRequestSent.length > 0) {
         userStatus = "request";
       } else if (
-        user.friend_request_received &&
-        user.friend_request_received.length > 0
+        user.friendRequestReceived &&
+        user.friendRequestReceived.length > 0
       ) {
         userStatus = "sent";
       }

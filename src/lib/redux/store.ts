@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import profileReducer from "./profile/profileSlice";
-import friendsListReducer from "./friends-list/friendsSlice";
+import chatListReducer from "./chat-list/chatListSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       profile: profileReducer,
-      friendsList: friendsListReducer,
+      chatList: chatListReducer,
     },
   });
 };

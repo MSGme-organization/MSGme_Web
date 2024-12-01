@@ -16,7 +16,7 @@ export const register = async ({
       email,
       username: userName,
       password,
-      public_key: publicKey,
+      publicKey: publicKey,
     });
     localStorage.setItem("private_key", JSON.stringify(privateKey));
     return response;

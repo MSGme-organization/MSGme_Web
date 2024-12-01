@@ -18,7 +18,7 @@ export default async function middleware(req: NextRequest) {
       const isprotectedRoute = protectedApiRoutes.includes(
         req.nextUrl.pathname
       );
-      
+
       if (isprotectedRoute) {
         await authorize(req);
         return NextResponse.next();
@@ -48,15 +48,15 @@ export default async function middleware(req: NextRequest) {
           );
           if (
             req.nextUrl.pathname.startsWith("/profile-details") &&
-            user.first_name &&
-            user.first_name &&
+            user.firstName &&
+            user.firstName &&
             user.dob
           ) {
             return NextResponse.redirect(new URL("chat", req.url));
           } else if (req.nextUrl.pathname.startsWith("/profile-details")) {
             return NextResponse.next();
           }
-          if (!user.first_name || !user.first_name || !user.dob) {
+          if (!user.firstName || !user.firstName || !user.dob) {
             return NextResponse.redirect(new URL("profile-details", req.url));
           } else {
             return NextResponse.next();

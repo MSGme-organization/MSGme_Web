@@ -23,8 +23,8 @@ const validateReq = async (body: FormData) => {
   });
 
   const step = Number(body.get("step"));
-  const last_name = body.get("last_name")?.toString();
-  const first_name = body.get("first_name")?.toString();
+  const lastName = body.get("lastName")?.toString();
+  const firstName = body.get("firstName")?.toString();
   const dob = body.get("dob")?.toString();
   const avatar = body.get("avatar");
   const username = body.get("username")?.toString();
@@ -33,19 +33,19 @@ const validateReq = async (body: FormData) => {
 
   if (step) {
     if (step === 1) {
-      if (last_name && first_name) {
+      if (lastName && firstName) {
         const userData = {
-          last_name: last_name,
-          first_name: first_name,
+          lastName: lastName,
+          firstName: firstName,
         };
         return userData;
       } else {
         const errors = {};
-        if (!last_name) {
-          errors["last_name"] = "last name is required.";
+        if (!lastName) {
+          errors["lastName"] = "last name is required.";
         }
-        if (!first_name) {
-          errors["first_name"] = "first name is required.";
+        if (!firstName) {
+          errors["firstName"] = "first name is required.";
         }
 
         return response.dataInvalid("data is required.", {
@@ -79,8 +79,8 @@ const validateReq = async (body: FormData) => {
     }
   } else {
     const userData = {};
-    last_name && (userData["last_name"] = last_name);
-    first_name && (userData["first_name"] = first_name);
+    lastName && (userData["lastName"] = lastName);
+    firstName && (userData["firstName"] = firstName);
     dob && (userData["dob"] = dob);
     bio && (userData["bio"] = bio);
 

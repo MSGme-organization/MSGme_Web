@@ -13,44 +13,44 @@ export const POST = async (request: NextRequest) => {
 
     if (body.requestStatus === "sent") {
       const payloadData = {
-        sender_id: decodedUser.id,
-        receiver_id: body.receiver_id,
+        senderId: decodedUser.id,
+        receiverId: body.receiverId,
       };
 
-      const frdReqResponse = await prisma.friend_request.create({
+      const frdReqResponse = await prisma.friendRequest.create({
         data: payloadData,
         select: { receiver: true, id: true },
       });
-      const { username, first_name, last_name } = frdReqResponse.receiver;
+      const { username, firstName, lastName } = frdReqResponse.receiver;
 
       const receiverData = {
         username,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         id: frdReqResponse.id,
         requestStatus: "sent",
       };
       return response.success("Request Sent Successfully", receiverData);
     } else {
       const payloadData = {
-        sender_id: decodedUser.id,
-        receiver_id: body.receiver_id,
+        senderId: decodedUser.id,
+        receiverId: body.receiverId,
       };
 
-      const frdReqResponse = await prisma.friend_request.delete({
+      const frdReqResponse = await prisma.friendRequest.delete({
         where: {
-          sender_id_receiver_id: payloadData,
+          senderId_receiverId: payloadData,
         },
         select: {
           receiver: true,
         },
       });
-      const { username, first_name, last_name } = frdReqResponse.receiver;
+      const { username, firstName, lastName } = frdReqResponse.receiver;
 
       const receiverData = {
         username,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         requestStatus: "unSent",
       };
       return response.success("Request Unsent Successfully", receiverData);

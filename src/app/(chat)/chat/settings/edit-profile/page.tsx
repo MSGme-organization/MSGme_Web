@@ -66,15 +66,7 @@ const fields = [
 ];
 
 const EditProfile = () => {
-  const data = useAppSelector((state) => state.profile) as {
-    avatar: { url?: string };
-    dob?: string;
-    first_name?: string;
-    last_name?: string;
-    username?: string;
-    email?: string;
-    bio?: string;
-  };
+  const data = useAppSelector((state) => state.profile) 
   const ref = React.useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
 
@@ -163,9 +155,9 @@ const EditProfile = () => {
           <div className="w-full flex gap-3">
             <div className="w-[50%]">
               <Input
-                {...formik.getFieldMeta("first_name")}
-                {...formik.getFieldProps("first_name")}
-                error={formik.errors.first_name as string}
+                {...formik.getFieldMeta("firstName")}
+                {...formik.getFieldProps("firstName")}
+                error={formik.errors.firstName as string}
                 placeholder="First Name"
                 type="text"
                 required={false}
@@ -178,9 +170,9 @@ const EditProfile = () => {
             </div>
             <div className="w-[50%]">
               <Input
-                {...formik.getFieldMeta("last_name")}
-                {...formik.getFieldProps("last_name")}
-                error={formik.errors.last_name as string}
+                {...formik.getFieldMeta("lastName")}
+                {...formik.getFieldProps("lastName")}
+                error={formik.errors.lastName as string}
                 placeholder="Last Name"
                 type="text"
                 required={false}

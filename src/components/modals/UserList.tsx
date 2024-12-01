@@ -1,6 +1,6 @@
 "use client";
 import { friendRequest, friendRequestResponse } from "@/query/add-user/friendsManage";
-import { fetchFriendsListData } from "@/lib/redux/friends-list/friendsSlice";
+import { fetchChatListData } from "@/lib/redux/chat-list/chatListSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
 import { CheckSvg, CrossSvg, SandWatch } from "@/utils/svgs";
@@ -64,7 +64,7 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
         mutationFn: friendRequestResponse,
         onSuccess: (res: AxiosResponse) => {
             successToast(res.data?.message);
-            dispatch(fetchFriendsListData())
+            dispatch(fetchChatListData())
             handleSearch()
         },
         onError: (error: AxiosError) => {
@@ -75,12 +75,12 @@ const UserList = ({ user, handleSearch }: UserListPropsInterface) => {
 
     const handleUserStatus = async (status: string) => {
         if (status === "sent" || status === "unSent") {
-            frdRequestQuery.mutate({ receiver_id: user.id, requestStatus: status })
+            frdRequestQuery.mutate({ receiverId: user.id, requestStatus: status })
         } else {
             if (status === "accept") {
-                requestResponseQuery.mutate({ receiver_id: user.id, request_response: "1" })
+                requestResponseQuery.mutate({ receiverId: user.id, requestResponse: "1" })
             } else {
-                requestResponseQuery.mutate({ receiver_id: user.id, request_response: "0" })
+                requestResponseQuery.mutate({ receiverId: user.id, requestResponse: "0" })
             }
         }
     };

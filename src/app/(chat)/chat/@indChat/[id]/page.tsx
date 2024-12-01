@@ -29,10 +29,10 @@ export default page;
 
 const getRecipientPublicKey = async (currentUserId: string, roomId: string) => {
   try {
-    const friendRelation = await prisma.friend_List.findFirst({
+    const friendRelation = await prisma.friendList.findFirst({
       where: {
-        room_id: roomId,
-        OR: [{ user_id: currentUserId }, { friend_id: currentUserId }],
+        roomId: roomId,
+        OR: [{ userId: currentUserId }, { friendId: currentUserId }],
       },
     });
 
@@ -42,21 +42,21 @@ const getRecipientPublicKey = async (currentUserId: string, roomId: string) => {
     }
 
     const recipientUserId =
-      friendRelation.user_id === currentUserId
-        ? friendRelation.friend_id
-        : friendRelation.user_id;
+      friendRelation.userId === currentUserId
+        ? friendRelation.friendId
+        : friendRelation.userId;
 
     const recipient = await prisma.user.findUnique({
       where: { id: recipientUserId },
-      select: { public_key: true },
+      select: { publicKey: true },
     });
 
-    if (!recipient || !recipient.public_key) {
+    if (!recipient || !recipient.publicKey) {
       console.log("Recipient public key not found.");
       return null;
     }
 
-    return recipient.public_key as JsonWebKey;
+    return recipient.publicKey as JsonWebKey;
   } catch (error) {
     console.error("Error fetching recipient public key:", error);
     return null;
