@@ -10,13 +10,13 @@ export const updateRoomLastMessage = async (
   messageObj: LastMessageType
 ) => {
   try {
-     await prisma.room.update({
+    await prisma.room.update({
       where: {
         id: roomId,
       },
       data: {
-        lastMessage: messageObj.message,
-        lastMsgTimestamp: messageObj.createdAt,
+        lastMessage: messageObj?.message || "",
+        lastMsgTimestamp: messageObj?.createdAt || null,
       },
     });
   } catch (error) {

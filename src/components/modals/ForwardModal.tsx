@@ -98,7 +98,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
                     loading="lazy"
                     className="rounded-full bg-green-300  aspect-square"
                   />
-                  <p className="font-semibold">{user.friendName}</p>
+                  <p className="font-semibold">{user.chatName}</p>
                 </div>
                 <button className="bg-primary px-4 text-white font-bold rounded-full text-[15px]">
                   Send

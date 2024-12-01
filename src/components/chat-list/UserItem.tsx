@@ -60,13 +60,15 @@ const UserItem: React.FC<Data> = ({
       </div>
       <div className="w-[15%] flex flex-col justify-around gap-1 items-center">
         <p className="text-[10px] text-center font-[550]">
-          {dayDiff <= 0
-            ? hrsDiff > 0
-              ? hrsDiff + "h"
-              : "just now"
-            : dayDiff === 1
-            ? "yesterday"
-            : dayDiff + " days ago"}
+          {dayDiff
+            ? dayDiff <= 0
+              ? hrsDiff > 0
+                ? hrsDiff + "h"
+                : "just now"
+              : dayDiff === 1
+              ? "yesterday"
+              : dayDiff + " days ago"
+            : null}
         </p>
         {newUnreadChatCount > 0 && (
           <div className="bg-red-500 text-white text-[12px] leading-[20px] text-center rounded-full w-5 h-5 flex items-center justify-center">

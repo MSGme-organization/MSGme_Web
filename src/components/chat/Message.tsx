@@ -4,18 +4,16 @@ import Reaction from "./Reaction";
 import { CldImage } from "next-cloudinary";
 import toast from "react-hot-toast";
 import {
-  BlockIcon,
   CopyIcon,
-  FlagIcon,
+  DeleteIcon,
   ForwardIcon,
-  MuteIcon,
   ReplyIcon,
   ReplyMSG,
 } from "@/utils/svgs";
 import Context from "../context-menu/Context";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
-import { isValidArray, isValidObject } from "@/utils/validate";
+import { isValidArray, isValidObject } from "@/utils/objectsValidate";
 import { getFormatTime } from "@/utils/date";
 import ReactionsCard from "../emoji/ReactionsCard";
 import { Popover } from "flowbite-react";
@@ -45,14 +43,15 @@ type MessageProps = {
   message: MessageType;
   index: number;
   handleReply: Function;
-  handleForward: Function;
-  gotoMSG: Function;
+  handleForward: (messageObj: MessageType) => void;
+  handleDelete: (msgId: string) => Promise<void>;
+  gotoMSG: (msgId: string) => void;
   handleMSGRef: Function;
   isContextActive: string | null;
   setContextActive: Function;
   searchString?: string | null | undefined;
   searchActiveIndex: number | null;
-  highlightText: (text, index) => any;
+  highlightText: (text: string, index: number) => any;
   decodedUser: DecodedUserType;
 };
 
@@ -79,6 +78,7 @@ const Message: React.FC<MessageProps> = ({
   isContextActive,
   setContextActive,
   highlightText,
+  handleDelete,
   decodedUser,
 }) => {
   const [contextCord, setContextCord] = React.useState<ContextCord | null>(
@@ -126,24 +126,10 @@ const Message: React.FC<MessageProps> = ({
       },
     },
     {
-      label: "Mute",
-      icon: MuteIcon,
+      label: "Delete",
+      icon: DeleteIcon,
       fn: () => {
-        console.log("Delete");
-      },
-    },
-    {
-      label: "Block",
-      icon: BlockIcon,
-      fn: () => {
-        console.log("Delete");
-      },
-    },
-    {
-      label: "Report",
-      icon: FlagIcon,
-      fn: () => {
-        console.log("Delete");
+        handleDelete(message._id);
       },
     },
   ];
@@ -284,7 +270,7 @@ const Message: React.FC<MessageProps> = ({
                     : "bg-gray-200 dark:bg-gray-700"
                 } text-black w-full dark:text-white mb-0 p-2 rounded-md border-s-[4px] border-[#0b6d40]`}
                 onClick={() => {
-                  gotoMSG(message.repliedMsg?._id);
+                  gotoMSG(message.repliedMsg?._id || "");
                 }}
               >
                 <div className="flex items-center my-2 gap-2">
@@ -359,7 +345,11 @@ const Message: React.FC<MessageProps> = ({
             <Context
               setContextCord={setContextCord}
               contextRef={ref}
-              items={dpItems}
+              items={
+                decodedUser.id === message.userId
+                  ? dpItems
+                  : dpItems.slice(0, dpItems.length - 1)
+              }
               position={
                 message.username === decodedUser.username
                   ? "top-left"

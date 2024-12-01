@@ -1,7 +1,7 @@
 "use client";
 
 import { DEFAULT_PROFILE_IMG } from "@/utils/data";
-import { isValidArray } from "@/utils/validate";
+import { isValidArray } from "@/utils/objectsValidate";
 import { CldImage } from "next-cloudinary";
 import React from "react";
 import { Reaction } from "../chat/Message";

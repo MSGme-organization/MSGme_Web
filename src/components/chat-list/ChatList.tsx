@@ -7,7 +7,7 @@ import Input from "@/components/common-components/Input";
 import { fetchChatListData } from "@/lib/redux/chat-list/chatListSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { SearchIcon } from "@/utils/svgs";
-import { isValidArray } from "@/utils/validate";
+import { isValidArray } from "@/utils/objectsValidate";
 import { useParams, useRouter } from "next/navigation";
 import { useSocket } from "../context/SocketContext";
 const ChatListNavBar = dynamic(

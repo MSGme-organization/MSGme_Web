@@ -17,7 +17,7 @@ import {
 } from "@/utils/messageE2EE";
 import { useSocket } from "@/components/context/SocketContext";
 import { getDayDiff, getDayLabel } from "@/utils/date";
-import { fetchMessage } from "@/query/message/messageAction";
+import { deleteMessage, fetchMessage } from "@/query/message/messageAction";
 import { updateRoomLastMessage } from "./_action";
 
 type ChatsProps = {
@@ -113,10 +113,12 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
     []
   );
   const gotoMSG = React.useCallback((id: string) => {
-    const targetDiv = msgRef.current.find((value) => {
-      return value.id === id;
-    });
-    focusToMsg(targetDiv);
+    if (id) {
+      const targetDiv = msgRef.current.find((value) => {
+        return value.id === id;
+      });
+      focusToMsg(targetDiv);
+    }
   }, []);
 
   const handleReply = React.useCallback((msg: MessageType) => {
@@ -124,9 +126,41 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
     setReplyMsg(restObj);
   }, []);
 
-  const handleForward = React.useCallback((msg: any) => {
-    setForwardMsg(msg);
+  const handleForward = React.useCallback((messageObject: MessageType) => {
+    setForwardMsg(messageObject);
   }, []);
+  const handleDelete = React.useCallback(
+    async (msgId: string) => {
+      try {
+        await deleteMessage(msgId);
+        setMessages((prev) =>
+          prev.filter((messageObject, index) => {
+            if (
+              messageObject._id === msgId &&
+              totalMessages.length - 1 === index
+            ) {
+              if (index === 0) {
+                updateRoomLastMessage(roomId, {
+                  message: "",
+                  createdAt: "",
+                });
+              } else {
+                updateRoomLastMessage(roomId, {
+                  message: totalMessages[index - 1].message,
+                  createdAt: totalMessages[index - 1].createdAt,
+                });
+              }
+              socket?.emit("reorder-list-request", roomId);
+            }
+            return messageObject._id !== msgId;
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [totalMessages]
+  );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
@@ -298,6 +332,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
                     handleReply={handleReply}
                     highlightText={highlightText}
                     handleForward={handleForward}
+                    handleDelete={handleDelete}
                     isContextActive={isContextActive}
                     searchActiveIndex={searchActiveIndex}
                     setContextActive={setContextActive}

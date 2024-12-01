@@ -84,7 +84,10 @@ export const GET = async () => {
         },
       },
       orderBy: {
-        lastMsgTimestamp: "desc",
+        lastMsgTimestamp:{
+          sort:"desc",
+          nulls:"last"
+        },
       },
     });
     const formattedChatList = dataFormatter(chatListData, decodedUser.id);
