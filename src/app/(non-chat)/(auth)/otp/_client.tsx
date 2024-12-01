@@ -1,7 +1,7 @@
 "use client";
 
-import Loading from "@/components/client-components/loader/Loading";
-import CustomOtpInput from "@/components/client-components/otp/CustomOtpInput";
+import Loading from "@/components/loader/Loading";
+import CustomOtpInput from "@/components/otp/CustomOtpInput";
 import { otpVerify, resendOtp } from "@/query/auth/otp";
 import { errorToast, successToast } from "@/utils/toast";
 import { useRouter } from "next/navigation";

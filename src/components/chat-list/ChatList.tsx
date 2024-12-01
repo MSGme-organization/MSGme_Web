@@ -2,30 +2,32 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import UserItem from "@/components/client-components/chat-list/UserItem";
-import Input from "@/components/client-components/common-components/Input";
-import { fetchFriendsListData } from "@/lib/redux/friends-list/friendsSlice";
+import UserItem from "@/components/chat-list/UserItem";
+import Input from "@/components/common-components/Input";
+import { fetchChatListData } from "@/lib/redux/chat-list/chatListSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { SearchIcon } from "@/utils/svgs";
-import { isValidArray } from "@/utils/validate";
+import { isValidArray } from "@/utils/objectsValidate";
 import { useParams, useRouter } from "next/navigation";
+import { useSocket } from "../context/SocketContext";
 const ChatListNavBar = dynamic(
-  () => import("@/components/client-components/chat-list/ChatListNavBar"),
+  () => import("@/components/chat-list/ChatListNavBar"),
   { ssr: false }
 );
 
 const ChatList = () => {
+  const socket = useSocket();
   const [filteredList, setFilteredList] = React.useState([]);
   const dispatch = useAppDispatch();
-  const friendsList = useAppSelector((state) => state.friendsList);
+  const chatList = useAppSelector((state) => state.chatList);
   const router = useRouter();
   const params = useParams();
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isValidArray(friendsList.data)) {
+    if (isValidArray(chatList.data)) {
       const value = e.target.value;
-      const filtered = friendsList.data.filter((friend: any) =>
-        friend.friend_name.toLowerCase().includes(value.toLowerCase())
+      const filtered = chatList.data.filter((chat: any) =>
+        chat.chatName.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredList(filtered);
     }
@@ -38,12 +40,18 @@ const ChatList = () => {
     []
   );
   React.useEffect(() => {
-    dispatch(fetchFriendsListData());
+    dispatch(fetchChatListData());
+    socket?.off("reorder-friends").on("reorder-friends", (data) => {
+      dispatch(fetchChatListData());
+    });
+    return () => {
+      socket?.off("reorder-friends");
+    };
   }, []);
 
   React.useEffect(() => {
-    setFilteredList(friendsList.data);
-  }, [friendsList]);
+    setFilteredList(chatList.data);
+  }, [chatList]);
 
   return (
     <>
@@ -60,13 +68,13 @@ const ChatList = () => {
           />
         </div>
         <hr className="border dark:border-customGrey-blackBg" />
-        {filteredList.length ? (
+        {isValidArray(filteredList) ? (
           filteredList?.map((data: any) => (
             <UserItem
               {...data}
-              isActive={data.room_id === params.id}
+              isActive={data.roomId === params.id}
               handleNavigation={handleNavigation}
-              key={data?.room_id}
+              key={data?.roomId}
             />
           ))
         ) : (

@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/components/client-components/common-components/Input";
-import Loading from "@/components/client-components/loader/Loading";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
+import Input from "@/components/common-components/Input";
+import Loading from "@/components/loader/Loading";
+import SettingsHeader from "@/components/settings/SettingsHeader";
 import { editProfile } from "@/query/profile/editprofile";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { updateProfileData } from "@/lib/redux/profile/profileSlice";
@@ -66,15 +66,7 @@ const fields = [
 ];
 
 const EditProfile = () => {
-  const data = useAppSelector((state) => state.profile) as {
-    avatar: { url?: string };
-    dob?: string;
-    first_name?: string;
-    last_name?: string;
-    username?: string;
-    email?: string;
-    bio?: string;
-  };
+  const data = useAppSelector((state) => state.profile) 
   const ref = React.useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
 
@@ -87,7 +79,7 @@ const EditProfile = () => {
           formData.append("avatar", values.avatar.file);
         }
       } else if (key === "dob") {
-        if (values.dob === formatDate(data.dob)) {
+        if (values.dob === formatDate(data.dob as string)) {
           formData.delete("dob");
         }
       } else {
@@ -100,7 +92,7 @@ const EditProfile = () => {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { ...data, dob: formatDate(data.dob) },
+    initialValues: { ...data, dob: formatDate(data?.dob as string) },
     validationSchema: EditProfileValidationSchema,
     onSubmit: handleSubmit,
   });
@@ -163,9 +155,9 @@ const EditProfile = () => {
           <div className="w-full flex gap-3">
             <div className="w-[50%]">
               <Input
-                {...formik.getFieldMeta("first_name")}
-                {...formik.getFieldProps("first_name")}
-                error={formik.errors.first_name as string}
+                {...formik.getFieldMeta("firstName")}
+                {...formik.getFieldProps("firstName")}
+                error={formik.errors.firstName as string}
                 placeholder="First Name"
                 type="text"
                 required={false}
@@ -178,9 +170,9 @@ const EditProfile = () => {
             </div>
             <div className="w-[50%]">
               <Input
-                {...formik.getFieldMeta("last_name")}
-                {...formik.getFieldProps("last_name")}
-                error={formik.errors.last_name as string}
+                {...formik.getFieldMeta("lastName")}
+                {...formik.getFieldProps("lastName")}
+                error={formik.errors.lastName as string}
                 placeholder="Last Name"
                 type="text"
                 required={false}

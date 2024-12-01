@@ -1131,7 +1131,7 @@ export const CheckSvg = () => (
     <g
       id="SVGRepo_tracerCarrier"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -1139,7 +1139,7 @@ export const CheckSvg = () => (
         stroke="#ffff"
         stroke-width="2"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></path>
     </g>
   </svg>
@@ -1151,7 +1151,7 @@ export const CrossSvg = () => (
     <g
       id="SVGRepo_tracerCarrier"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -1173,7 +1173,7 @@ export const CheckedIcon = () => (
     <g
       id="SVGRepo_tracerCarrier"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -1181,7 +1181,7 @@ export const CheckedIcon = () => (
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></path>
     </g>
   </svg>
@@ -1198,7 +1198,7 @@ export const DiagonallyArrowIcon = () => (
     <g
       id="SVGRepo_tracerCarrier"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -1206,7 +1206,7 @@ export const DiagonallyArrowIcon = () => (
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       ></path>
     </g>
   </svg>

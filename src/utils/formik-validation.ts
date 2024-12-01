@@ -14,8 +14,8 @@ export const ChangePasswordInitialValues = {
 };
 
 export const EditProfileValidationSchema = Yup.object({
-  first_name: Yup.string().required("Required"),
-  last_name: Yup.string().required("Required"),
+  firstName: Yup.string().required("Required"),
+  lastName: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email address").required("Required"),
 });
 

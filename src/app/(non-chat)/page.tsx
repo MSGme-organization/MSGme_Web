@@ -1,4 +1,4 @@
-import HomeImage from "@/components/client-components/HomeLayout/HomeImage";
+import HomeImage from "@/components/HomeLayout/HomeImage";
 import Image from "next/image";
 import Link from "next/link";
 

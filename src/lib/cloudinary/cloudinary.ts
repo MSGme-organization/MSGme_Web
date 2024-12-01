@@ -15,7 +15,7 @@ const api_sign_request = (params_to_sign, api_secret) => {
     .join("&");
 
   const shasum = crypto.createHash("sha1");
-  shasum.update(Buffer.from(to_sign + api_secret, "utf8"));
+  shasum.update(Buffer.from(to_sign + api_secret, "utf8").toString("binary"));
   return shasum.digest("hex");
 };
 

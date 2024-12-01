@@ -1,4 +1,4 @@
-import ChatList from "@/components/client-components/chat-list/ChatList";
+import ChatList from "@/components/chat-list/ChatList";
 
 
 const Chat = () => {

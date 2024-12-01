@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/components/client-components/common-components/Input";
-import Loading from "@/components/client-components/loader/Loading";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
+import Input from "@/components/common-components/Input";
+import Loading from "@/components/loader/Loading";
+import SettingsHeader from "@/components/settings/SettingsHeader";
 import { changePassword } from "@/query/profile/changePass";
 import {
   ChangePasswordInitialValues,

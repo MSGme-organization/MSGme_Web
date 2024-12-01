@@ -6,13 +6,13 @@ interface paramsInterface {
 }
 
 interface friendRequestInterface {
-  receiver_id: string;
+  receiverId: string;
   requestStatus: "sent" | "unSent";
 }
 
 interface friendRequestResponseInterface {
-  receiver_id: string;
-  request_response: "0" | "1";
+  receiverId: string;
+  requestResponse: "0" | "1";
 }
 
 export const searchUsers = async (params: paramsInterface) => {

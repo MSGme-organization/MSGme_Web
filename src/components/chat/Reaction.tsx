@@ -6,7 +6,7 @@ import { Toolbar } from "./EmojiToolbar";
 
 const Reaction = ({
   position,
-  setEmojiReaction,
+  handleReaction,
 }: {
   position:
     | "top"
@@ -22,12 +22,9 @@ const Reaction = ({
     | "left-start"
     | "left-end"
     | undefined;
-  setEmojiReaction: (emoji: string) => void;
+  handleReaction: (emoji: string) => void;
 }) => {
-  const handleReaction = (emoji: any) => {
-    setEmojiReaction(emoji);
-  };
-
+ 
   return (
     <>
       <Dropdown

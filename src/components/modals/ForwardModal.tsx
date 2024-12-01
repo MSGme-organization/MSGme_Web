@@ -1,18 +1,17 @@
 "use client";
 
-import { Message } from "@/app/(chat)/chat/@indChat/[id]/page";
 import { DEFAULT_PROFILE_IMG, users } from "@/utils/data";
 import { Modal } from "flowbite-react";
-import Image from "next/image";
 import React from "react";
 import Input from "../common-components/Input";
 import { CloseIcon } from "@/utils/svgs";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { CldImage } from "next-cloudinary";
+import { MessageType } from "../chat/Message";
 
 interface ForwardModalProps {
-  forwardMsg: Message | null;
-  setForwardMsg: React.Dispatch<React.SetStateAction<Message | null>>;
+  forwardMsg: MessageType | null;
+  setForwardMsg: React.Dispatch<React.SetStateAction<MessageType | null>>;
 }
 
 const ForwardModal: React.FC<ForwardModalProps> = ({
@@ -21,20 +20,20 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
 }) => {
   const [search, setSearch] = React.useState<string>("");
   const [filteredArr, setFilteredArr] = React.useState([]);
-  const friendsList = useAppSelector((state) => state.friendsList)
+  const chatList = useAppSelector((state) => state.chatList);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setFilteredArr(
-      friendsList.data.filter((friend: any) =>
-        friend.friend_name.toLowerCase().includes(e.target.value.toLowerCase())
+      chatList.data.filter((chat: any) =>
+        chat.chatName.toLowerCase().includes(e.target.value.toLowerCase())
       )
     );
   };
 
   React.useEffect(() => {
-    setFilteredArr(friendsList.data)
-  }, [friendsList])
+    setFilteredArr(chatList.data);
+  }, [chatList]);
 
   return (
     <Modal
@@ -92,14 +91,14 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
               >
                 <div className="flex gap-5 items-center">
                   <CldImage
-                    src={user?.friend_avatar || DEFAULT_PROFILE_IMG}
-                    alt={`${user?.friend_name}'s avatar`}
+                    src={user?.friendAvatar || DEFAULT_PROFILE_IMG}
+                    alt={`${user?.friendName}'s avatar`}
                     width={40}
                     height={40}
                     loading="lazy"
                     className="rounded-full bg-green-300  aspect-square"
                   />
-                  <p className="font-semibold">{user.friend_name}</p>
+                  <p className="font-semibold">{user.chatName}</p>
                 </div>
                 <button className="bg-primary px-4 text-white font-bold rounded-full text-[15px]">
                   Send

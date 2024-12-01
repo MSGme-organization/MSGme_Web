@@ -1,9 +1,9 @@
 "use client";
 
-import AddProfilePhoto from "@/components/client-components/profile-setup/AddProfilePhoto";
-import DOB from "@/components/client-components/profile-setup/DOB";
-import FullName from "@/components/client-components/profile-setup/FullName";
-import { useProfile } from "@/components/client-components/profile-setup/ProfileContext";
+import AddProfilePhoto from "@/components/profile-setup/AddProfilePhoto";
+import DOB from "@/components/profile-setup/DOB";
+import FullName from "@/components/profile-setup/FullName";
+import { useProfile } from "@/components/context/ProfileContext";
 
 type PageContext = {
   setStep: (step: number) => void;

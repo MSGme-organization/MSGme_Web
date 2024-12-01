@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 
 const initialState = {
-  first_name: "",
-  last_name: "",
+  firstName: "",
+  lastName: "",
   email: "",
   username: "",
   dob: "",
   bio: "",
-  avatar: "",
+  avatar: { url: "" },
 };
 
 const profileSlice = createSlice({

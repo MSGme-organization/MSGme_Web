@@ -1,3 +1,4 @@
+import { generateAndExportKeyPair } from "@/utils/messageE2EE";
 import axios from "axios";
 
 export const register = async ({
@@ -9,12 +10,19 @@ export const register = async ({
   userName: string;
   password: string;
 }) => {
-  const response = await axios.post("/api/v1/register", {
-    email,
-    username: userName,
-    password,
-  });
-  return response;
+  try {
+    const { publicKey, privateKey } = await generateAndExportKeyPair();
+    const response = await axios.post("/api/v1/register", {
+      email,
+      username: userName,
+      password,
+      publicKey: publicKey,
+    });
+    localStorage.setItem("private_key", JSON.stringify(privateKey));
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const login = async ({

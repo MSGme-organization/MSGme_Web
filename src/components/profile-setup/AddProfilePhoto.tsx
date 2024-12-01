@@ -17,7 +17,7 @@ type Props = {
 
 const AddProfilePhoto = ({ handleDecrement }: Props) => {
   const data = useAppSelector((state) => state.profile);
-  const [image, setImage] = useState(data.avatar);
+  const [image, setImage] = useState(data.avatar?.url || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();

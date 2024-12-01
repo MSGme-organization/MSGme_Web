@@ -1,3 +1,4 @@
+"use client"
 import {
   BackIcon,
   CloseIcon,
@@ -27,7 +28,7 @@ interface ChatHeaderProps {
   count: number;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({
+const ChatHeader = ({
   name,
   avatar,
   handleSearch,
@@ -36,7 +37,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   searchString,
   searchActiveIndex,
   count,
-}) => {
+}: ChatHeaderProps) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
   const searchRef = React.useRef<HTMLInputElement>(null);
@@ -49,12 +50,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
     },
     {
       label: "Mute",
-      fn: () => { },
+      fn: () => {},
       icon: MuteIcon,
     },
     {
       label: "Report",
-      fn: () => { },
+      fn: () => {},
       icon: FlagIcon,
     },
   ];
@@ -79,8 +80,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   return (
     <>
       <div
-        className={`w-full sticky ${searchOpen ? "mb-[66px]" : "mb-0"
-          } top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
+        className={`w-full sticky ${
+          searchOpen ? "mb-[66px]" : "mb-0"
+        } top-0 left-0 min-h-[70px] z-[2] flex items-center justify-around shadow border-b border-gray-100 dark:border-gray-600 dark:bg-customGrey-blackBg bg-white`}
       >
         <div className="w-full px-4 flex items-center justify-between z-[21]  dark:bg-customGrey-blackBg bg-white">
           <div className="flex items-center gap-3">
@@ -131,12 +133,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         </div>
         <div
-          className={`absolute w-full top-[100%] gap-2 left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${searchOpen ? "translate-y-[0%]" : ""
-            }`}
+          className={`absolute w-full top-[100%] gap-2 left-0 z-[20] p-3 bg-white dark:bg-customGrey-blackBg flex justify-around items-center -translate-y-[100%] ${
+            searchOpen ? "translate-y-[0%]" : ""
+          }`}
         >
           <Input
             type="text"
-            // ref={searchRef}
             onChange={handleSearch}
             value={searchString || ""}
             placeholder="search here"

@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/components/client-components/common-components/Input";
-import { PasswordSvg } from "@/components/client-components/HomeLayout/Svgs";
-import Loading from "@/components/client-components/loader/Loading";
+import Input from "@/components/common-components/Input";
+import { PasswordSvg } from "@/components/HomeLayout/Svgs";
+import Loading from "@/components/loader/Loading";
 import { setPassword } from "@/query/auth/auth";
 import { SetPassword } from "@/utils/formik-validation";
 import { CloseEyeSvg, EyeSvg } from "@/utils/svgs";
