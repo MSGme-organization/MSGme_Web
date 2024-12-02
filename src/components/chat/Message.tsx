@@ -19,12 +19,8 @@ import ReactionsCard from "../emoji/ReactionsCard";
 import { Popover } from "flowbite-react";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { useSocket } from "../context/SocketContext";
+import { DecodedUserType } from "@/utils/helpers/token";
 
-export type DecodedUserType = {
-  id: string;
-  username: string;
-  email: string;
-};
 
 export type MessageType = {
   username: string;
@@ -38,6 +34,9 @@ export type MessageType = {
   iv: string;
   roomId: string;
   createdAt: string;
+  isDeleted?: boolean;
+  isEdited?: boolean;
+  isForward?: boolean;
 };
 type MessageProps = {
   message: MessageType;

@@ -26,7 +26,7 @@ const TextMessageField = ({
     },
     onSubmit: (values, { resetForm }) => {
       if (replyMsg !== null || values.msg) {
-        handleMessageSend(values,)
+        handleMessageSend(values.msg,)
         resetForm();
       }
     },

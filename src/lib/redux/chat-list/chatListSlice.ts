@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 import { fetchChatList } from "@/query/friends-list/friendsList";
+import { ChatListType } from "@/app/api/v1/(friends)/get-friends/route";
 
-const initialState = [];
+const initialState: ChatListType[] = [];
 
 const chatListSlice = createSlice({
   name: "chatListSlice",

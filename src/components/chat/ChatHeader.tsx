@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   BackIcon,
   CloseIcon,
@@ -76,7 +76,6 @@ const ChatHeader = ({
       return !prev;
     });
   };
-
   return (
     <>
       <div
