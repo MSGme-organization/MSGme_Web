@@ -1,10 +1,7 @@
 "use client";
 
 import ChatHeader from "@/components/chat/ChatHeader";
-import Message, {
-  DecodedUserType,
-  MessageType,
-} from "@/components/chat/Message";
+import Message, { MessageType } from "@/components/chat/Message";
 import TextMessageField from "@/components/chat/TextMessageField";
 import ForwardModal from "@/components/modals/ForwardModal";
 import { useAppSelector } from "@/lib/redux/hooks";
@@ -19,6 +16,8 @@ import { useSocket } from "@/components/context/SocketContext";
 import { getDayDiff, getDayLabel } from "@/utils/date";
 import { deleteMessage, fetchMessage } from "@/query/message/messageAction";
 import { updateRoomLastMessage } from "./_action";
+import { DecodedUserType } from "@/utils/helpers/token";
+import { ChatListType } from "@/app/api/v1/(friends)/get-friends/route";
 
 type ChatsProps = {
   roomId: string;
@@ -38,13 +37,13 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   );
   const [searchDivsLength, setSearchDivsLength] = React.useState(0);
   const [totalMessages, setMessages] = React.useState<MessageType[] | []>([]);
-  const [chatFriend, setChatFriend] = React.useState<any>(null);
+  const [chatFriend, setChatFriend] = React.useState<ChatListType | null>(null);
   const ref = React.useRef<HTMLDivElement>(null);
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const searchDivs = React.useRef<HTMLDivElement[]>([]);
   const socket = useSocket();
-  const handleMessageSend = async (message: { msg: string }) => {
-    if (socket && (replyMsg !== null || message.msg)) {
+  const handleMessageSend = async (message: string) => {
+    if (socket && (replyMsg !== null || message)) {
       const userPrivateKey: JsonWebKey = JSON.parse(
         localStorage.getItem("private_key") as string
       );
@@ -55,7 +54,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
         );
         const { encryptedData, iv } = await encryptMessage(
           sharedSecret,
-          message.msg
+          message
         );
         const messageObject = {
           fullName: `${profile.firstName} ${profile.lastName}`,
@@ -127,7 +126,13 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   }, []);
 
   const handleForward = React.useCallback((messageObject: MessageType) => {
-    setForwardMsg(messageObject);
+    setForwardMsg({
+      ...messageObject,
+      fullName: `${profile.firstName} ${profile.lastName}`,
+      username: profile.username,
+      avatar: profile.avatar?.url || "",
+      userId: decodedUser.id,
+    });
   }, []);
   const handleDelete = React.useCallback(
     async (msgId: string) => {
@@ -242,9 +247,9 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   }, [searchDivsLength]);
 
   React.useEffect(() => {
-    const friend = chatList.data.find((chat: any) => chat.roomId === roomId);
-    setChatFriend(friend);
-  }, [roomId]);
+    const friend = chatList.data.find((chat) => chat.roomId === roomId);
+    setChatFriend(friend || null);
+  }, [roomId, chatList]);
 
   React.useEffect(() => {
     const decryptMessageList = async () => {

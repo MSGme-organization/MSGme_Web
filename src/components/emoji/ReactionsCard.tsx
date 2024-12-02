@@ -65,8 +65,9 @@ const ReactionsCard = ({
       <div className=" custom-scrollbar flex items-center gap-3 overflow-x-auto">
         <ReactionList target="all" label="All" length={emojiReaction.length} />
         {isValidArray(groupedReactions) &&
-          groupedReactions.map((group) => (
+          groupedReactions.map((group, index) => (
             <ReactionList
+              key={index}
               target={group.emoji}
               label={group.emoji}
               length={group.count}

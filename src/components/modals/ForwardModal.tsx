@@ -4,10 +4,14 @@ import { DEFAULT_PROFILE_IMG, users } from "@/utils/data";
 import { Modal } from "flowbite-react";
 import React from "react";
 import Input from "../common-components/Input";
-import { CloseIcon } from "@/utils/svgs";
+import { CloseIcon, SendIcon, ShareIcon } from "@/utils/svgs";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { CldImage } from "next-cloudinary";
 import { MessageType } from "../chat/Message";
+import { getRecipientPublicKey } from "@/app/(chat)/chat/@indChat/[id]/_action";
+import { deriveSharedSecret, encryptMessage } from "@/utils/messageE2EE";
+import { useSocket } from "../context/SocketContext";
+import { ChatListType } from "@/app/api/v1/(friends)/get-friends/route";
 
 interface ForwardModalProps {
   forwardMsg: MessageType | null;
@@ -19,8 +23,12 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
   setForwardMsg,
 }) => {
   const [search, setSearch] = React.useState<string>("");
-  const [filteredArr, setFilteredArr] = React.useState([]);
+  const [filteredArr, setFilteredArr] = React.useState<ChatListType[]>([]);
+  const [buttonStatuses, setButtonStatuses] = React.useState<{
+    [key: string]: boolean;
+  }>({});
   const chatList = useAppSelector((state) => state.chatList);
+  const socket = useSocket();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -28,6 +36,81 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
       chatList.data.filter((chat: any) =>
         chat.chatName.toLowerCase().includes(e.target.value.toLowerCase())
       )
+    );
+  };
+
+  const handleSendMessage = async (roomId: string, userId: string) => {
+    try {
+      if (forwardMsg && roomId && socket) {
+        const userPrivateKey: JsonWebKey = JSON.parse(
+          localStorage.getItem("private_key") as string
+        );
+        const recipientPublicKey = await getRecipientPublicKey(
+          forwardMsg.userId,
+          roomId
+        );
+        if (recipientPublicKey) {
+          const sharedSecret = await deriveSharedSecret(
+            userPrivateKey,
+            recipientPublicKey
+          );
+          const { encryptedData, iv } = await encryptMessage(
+            sharedSecret,
+            forwardMsg.message
+          );
+          const forwardMessageObject = {
+            fullName: forwardMsg?.fullName,
+            username: forwardMsg?.username,
+            avatar: forwardMsg?.avatar,
+            message: encryptedData,
+            iv: iv,
+            repliedMsgId: null,
+            userId: forwardMsg.userId,
+            isForward: true,
+          };
+          socket.emit("message-send", {
+            messageObject: forwardMessageObject,
+            roomId,
+          });
+
+          setButtonStatuses((prev) => ({ ...prev, [userId]: true }));
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const ForwardUser = ({ user }) => {
+    const buttonStatus = buttonStatuses[user.id] || false;
+    return (
+      <div className="w-full py-4 flex justify-between items-center">
+        <div className="flex gap-5 items-center">
+          <CldImage
+            src={user?.friendAvatar || DEFAULT_PROFILE_IMG}
+            alt={`${user?.friendName}'s avatar`}
+            width={40}
+            height={40}
+            loading="lazy"
+            className="rounded-full bg-green-300 aspect-square"
+          />
+          <p className="font-semibold">{user.chatName}</p>
+        </div>
+        {buttonStatus ? (
+          <div className="bg-customGrey dark:bg-customGrey-blackBg px-4 text-white font-bold rounded-full text-[15px]">
+            Sent
+          </div>
+        ) : (
+          <button
+            className="px-4 text-white font-bold rounded-full text-[15px]"
+            onClick={async () => {
+              await handleSendMessage(user.roomId, user.id);
+            }}
+          >
+            {SendIcon()}
+          </button>
+        )}
+      </div>
     );
   };
 
@@ -59,16 +142,6 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
                   </div>
                 </div>
               )}
-              <div>
-                <Input
-                  autocomplete="off"
-                  classes="border-none  outline-none focus:ring-0  shadow-none"
-                  name="search"
-                  placeholder="Type a message here (optional)"
-                  type="text"
-                  required={false}
-                />
-              </div>
             </div>
             <Input
               classes=""
@@ -85,25 +158,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
               autocomplete="off"
             />
             {filteredArr.map((user: any) => (
-              <div
-                className="w-full py-4 flex justify-between items-center"
-                key={user.id}
-              >
-                <div className="flex gap-5 items-center">
-                  <CldImage
-                    src={user?.friendAvatar || DEFAULT_PROFILE_IMG}
-                    alt={`${user?.friendName}'s avatar`}
-                    width={40}
-                    height={40}
-                    loading="lazy"
-                    className="rounded-full bg-green-300  aspect-square"
-                  />
-                  <p className="font-semibold">{user.chatName}</p>
-                </div>
-                <button className="bg-primary px-4 text-white font-bold rounded-full text-[15px]">
-                  Send
-                </button>
-              </div>
+              <ForwardUser key={user.id} user={user} />
             ))}
           </div>
         </div>

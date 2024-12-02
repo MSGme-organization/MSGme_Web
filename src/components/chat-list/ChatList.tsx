@@ -10,6 +10,7 @@ import { SearchIcon } from "@/utils/svgs";
 import { isValidArray } from "@/utils/objectsValidate";
 import { useParams, useRouter } from "next/navigation";
 import { useSocket } from "../context/SocketContext";
+import { ChatListType } from "@/app/api/v1/(friends)/get-friends/route";
 const ChatListNavBar = dynamic(
   () => import("@/components/chat-list/ChatListNavBar"),
   { ssr: false }
@@ -17,7 +18,7 @@ const ChatListNavBar = dynamic(
 
 const ChatList = () => {
   const socket = useSocket();
-  const [filteredList, setFilteredList] = React.useState([]);
+  const [filteredList, setFilteredList] = React.useState<ChatListType[]>([]);
   const dispatch = useAppDispatch();
   const chatList = useAppSelector((state) => state.chatList);
   const router = useRouter();

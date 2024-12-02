@@ -3,11 +3,22 @@ import { decodedToken } from "@/utils/helpers/token";
 import prisma from "@/lib/prisma/prisma";
 import { cookies } from "next/headers";
 
+export type ChatListType = {
+  id: string;
+  isBlocked: boolean;
+  roomId: string;
+  createdAt: Date | string;
+  chatName: string;
+  chatAvatar: string;
+  chatBio: string;
+  lastChat: string;
+  lastChatTime: string;
+  newUnreadChatCount: number | string;
+};
+
 export const GET = async () => {
   try {
-    const decodedUser: any = decodedToken(
-      cookies().get("token")?.value as string
-    );
+    const decodedUser = decodedToken(cookies().get("token")?.value as string);
 
     const chatListData = await prisma.room.findMany({
       where: {
@@ -84,9 +95,9 @@ export const GET = async () => {
         },
       },
       orderBy: {
-        lastMsgTimestamp:{
-          sort:"desc",
-          nulls:"last"
+        lastMsgTimestamp: {
+          sort: "desc",
+          nulls: "last",
         },
       },
     });
@@ -98,7 +109,7 @@ export const GET = async () => {
   }
 };
 
-const dataFormatter = (chatListData: any, loggedId: string): any => {
+const dataFormatter = (chatListData: any, loggedId: string): ChatListType[] => {
   const transformedData = chatListData.map((chatObj: any) => {
     if (chatObj.isGroup) {
       return {

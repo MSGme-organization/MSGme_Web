@@ -1,5 +1,11 @@
 import { jwtVerify, SignJWT, decodeJwt } from "jose";
 
+export type DecodedUserType = {
+  id: string;
+  username: string;
+  email: string;
+};
+
 export const generateToken = async (data: any) => {
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
@@ -17,6 +23,6 @@ export const verifyToken = async (token: string) => {
   }
 };
 
-export const decodedToken = (token: string) => {
+export const decodedToken = (token: string): DecodedUserType => {
   return decodeJwt(token);
 };

@@ -1231,3 +1231,28 @@ export const WhiteCloseIcon = () => (
     />
   </svg>
 );
+
+export const SendIcon = () => (
+  <svg
+    fill="#38c585"
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="30px"
+    height="30px"
+  >
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <g id="surface1">
+        <path d="M2,3v7.8L18,12L2,13.2V21l20-9L2,3z"></path>
+      </g>
+      <rect className="st0" fill="none" width="24" height="24"></rect>
+    </g>
+  </svg>
+);
