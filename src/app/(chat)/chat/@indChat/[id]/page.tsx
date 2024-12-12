@@ -2,7 +2,6 @@ import React from "react";
 import Chats from "./_client";
 import { decodedToken } from "@/utils/helpers/token";
 import { cookies } from "next/headers";
-import prisma from "@/lib/prisma/prisma";
 import { getRecipientPublicKey } from "./_action";
 
 const page = async ({ params }: { params: { id: string } }) => {

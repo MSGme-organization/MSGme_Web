@@ -1,14 +1,27 @@
 import { MessageType } from "@/components/chat/Message";
-import axios, { AxiosError, AxiosResponse } from "axios";
-
-export const fetchMessage = async (roomId: string) => {
+import axios from "axios";
+export type FetchMessagesType = {
+  data: MessageType[];
+  nextPage: number | string | null;
+};
+export const fetchMessages = async ({
+  roomId,
+  pageParam,
+  limit,
+}: {
+  roomId: string;
+  pageParam: number;
+  limit: number;
+}) => {
   try {
-    const response = await axios.get(
+    const response = await axios.get<FetchMessagesType>(
       process.env.NEXT_PUBLIC_CHAT_SOCKET_URL +
-        "api/v1/message/get-message/" +
-        roomId
+        `api/v1/message/get-message/${roomId}`,
+      {
+        params: { page: pageParam,limit },
+      }
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
   }

@@ -47,7 +47,6 @@ const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
         ))}
       </div>
       <div className="px-2 pb-2 relative h-[350px] overflow-auto remove-scrollbar">
-        {/* <div className="px-2 pb-2 relative h-[100%] overflow-auto"> */}
         {Object.keys(emojiData[emoji]).map((key, index) => (
           <>
             <p className="font-bold sticky top-[0px] bg-white text-black dark:text-white dark:bg-black z-10 text-[15px] py-2 text-left">
@@ -72,19 +71,8 @@ const EmojiPicker: React.FC<Props> = ({ handleClick }) => {
           </>
         ))}
       </div>
-      {/* <div className="bg-white dark:bg-black h-[40px] flex justify-start items-center ps-5 flex-row gap-2">
-        {EmojiBG.map((bg: string, index: number) => (
-          <button
-            onClick={() => setColorCode(index)}
-            className={`h-[20px] w-[20px] bg-[${bg}] rounded-lg outline outline-black dark:outline-white ${
-              index === colorCode ? "outline-1" : "outline-0"
-            }`}
-            key={index}
-          ></button>
-        ))}
-      </div> */}
     </div>
   );
 };
 
-export default EmojiPicker;
+export default React.memo(EmojiPicker);
