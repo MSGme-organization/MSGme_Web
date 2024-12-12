@@ -1,9 +1,8 @@
-"use client";
-
 import DefaultChat from "@/components/chat/DefaultChat";
+import React from "react";
 
-const IndChat = () => {
+const Default = () => {
   return <DefaultChat />;
 };
 
-export default IndChat;
+export default Default;

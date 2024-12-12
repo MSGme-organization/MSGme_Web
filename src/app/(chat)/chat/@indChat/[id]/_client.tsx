@@ -5,7 +5,7 @@ import Message, { MessageType } from "@/components/chat/Message";
 import TextMessageField from "@/components/chat/TextMessageField";
 import ForwardModal from "@/components/modals/ForwardModal";
 import { useAppSelector } from "@/lib/redux/hooks";
-import React, { useCallback } from "react";
+import React from "react";
 import {
   decryptMessage,
   decryptMessageArray,
@@ -14,10 +14,11 @@ import {
 } from "@/utils/messageE2EE";
 import { useSocket } from "@/components/context/SocketContext";
 import { getDayDiff, getDayLabel } from "@/utils/date";
-import { deleteMessage, fetchMessage } from "@/query/message/messageAction";
+import { deleteMessage, fetchMessages } from "@/query/message/messageAction";
 import { updateRoomLastMessage } from "./_action";
 import { DecodedUserType } from "@/utils/helpers/token";
 import { ChatListType } from "@/app/api/v1/(friends)/get-friends/route";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 type ChatsProps = {
   roomId: string;
@@ -42,6 +43,26 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   const msgRef = React.useRef<HTMLDivElement[]>([]);
   const searchDivs = React.useRef<HTMLDivElement[]>([]);
   const socket = useSocket();
+
+  const handleFetchMessage = async ({ pageParam }) => {
+    return await fetchMessages({ roomId, pageParam, limit: 30 });
+  };
+
+  const {
+    data: fetchedMessageData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ["fetchMessages", roomId],
+    queryFn: handleFetchMessage,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage?.nextPage || null,
+    staleTime:0
+  });
+
   const handleMessageSend = async (message: string) => {
     if (socket && (replyMsg !== null || message)) {
       const userPrivateKey: JsonWebKey = JSON.parse(
@@ -181,7 +202,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
     }
   };
 
-  const downActiveIndex = useCallback(() => {
+  const downActiveIndex = React.useCallback(() => {
     if (searchDivsLength !== 0 && searchDivsLength > searchActiveIndex) {
       setSearchActiveIndex((prev) => {
         if (prev === null || prev === searchDivs.current.length - 1) {
@@ -194,7 +215,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
     }
   }, [searchDivsLength]);
 
-  const upActiveIndex = useCallback(() => {
+  const upActiveIndex = React.useCallback(() => {
     if (searchDivsLength !== 0) {
       setSearchActiveIndex((prev) => {
         if (prev === null || prev === 0) {
@@ -229,6 +250,14 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
     }
   };
 
+  const handleScroll = async () => {
+    if (ref.current) {
+      if (ref.current.scrollTop === 0 && hasNextPage && !isFetchingNextPage) {
+        await fetchNextPage();
+      }
+    }
+  };
+
   React.useEffect(() => {
     if (ref.current) ref.current.scrollTo(0, ref.current.scrollHeight);
     msgRef.current = msgRef.current.slice(0, totalMessages.length);
@@ -252,8 +281,24 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
   }, [roomId, chatList]);
 
   React.useEffect(() => {
+    const currentRef = ref.current;
+    if (currentRef) {
+      currentRef.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage]);
+  React.useEffect(() => {
     const decryptMessageList = async () => {
-      const response = await fetchMessage(roomId);
+      const allMessages =
+        fetchedMessageData?.pages
+          .toReversed()
+          .flatMap((page) => page?.data || []) || [];
+
+
       const userPrivateKey: JsonWebKey = JSON.parse(
         localStorage.getItem("private_key") as string
       );
@@ -262,7 +307,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
         recipientPublicKey
       );
       const decryptedMessageArray = await decryptMessageArray(
-        response?.data || [],
+        allMessages || [],
         sharedSecret
       );
       setMessages(decryptedMessageArray);
@@ -281,8 +326,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
         socket.off("message-acknowledgment", handleMessageReceive);
       }
     };
-  }, [roomId, socket]);
-
+  }, [roomId, socket, fetchedMessageData]);
   return (
     <>
       <div
@@ -310,7 +354,7 @@ const Chats = ({ roomId, decodedUser, recipientPublicKey }: ChatsProps) => {
             className="bg-customGrey-light dark:bg-customGrey-black text-black dark:text-white pb-6"
             id="msg-list"
           >
-            {totalMessages.map((message: MessageType, index: number) => {
+            {!isError&&totalMessages.map((message: MessageType, index: number) => {
               const prevMessageDate =
                 index !== 0 ? totalMessages[index - 1].createdAt : null;
 

@@ -33,7 +33,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setFilteredArr(
-      chatList.data.filter((chat: any) =>
+      chatList.data.filter((chat) =>
         chat.chatName.toLowerCase().includes(e.target.value.toLowerCase())
       )
     );
@@ -157,7 +157,7 @@ const ForwardModal: React.FC<ForwardModalProps> = ({
               RightIcon={null}
               autocomplete="off"
             />
-            {filteredArr.map((user: any) => (
+            {filteredArr.map((user) => (
               <ForwardUser key={user.id} user={user} />
             ))}
           </div>
