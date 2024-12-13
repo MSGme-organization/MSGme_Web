@@ -1,7 +1,9 @@
+import TanstackQueryProvider from "@/components/tanstack-query/TanstackQueryProvider";
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import "./globals.css";
+import StoreProvider from "../components/StoreProvider";
 
 const NunitoSans = Nunito_Sans({
   weight: "300",
@@ -20,11 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <>
+      <StoreProvider>
+        <html lang="en" suppressHydrationWarning={true}>
+          <head>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
               (function() {
                 const theme = localStorage.getItem('flowbite-theme-mode');
                 if (theme === 'dark') {
@@ -34,20 +38,24 @@ export default function RootLayout({
                 }
               })();
             `,
-          }}
-        />
-      </head>
-      <body
-        className={
-          NunitoSans.className +
-          " " +
-          " bg-bgColor dark:bg-customGrey-blackBg"
-        }
-        suppressHydrationWarning={true}
-      >
-        {children}
-        <Toaster />
-      </body>
-    </html>
+              }}
+            />
+          </head>
+          <TanstackQueryProvider>
+            <body
+              className={
+                NunitoSans.className +
+                " " +
+                " bg-bgColor dark:bg-customGrey-blackBg relative"
+              }
+              suppressHydrationWarning={true}
+            >
+              {children}
+              <Toaster />
+            </body>
+          </TanstackQueryProvider>
+        </html>
+      </StoreProvider>
+    </>
   );
 }

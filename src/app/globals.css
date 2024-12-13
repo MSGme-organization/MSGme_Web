@@ -4,17 +4,35 @@
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #474545;
+  background-color: #f1f1f1;
 }
 
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 4px;
+  height: 4px;
   background-color: #5f5858;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #3333333d;
+}
+
+custom-scrollbar:hover::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.remove-scrollbar::-webkit-scrollbar-track {
+  display: none;
+}
+
+.remove-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.remove-scrollbar::-webkit-scrollbar-thumb {
+  display: none;
 }
 
 .loader-spinner {
@@ -60,6 +78,7 @@
 }
 
 @keyframes l32 {
+
   80%,
   100% {
     transform: rotate(0.5turn);
@@ -84,4 +103,45 @@
 
 .search-bar-focus:focus {
   border: 1 px solid #38c585;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+.api-loader {
+  aspect-ratio: 0.75;
+  --c: no-repeat linear-gradient(#38c585 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 20% 50%;
+  animation: l6 1s infinite linear;
+}
+
+@keyframes l6 {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%;
+  }
+
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%;
+  }
+
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%;
+  }
+
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%;
+  }
 }

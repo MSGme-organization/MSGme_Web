@@ -1,9 +1,11 @@
 "use client";
 
-import ShareModal from "@/components/client-components/modals/ShareModal";
-import ProfileSection from "@/components/client-components/settings/ProfileSection";
-import SettingItem from "@/components/client-components/settings/SettingItem";
-import SettingsHeader from "@/components/client-components/settings/SettingsHeader";
+import Loading from "@/components/loader/Loading";
+import ShareModal from "@/components/modals/ShareModal";
+import ProfileSection from "@/components/settings/ProfileSection";
+import SettingItem from "@/components/settings/SettingItem";
+import SettingsHeader from "@/components/settings/SettingsHeader";
+import { logout } from "@/query/auth/auth";
 import {
   ChangePassIcon,
   HelpIcon,
@@ -15,6 +17,8 @@ import {
   StartIcon,
   SunIcon,
 } from "@/utils/svgs";
+import { errorToast, successToast } from "@/utils/toast";
+import { useMutation } from "@tanstack/react-query";
 import { useThemeMode } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -23,6 +27,16 @@ const Settings = () => {
   const [shareModel, setShareModel] = React.useState(false);
   const router = useRouter();
   const theme = useThemeMode();
+  const logoutQuery = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      successToast("Logged out successfully")
+      router.push("/login");
+    },
+    onError: (error: any) => {
+      errorToast(error.response.data.message)
+    },
+  });
 
   const settingItems = [
     {
@@ -35,13 +49,13 @@ const Settings = () => {
       label: "Review",
       showArrow: true,
       icon: StartIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Change Language",
       showArrow: true,
       icon: LanguageIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Change Theme",
@@ -57,35 +71,41 @@ const Settings = () => {
     {
       label: "Help & Support",
       icon: HelpIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Privacy Policy",
       icon: PrivacyIcon,
-      fn: () => {},
+      fn: () => { },
     },
     {
       label: "Version 1.0.0",
       icon: InfoIcon,
-      fn: () => {},
+      fn: () => { },
     },
   ];
 
   return (
     <>
-      <SettingsHeader headerText={"Settings"} showLogout />
-      <ProfileSection />
-      <section className="w-full py-3 border-b border-gray-200 dark:border-gray-800">
-        {settingItems.map((item, index) => (
-          <SettingItem key={index} {...item} />
-        ))}
-      </section>
-      <section></section>
-      <ShareModal
-        shareUrl="www.google.com"
-        setOpenModal={setShareModel}
-        openModal={shareModel}
-      />
+      <Loading isLoading={logoutQuery.isPending}>
+        <SettingsHeader
+          headerText={"Settings"}
+          logout={logoutQuery}
+          showLogout
+        />
+        <ProfileSection />
+        <section className="w-full py-3 border-b border-gray-200 dark:border-gray-800">
+          {settingItems.map((item, index) => (
+            <SettingItem key={index} {...item} />
+          ))}
+        </section>
+        <section></section>
+        <ShareModal
+          shareUrl="www.google.com"
+          setOpenModal={setShareModel}
+          openModal={shareModel}
+        />
+      </Loading>
     </>
   );
 };

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,106 +9,111 @@ datasource MSGme {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  username   String   @unique
-  first_name String
-  last_name  String
-  email      String   @unique
-  password   String
-  dob        DateTime
-  bio        String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id        String    @id @default(uuid())
+  username  String    @unique
+  firstName String?
+  lastName  String?
+  email     String    @unique
+  password  String
+  dob       DateTime?
+  bio       String?
+  publicKey Json?
+  createdAt DateTime  @default(now())
+  avatar    String?
+  updatedAt DateTime  @default(now()) @updatedAt
 
-  // friend request 
-  friend_request_sent     Friend_request[] @relation("Sender")
-  friend_request_received Friend_request[] @relation("Receiver")
+  friendRequestSent     FriendRequest[] @relation("Sender")
+  friendRequestReceived FriendRequest[] @relation("Receiver")
 
-  // friend list 
-  user_friend    Friend_List[] @relation("User")
-  to_friend_list Friend_List[] @relation("UserFriend")
+  userFriend   FriendList[] @relation("User")
+  toFriendList FriendList[] @relation("UserFriend")
 
-  // reports
-  reported_user Reports[] @relation("ReportedUser")
-  reporter      Reports[] @relation("Reporter")
+  reportedUser Report[] @relation("ReportedUser")
+  reporter     Report[] @relation("Reporter")
 
-  // group_list
-  group Group_List[]
+  group GroupList[]
 }
 
-model Friend_request {
-  id          String   @id @default(uuid())
-  sender_id   String
-  receiver_id String
-  status      Boolean
-  sender      User     @relation("Sender", fields: [sender_id], references: [id], onDelete: Cascade)
-  receiver    User     @relation("Receiver", fields: [receiver_id], references: [id], onDelete: Cascade)
-  created_at  DateTime @default(now())
-
-  @@index([sender_id])
-  @@index([receiver_id])
+enum FriendRequestStatus {
+  pending
+  accepted
+  rejected
 }
 
-model Friend_List {
-  id         String   @id @default(uuid())
-  user_id    String
-  friend_id  String
-  isBlocked  Boolean
-  room_id    String
-  created_at DateTime @default(now())
+model FriendRequest {
+  id         String              @id @default(uuid())
+  senderId   String
+  receiverId String
+  status     FriendRequestStatus @default(pending)
+  sender     User                @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User                @relation("Receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt  DateTime            @default(now())
 
-  room           Room @relation(fields: [room_id], references: [id], onDelete: Cascade)
-  user           User @relation("User", fields: [user_id], references: [id], onDelete: Cascade)
-  to_friend_list User @relation("UserFriend", fields: [friend_id], references: [id], onDelete: Cascade)
+  @@unique([senderId, receiverId])
+}
 
-  @@index([room_id])
-  @@index([user_id])
-  @@index([friend_id])
+model FriendList {
+  id        String   @id @default(uuid())
+  userId    String
+  friendId  String
+  isBlocked Boolean  @default(false)
+  roomId    String   @unique
+  createdAt DateTime @default(now())
+
+  room     Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user     User @relation("User", fields: [userId], references: [id], onDelete: Cascade)
+  toFriend User @relation("UserFriend", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@index([userId])
+  @@index([friendId])
 }
 
 model Room {
-  id         String   @id @default(uuid())
-  member     Int
-  created_at DateTime @default(now())
-
-  Friend_List Friend_List[]
-
-  Group Group?
+  id               String      @id @default(uuid())
+  members          Int
+  lastMessage      String?
+  lastMsgTimestamp DateTime?
+  createdAt        DateTime    @default(now())
+  isGroup          Boolean     @default(false)
+  
+  friendList       FriendList?
+  group Group?
 }
 
-model Reports {
+model Report {
   id         String   @id @default(uuid())
-  user_id    String
-  repoter_id String
+  userId     String
+  reporterId String
   reason     String
-  created_at DateTime @default(now())
+  createdAt  DateTime @default(now())
 
-  user     User @relation("ReportedUser", fields: [user_id], references: [id], onDelete: Cascade)
-  Reporter User @relation("Reporter", fields: [repoter_id], references: [id], onDelete: Cascade)
+  user     User @relation("ReportedUser", fields: [userId], references: [id], onDelete: Cascade)
+  reporter User @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
 }
 
 model Group {
-  id          String   @id @default(uuid())
-  room_id     String   @unique
-  group_name  String
-  group_image String
-  created_at  DateTime @default(now())
+  id         String   @id @default(uuid())
+  roomId     String   @unique
+  groupName  String
+  groupImage String
+  createdAt  DateTime @default(now())
 
-  room       Room         @relation(fields: [room_id], references: [id], onDelete: Cascade)
-  group_list Group_List[]
+  room      Room        @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  groupList GroupList[]
 
-  @@index([room_id])
+  @@index([roomId])
 }
 
-model Group_List {
+model GroupList {
   id        String  @id @default(uuid())
-  user_id   String
-  group_id  String
-  isBlocked Boolean
+  userId    String
+  groupId   String
+  isBlocked Boolean @default(false)
 
-  user  User  @relation(fields: [user_id], references: [id])
-  group Group @relation(fields: [group_id], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
 
-  @@index([user_id])
-  @@index([group_id])
+  @@index([userId])
+  @@index([groupId])
 }

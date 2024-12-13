@@ -14,12 +14,9 @@ export const ChangePasswordInitialValues = {
 };
 
 export const EditProfileValidationSchema = Yup.object({
-  firstName: Yup.string().required("First Name is required"),
-  lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  bio: Yup.string().required("Bio is required"),
+  firstName: Yup.string().required("Required"),
+  lastName: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
 });
 
 export const ChangePasswordValidationSchema = Yup.object({
@@ -28,22 +25,20 @@ export const ChangePasswordValidationSchema = Yup.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/,
       "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character"
     )
-    .required("Current Password is required"),
+    .required("Required"),
   newPassword: Yup.string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/,
       "Password should contain - minimum 1 capital and 1 small alphabet ,\n- 1 digit,\n- 1 special character and minimum 8 character"
     )
-    .required("New Password is required"),
+    .required("Required"),
   confirmNewPassword: Yup.string()
     .oneOf([Yup.ref("newPassword"), ""], "Passwords must match")
-    .required("Confirm New Password is required"),
+    .required("Required"),
 });
 
 export const LoginValidation = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/,
@@ -53,9 +48,7 @@ export const LoginValidation = Yup.object({
 });
 
 export const EmailValidation = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
 });
 
 export const SetPassword = Yup.object({
@@ -71,9 +64,7 @@ export const SetPassword = Yup.object({
 });
 
 export const RegisterValidation = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_/+]).{8,}$/,
