@@ -4,8 +4,8 @@ export const generateAndExportKeyPair = async () => {
   try {
     const keyPair = await window.crypto.subtle.generateKey(
       {
-        name: process.env.NEXT_PUBLIC_ENCRYPTION_ALGORITHM as string,
-        namedCurve: process.env.NEXT_PUBLIC_ENCRYPTION_CURVE as string,
+        name: "ECDH" ,
+        namedCurve: "P-256" ,
       },
       true,
       ["deriveKey", "deriveBits"]
@@ -35,8 +35,8 @@ export const deriveSharedSecret = async (
     "jwk",
     privateKeyJwk,
     {
-      name: process.env.NEXT_PUBLIC_ENCRYPTION_ALGORITHM as string,
-      namedCurve: process.env.NEXT_PUBLIC_ENCRYPTION_CURVE as string,
+      name: "ECDH",
+      namedCurve: "P-256",
     },
     true,
     ["deriveKey", "deriveBits"]
@@ -45,15 +45,15 @@ export const deriveSharedSecret = async (
     "jwk",
     recipientPublicKey,
     {
-      name: process.env.NEXT_PUBLIC_ENCRYPTION_ALGORITHM as string,
-      namedCurve: process.env.NEXT_PUBLIC_ENCRYPTION_CURVE as string,
+      name: "ECDH",
+      namedCurve: "P-256",
     },
     true,
     []
   );
   const sharedSecret = await window.crypto.subtle.deriveKey(
     {
-      name: process.env.NEXT_PUBLIC_ENCRYPTION_ALGORITHM as string,
+      name: "ECDH",
       public: recipientKey,
     },
     privateKey,

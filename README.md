@@ -54,8 +54,6 @@ MSGme is a feature-rich, real-time chat web application designed for seamless an
     REDIS_PASSWORD="your_redis_password"
     REDIS_USERNAME="your_redis_username"
     NEXT_PUBLIC_CHAT_SOCKET_URL="your_websocket_server_endpoint"
-    NEXT_PUBLIC_ENCRYPTION_ALGORITHM="ECDH"
-    NEXT_PUBLIC_ENCRYPTION_CURVE="P-256"
     ```
 5. Migrate the database schema:
     ```bash
